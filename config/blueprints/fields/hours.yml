@@ -1,0 +1,63 @@
+  type: object
+  label:
+    *: hksagentur.schema.field.hours.label
+  help:
+    *: hksagentur.schema.field.hours.help
+  fields:
+    monday:
+      extends: @hksagentur/schema/fields/hours-day
+      label:
+        *: hksagentur.schema.day.monday.long
+    tuesday:
+      extends: @hksagentur/schema/fields/hours-day
+      label:
+        *: hksagentur.schema.day.tuesday.long
+    wednesday:
+      extends: @hksagentur/schema/fields/hours-day
+      label:
+        *: hksagentur.schema.day.wednesday.long
+    thursday:
+      extends: @hksagentur/schema/fields/hours-day
+      label:
+        *: hksagentur.schema.day.thursday.long
+    friday:
+      extends: @hksagentur/schema/fields/hours-day
+      label:
+        *: hksagentur.schema.day.friday.long
+    saturday:
+      extends: @hksagentur/schema/fields/hours-day
+      label:
+        *: hksagentur.schema.day.saturday.long
+    sunday:
+      extends: @hksagentur/schema/fields/hours-day
+      label:
+        *: hksagentur.schema.day.sunday.long
+    exceptions:
+      extends: @hksagentur/schema/fields/hours-exception
+      label:
+        *: hksagentur.schema.field.hours.exceptions
+  default:
+    monday:
+      -
+        start: "09:00"
+        end: "19:00"
+    tuesday:
+      -
+        start: "09:00"
+        end: "19:00"
+    wednesday:
+      -
+        start: "09:00"
+        end: "19:00"
+    thursday:
+      -
+        start: "09:00"
+        end: "19:00"
+    friday:
+      -
+        start: "09:00"
+        end: "19:00"
+    saturday:
+      -
+        start: "08:00"
+        end: "14:00"

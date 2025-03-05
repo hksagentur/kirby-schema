@@ -1,0 +1,40 @@
+type: group
+fields:
+  title:
+    type: text
+    label:
+      *: hksagentur.schema.field.link.title
+    counter: false
+  url:
+    type: link
+    label:
+      *: hksagentur.schema.field.link.url
+    required: true
+    options:
+      - url
+      - page
+      - anchor
+  target:
+    type: toggle
+    label:
+      *: hksagentur.schema.field.link.target.label
+    text:
+      *: hksagentur.schema.field.link.target.text
+  rel:
+    type: select
+    label:
+      *: hksagentur.schema.field.link.rel
+    options:
+      alternate: Alternate
+      author: Author
+      bookmark: Bookmark
+      help: Help
+      home: Home
+      license: License
+      me: Me
+      next: Next
+      prev: Prev
+      tag: Tag
+      search: Search
+      privacy-policy: Privacy Policy
+      terms-of-service: Terms of Service

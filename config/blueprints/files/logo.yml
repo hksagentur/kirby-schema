@@ -1,0 +1,19 @@
+title:
+  *: hksagentur.schema.file.logo.title
+
+accept:
+  mime:
+    - image/svg+xml
+    - image/png
+
+image:
+  ratio: 1/1
+  cover: false
+
+focus: false
+
+fields:
+  alt:
+    type: text
+    label:
+      *: hksagentur.schema.file.logo.alt

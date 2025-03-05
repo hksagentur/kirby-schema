@@ -1,0 +1,13 @@
+type: files
+label:
+  *: hksagentur.schema.field.image.label
+query: page.images.template('image')
+layout: cards
+size: full
+multiple: false
+info: "{{ file.dimensions }} ({{ file.niceSize }})"
+image:
+  ratio: 3/2
+  cover: true
+uploads:
+  template: image

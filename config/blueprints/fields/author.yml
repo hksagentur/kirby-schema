@@ -1,0 +1,4 @@
+type: users
+label:
+  *: hksagentur.schema.field.author.label
+default: true

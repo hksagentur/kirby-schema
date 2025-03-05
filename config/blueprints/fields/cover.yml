@@ -1,0 +1,3 @@
+extends: @hksagentur/schema/fields/image
+label:
+  *: hksagentur.schema.field.cover.label

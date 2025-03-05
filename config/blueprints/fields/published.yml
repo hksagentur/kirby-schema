@@ -1,0 +1,8 @@
+type: date
+label:
+  *: hksagentur.schema.field.published.label
+time: true
+default: now
+step:
+  unit: minute
+  size: 1

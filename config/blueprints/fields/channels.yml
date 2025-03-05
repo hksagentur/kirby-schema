@@ -1,0 +1,24 @@
+type: structure
+label:
+  *: hksagentur.schema.field.channels.label
+fields:
+  extends: @hksagentur/schema/fields/link
+  icon:
+    type: select
+    label:
+      *: hksagentur.schema.field.channels.icon
+    options:
+      facebook: Facebook
+      instagram: Instagram
+      linkedin: LinkedIn
+      tiktok: TikTok
+      x: X
+      xing: Xing
+columns:
+  title:
+    width: 1/2
+  url:
+    width: 1/4
+  target:
+    width: 1/4
+    text: false

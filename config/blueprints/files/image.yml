@@ -1,0 +1,41 @@
+title:
+  *: hksagentur.schema.file.image.title
+
+accept:
+  type: image
+
+image:
+  ratio: 3/2
+  cover: false
+
+create:
+  width: 2560
+  height: 2560
+
+columns:
+  main:
+    width: 2/3
+    fields:
+      alt:
+        type: text
+        label:
+          *: hksagentur.schema.file.image.alt
+      caption:
+        type: textarea
+        label:
+          *: hksagentur.schema.file.image.caption
+        size: medium
+        buttons:
+          - italic
+          - bold
+          - link
+          - email
+  sidebar:
+    width: 1/3
+    fields:
+      author:
+        type: text
+        label:
+          *: hksagentur.schema.file.image.author
+        counter: false
+      license: @hksagentur/schema/fields/license

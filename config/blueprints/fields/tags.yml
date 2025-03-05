@@ -1,0 +1,6 @@
+type: tags
+label:
+  *: hksagentur.schema.field.tags.label
+options:
+  type: query
+  query: page.siblings.pluck('tags', ',', true)

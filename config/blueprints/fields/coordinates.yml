@@ -1,0 +1,20 @@
+type: group
+fields:
+  latitude:
+    type: text
+    label:
+      *: hksagentur.schema.field.coordinates.latitude
+    width: 1/2
+    counter: false
+    translate: false
+    placeholder: 53.0758
+    pattern: ^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$
+  longitude:
+    type: text
+    label:
+      *: hksagentur.schema.field.coordinates.latitude
+    width: 1/2
+    counter: false
+    translate: false
+    placeholder: 8.8071
+    pattern: ^[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$

@@ -1,0 +1,7 @@
+type: tags
+label:
+  *: hksagentur.schema.field.responsibilities.label
+max: 3
+options:
+  type: query
+  query: page.siblings.pluck('responsibilities', ',', true)

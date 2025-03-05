@@ -1,0 +1,41 @@
+type: structure
+label:
+  *: hksagentur.schema.field.hours.exception.label
+fields:
+  date:
+    type: date
+    label:
+      *: hksagentur.schema.field.hours.exception.date
+    required: true
+    time: false
+    default: today
+  start:
+    type: time
+    label:
+      *: hksagentur.schema.field.hours.exception.start
+    step:
+      unit: minute
+      size: 15
+    required: false
+    translate: false
+    width: 1/2
+  end:
+    type: time
+    label:
+      *: hksagentur.schema.field.hours.exception.end
+    step:
+      unit: minute
+      size: 15
+    required: false
+    translate: false
+    width: 1/2
+  note:
+    type: text
+    icon: info
+    label:
+      *: hksagentur.schema.field.hours.exception.note
+columns:
+  date: true
+  note: true
+sortable: false
+sortBy: date

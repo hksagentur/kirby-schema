@@ -1,0 +1,18 @@
+type: group
+fields:
+  name:
+    type: text
+    label:
+      *: hksagentur.schema.field.organization.name
+    required: false
+    counter: false
+  lineAddress:
+    type: line
+  address: @hksagentur/schema/fields/address
+  coordinates: @hksagentur/schema/fields/coordinates
+  lineContact:
+    type: line
+  telephone: @hksagentur/schema/fields/telephone
+  fax: @hksagentur/schema/fields/fax
+  email: @hksagentur/schema/fields/email
+  website: @hksagentur/schema/fields/website

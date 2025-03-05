@@ -1,0 +1,10 @@
+type: files
+label:
+  *: hksagentur.schema.field.logo.label
+query: page.images.template('logo')
+layout: cards
+size: full
+info: "{{ file.dimensions }} ({{ file.niceSize }})"
+multiple: false
+uploads:
+  template: logo

@@ -1,0 +1,35 @@
+{
+  "name": "hksagentur/kirby-schema",
+  "description": "Frequently used data structures for the Kirby panel",
+  "type": "kirby-plugin",
+  "license": "ISC",
+  "authors": [
+    {
+      "name": "Daniel Weidner",
+      "email": "d.weidner@hks-agentur.de",
+      "homepage": "https://hks-agentur.de"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Hks\\Schema\\": "src/"
+    }
+  },
+  "require": {
+    "getkirby/composer-installer": "^1.1"
+  },
+  "suggest": {
+    "commerceguys/addressing": "Required to associate models with an address.",
+    "spatie/opening-hours": "Required to format the opening hours of models.",
+    "getkirby/geo": "Required to calculate the distance between geographic locations."
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "allow-plugins": {
+      "getkirby/composer-installer": true
+    }
+  },
+  "extra": {
+    "installer-name": "schema"
+  }
+}

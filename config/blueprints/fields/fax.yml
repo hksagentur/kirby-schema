@@ -1,0 +1,4 @@
+type: tel
+label:
+  *: hksagentur.schema.field.fax.label
+icon: print

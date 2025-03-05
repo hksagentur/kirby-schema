@@ -1,0 +1,34 @@
+type: structure
+label:
+  *: hksagentur.schema.field.hours.day.label
+fields:
+  start:
+    type: time
+    label:
+      *: hksagentur.schema.field.hours.day.start
+    step:
+      unit: minute
+      size: 15
+    required: true
+    translate: false
+    width: 1/2
+  end:
+    type: time
+    label:
+      *: hksagentur.schema.field.hours.day.end
+    step:
+      unit: minute
+      size: 15
+    required: true
+    translate: false
+    width: 1/2
+  note:
+    type: text
+    icon: info
+    label:
+      *: hksagentur.schema.field.hours.day.note
+columns:
+  start: true
+  end: true
+sortable: false
+sortBy: start

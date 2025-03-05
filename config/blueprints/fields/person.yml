@@ -1,0 +1,40 @@
+type: group
+fields:
+  givenName:
+    type: text
+    label:
+      *: hksagentur.schema.field.person.givenname
+    required: false
+    counter: false
+  additionalName:
+    type: text
+    label:
+      *: hksagentur.schema.field.person.additionalname
+    required: false
+    counter: false
+  familyName:
+    type: text
+    label:
+      *: hksagentur.schema.field.person.familyname
+    required: false
+    counter: false
+  description:
+    type: textarea
+    label:
+      *: hksagentur.schema.field.person.description
+    size: tiny
+    buttons:
+      - italic
+      - bold
+      - "|"
+      - link
+      - email
+  lineContact:
+    type: line
+  telephone: @hksagentur/schema/fields/telephone
+  fax: @hksagentur/schema/fields/fax
+  email: @hksagentur/schema/fields/email
+  lineTaxonomies:
+    type: line
+  occupation: @hksagentur/schema/fields/occupation
+  responsibilities: @hksagentur/schema/fields/responsibilities
