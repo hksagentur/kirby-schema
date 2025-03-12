@@ -32,6 +32,10 @@
       "getkirby/composer-installer": true
     }
   },
+  "scripts": {
+    "format": "pint --verbose",
+    "lint": "pint --verbose --test"
+  },
   "extra": {
     "installer-name": "schema"
   }
