@@ -18,6 +18,9 @@
   "require": {
     "getkirby/composer-installer": "^1.1"
   },
+  "require-dev": {
+    "laravel/pint": "^1.20"
+  },
   "suggest": {
     "commerceguys/addressing": "Required to associate models with an address.",
     "spatie/opening-hours": "Required to format the opening hours of models.",
