@@ -3,6 +3,7 @@
 return [
     '@hksagentur/schema/files/image' => __DIR__ . '/blueprints/files/image.yml',
     '@hksagentur/schema/files/logo' => __DIR__ . '/blueprints/files/logo.yml',
+    '@hksagentur/schema/files/video' => __DIR__ . '/blueprints/files/video.yml',
     '@hksagentur/schema/fields/address' => __DIR__ . '/blueprints/fields/address.yml',
     '@hksagentur/schema/fields/author' => __DIR__ . '/blueprints/fields/author.yml',
     '@hksagentur/schema/fields/channels' => __DIR__ . '/blueprints/fields/channels.yml',
@@ -25,6 +26,7 @@ return [
     '@hksagentur/schema/fields/responsibilities' => __DIR__ . '/blueprints/fields/responsibilities.yml',
     '@hksagentur/schema/fields/tags' => __DIR__ . '/blueprints/fields/tags.yml',
     '@hksagentur/schema/fields/telephone' => __DIR__ . '/blueprints/fields/telephone.yml',
+    '@hksagentur/schema/fields/video' => __DIR__ . '/blueprints/fields/video.yml',
     '@hksagentur/schema/fields/website' => __DIR__ . '/blueprints/fields/website.yml',
     '@hksagentur/schema/sections/meta' => __DIR__ . '/blueprints/sections/meta.yml',
 ];

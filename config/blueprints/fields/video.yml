@@ -1,0 +1,13 @@
+type: files
+label:
+  *: hksagentur.schema.field.video.label
+query: page.videos.template('video')
+layout: cards
+size: full
+multiple: false
+info: "{{ file.dimensions }} ({{ file.niceSize }})"
+image:
+  ratio: 16/9
+  cover: true
+uploads:
+  template: video

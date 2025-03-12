@@ -1,0 +1,40 @@
+title:
+  *: hksagentur.schema.file.video.title
+
+accept:
+  type: video
+
+image:
+  ratio: 16/9
+  cover: false
+
+columns:
+  main:
+    width: 2/3
+    fields:
+      caption:
+        type: textarea
+        label:
+          *: hksagentur.schema.file.video.caption
+        size: medium
+        buttons:
+          - italic
+          - bold
+          - link
+          - email
+  sidebar:
+    width: 1/3
+    fields:
+      poster:
+        extends: @hksagentur/schema/fields/image
+        label:
+          *: hksagentur.schema.field.video.poster
+        image:
+          ratio: 16/9
+          cover: true
+      author:
+        type: text
+        label:
+          *: hksagentur.schema.file.video.author
+        counter: false
+      license: @hksagentur/schema/fields/license
