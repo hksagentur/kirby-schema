@@ -28,7 +28,7 @@ columns:
       poster:
         extends: @hksagentur/schema/fields/image
         label:
-          *: hksagentur.schema.field.video.poster
+          *: hksagentur.schema.file.video.poster
         image:
           ratio: 16/9
           cover: true
