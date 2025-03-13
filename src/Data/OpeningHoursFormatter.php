@@ -2,23 +2,17 @@
 
 namespace Hks\Schema\Data;
 
-use Kirby\Cms\App;
 use Kirby\Toolkit\A;
 use Kirby\Toolkit\Html;
 use Kirby\Toolkit\I18n;
 use Spatie\OpeningHours\OpeningHours;
 
-class OpeningHoursFormatter
+class OpeningHoursFormatter extends Formatter
 {
     public function format(OpeningHours $openingHours, array $options = []): string
     {
-        $options = A::merge([
-            'locale' => App::instance()->language()->locale(LC_ALL),
-            'abbreviate' => false,
-            'attributes' => [
-                'class' => ['meta'],
-            ],
-        ], $options);
+        $locale = $options['locale'] ?? static::defaultLocale();
+        $abbreviate = $options['abbreviate'] ?? false;
 
         $elements = [];
 
@@ -29,25 +23,25 @@ class OpeningHoursFormatter
             $start = A::first($days);
             $end = A::last($days);
 
-            if (empty($options['abbreviate'])) {
+            if ($abbreviate) {
                 $localizedStart = I18n::translate(
                     key: 'hksagentur.schema.day.'.$start.'.long',
-                    locale: $options['locale'],
+                    locale: $locale,
                 );
 
                 $localizedEnd = I18n::translate(
                     key: 'hksagentur.schema.day.'.$end.'.long',
-                    locale: $options['locale'],
+                    locale: $locale,
                 );
             } else {
                 $localizedStart = I18n::translate(
                     key: 'hksagentur.schema.day.'.$start.'.short',
-                    locale: $options['locale'],
+                    locale: $locale,
                 );
 
                 $localizedEnd = I18n::translate(
                     key: 'hksagentur.schema.day.'.$end.'.short',
-                    locale: $options['locale'],
+                    locale: $locale,
                 );
             }
 
@@ -76,12 +70,15 @@ class OpeningHoursFormatter
             } else {
                 $elements[] = Html::tag(
                     name: 'dd',
-                    content: I18n::translate('hksagentur.schema.status.hours.closed'),
+                    content: I18n::translate(
+                        key: 'hksagentur.schema.status.hours.closed',
+                        locale: $locale,
+                    ),
                     attr: ['class' => 'meta__value'],
                 );
             }
         }
 
-        return Html::tag('dl', $elements, $options['attributes']);
+        return Html::tag('dl', $elements, $options['attributes'] ?? []);
     }
 }

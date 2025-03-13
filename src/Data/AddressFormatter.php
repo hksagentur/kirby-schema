@@ -7,26 +7,27 @@ use CommerceGuys\Addressing\AddressFormat\AddressFormatRepository;
 use CommerceGuys\Addressing\Country\CountryRepository;
 use CommerceGuys\Addressing\Subdivision\SubdivisionRepository;
 use Hks\Schema\Data\Address\MicroformatFormatter;
-use Kirby\Cms\App;
 use Kirby\Toolkit\A;
 
-class AddressFormatter
+class AddressFormatter extends Formatter
 {
     public function format(Address $address, array $options = []): string
     {
         $options = A::merge([
-            'locale' => App::instance()->language()->locale(LC_ALL),
             'attributes' => [
                 'translate' => 'no',
             ],
         ], $options);
 
+        $locale = $options['locale'] ?? static::defaultLocale();
+
         $addressFormatRepository = new AddressFormatRepository();
-        $countryRepository = new CountryRepository($options['locale']);
         $subdivisonRepository = new SubdivisionRepository($addressFormatRepository);
 
+        $countryRepository = new CountryRepository($locale);
+
         $formatter = new MicroformatFormatter($addressFormatRepository, $countryRepository, $subdivisonRepository, [
-            'locale' => $options['locale'],
+            'locale' => $locale,
             'html' => true,
             'html_tag' => 'div',
             'html_attributes' => $options['attributes'] ?? [],

@@ -2,22 +2,10 @@
 
 use Hks\Schema\Data\AddressFormatter;
 use Hks\Schema\Data\CurrencyFormatter;
-use Hks\Schema\Data\DecimalNumberFormatter;
 use Hks\Schema\Data\GeoCoordinateFormatter;
+use Hks\Schema\Data\NumberFormatter;
 use Hks\Schema\Data\OpeningHoursFormatter;
-use Hks\Schema\Data\SchemaBuilder;
-use Hks\Schema\Toolkit\Schema;
 use Kirby\Toolkit\A;
-
-if (! function_exists('schema')) {
-    /**
-     * Get the schema builder.
-     */
-    function schema(): SchemaBuilder
-    {
-        return Schema::instance();
-    }
-}
 
 if (! function_exists('format')) {
     /**
@@ -30,9 +18,8 @@ if (! function_exists('format')) {
             'coordinate' => GeoCoordinateFormatter::class,
             'currency' => CurrencyFormatter::class,
             'hours' => OpeningHoursFormatter::class,
-            'number' => DecimalNumberFormatter::class,
+            'number' => NumberFormatter::class,
         ], option('hksagentur.schema.formatters', []));
-
 
         $formatter = ! class_exists($formatter)
             ? ($formatters[$formatter] ?? null)

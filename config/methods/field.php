@@ -1,7 +1,7 @@
 <?php
 
 use Hks\Schema\Data\CurrencyFormatter;
-use Hks\Schema\Data\DecimalNumberFormatter;
+use Hks\Schema\Data\NumberFormatter;
 use Hks\Schema\Data\OpeningHoursFactory;
 use Kirby\Content\Field;
 use Spatie\OpeningHours\OpeningHours;
@@ -14,7 +14,7 @@ return [
         ]);
     },
     'toNumber' => function (Field $field, ?int $precision = null, ?int $maxPrecision = null, ?string $locale = null): string {
-        return format(DecimalNumberFormatter::class, $field->value(), [
+        return format(NumberFormatter::class, $field->value(), [
             'locale' => $locale,
             'precision' => $precision,
             'maxPrecision' => $maxPrecision,

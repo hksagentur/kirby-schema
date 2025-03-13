@@ -2,23 +2,19 @@
 
 namespace Hks\Schema\Data;
 
-use Kirby\Cms\App;
 use Kirby\Geo\Point;
-use Kirby\Toolkit\A;
 use Kirby\Toolkit\I18n;
 
-class GeoCoordinateFormatter
+class GeoCoordinateFormatter extends Formatter
 {
     public function format(Point $point, array $options = []): string
     {
-        $options = A::merge([
-            'locale' => App::instance()->language()->locale(LC_ALL),
-            'precision' => 3,
-        ], $options);
+        $locale = $options['locale'] ?? static::defaultLocale();
+        $precision = $options['precision'] ?? 3;
 
         return implode(', ', [
-            I18n::formatNumber(round($point->lat(), $options['precision']), $options['locale']),
-            I18n::formatNumber(round($point->lng(), $options['precision']), $options['locale']),
+            I18n::formatNumber(round($point->lat(), $precision), $locale),
+            I18n::formatNumber(round($point->lng(), $precision), $locale),
         ]);
     }
 }

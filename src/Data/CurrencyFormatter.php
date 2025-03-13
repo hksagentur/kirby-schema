@@ -2,12 +2,10 @@
 
 namespace Hks\Schema\Data;
 
-use Kirby\Cms\App;
-use Kirby\Toolkit\A;
 use NumberFormatter;
 use RuntimeException;
 
-class CurrencyFormatter
+class CurrencyFormatter extends Formatter
 {
     protected static string $currency = 'EUR';
 
@@ -32,18 +30,19 @@ class CurrencyFormatter
         static::useCurrency($previousCurrency);
     }
 
-    public function format(int|float $number, array $options = []): string
+    public function format(int|float $value, array $options = []): string
     {
         $this->ensureIntlExtensionIsInstalled();
 
-        $options = A::merge([
-            'locale' => App::instance()->language()->locale(LC_ALL),
-            'currency' => static::defaultCurrency(),
-        ], $options);
+        $formatter = new NumberFormatter(
+            locale: $options['locale'] ?? static::defaultLocale(),
+            style: NumberFormatter::CURRENCY,
+        );
 
-        $formatter = new NumberFormatter($options['locale'], NumberFormatter::CURRENCY);
-
-        return $formatter->formatCurrency($number, $options['currency']);
+        return $formatter->formatCurrency(
+            amount: $value,
+            currency: $options['currency'] ?? static::defaultCurrency(),
+        );
     }
 
     protected static function ensureIntlExtensionIsInstalled()

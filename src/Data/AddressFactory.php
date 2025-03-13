@@ -8,7 +8,28 @@ use Kirby\Content\Content;
 
 class AddressFactory
 {
-    public const DEFAULT_COUNTRY = 'DE';
+    protected static string $country = 'DE';
+
+    public static function defaultCountry(): string
+    {
+        return static::$country;
+    }
+
+    public static function useCountry(string $country): void
+    {
+        static::$country = $country;
+    }
+
+    public static function withCountry(string $country, callable $callback): void
+    {
+        $previousCountry = static::defaultCountry();
+
+        static::useCountry($country);
+
+        $callback();
+
+        static::useCountry($previousCountry);
+    }
 
     public static function createFromArray(array $data): Address
     {
@@ -18,7 +39,7 @@ class AddressFactory
             addressLine3: $data['address_line_3'] ?? '',
             postalCode: $data['postal_code'] ?? '',
             locality: $data['locality'] ?? '',
-            countryCode: $data['country_code'] ?? self::DEFAULT_COUNTRY,
+            countryCode: $data['country_code'] ?? static::defaultCountry(),
         );
     }
 
