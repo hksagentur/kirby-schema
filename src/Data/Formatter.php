@@ -6,7 +6,7 @@ use Kirby\Cms\App;
 
 abstract class Formatter
 {
-    protected static string $locale = null;
+    protected static ?string $locale = null;
 
     public static function defaultLocale(): string
     {
