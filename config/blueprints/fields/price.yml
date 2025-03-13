@@ -1,0 +1,7 @@
+type: number
+label:
+  *: hksagentur.schema.field.price.label
+icon: money
+after: €
+step: 0.01
+min: 0

@@ -1,6 +1,8 @@
 <?php
 
 use Hks\Schema\Data\AddressFormatter;
+use Hks\Schema\Data\CurrencyFormatter;
+use Hks\Schema\Data\DecimalNumberFormatter;
 use Hks\Schema\Data\GeoCoordinateFormatter;
 use Hks\Schema\Data\OpeningHoursFormatter;
 use Hks\Schema\Data\SchemaBuilder;
@@ -26,7 +28,9 @@ if (! function_exists('format')) {
         $formatters = A::merge([
             'address' => AddressFormatter::class,
             'coordinate' => GeoCoordinateFormatter::class,
+            'currency' => CurrencyFormatter::class,
             'hours' => OpeningHoursFormatter::class,
+            'number' => DecimalNumberFormatter::class,
         ], option('hksagentur.schema.formatters', []));
 
 
