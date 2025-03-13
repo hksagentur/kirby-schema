@@ -2,7 +2,7 @@
 
 use Hks\Schema\Data\CurrencyFormatter;
 use Hks\Schema\Data\DecimalNumberFormatter;
-use Holab\Data\OpeningHoursFactory;
+use Hks\Schema\Data\OpeningHoursFactory;
 use Kirby\Content\Field;
 use Spatie\OpeningHours\OpeningHours;
 
