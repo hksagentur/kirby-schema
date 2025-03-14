@@ -14,6 +14,10 @@ class OpeningHoursFormatter extends Formatter
         $locale = $options['locale'] ?? static::defaultLocale();
         $abbreviate = $options['abbreviate'] ?? false;
 
+        $attributes = A::merge([
+            'class' => 'meta',
+        ], $options['attributes'] ?? []);
+
         $elements = [];
 
         foreach ($openingHours->forWeekConsecutiveDays() as [
@@ -25,22 +29,22 @@ class OpeningHoursFormatter extends Formatter
 
             if ($abbreviate) {
                 $localizedStart = I18n::translate(
-                    key: 'hksagentur.schema.day.'.$start.'.long',
-                    locale: $locale,
-                );
-
-                $localizedEnd = I18n::translate(
-                    key: 'hksagentur.schema.day.'.$end.'.long',
-                    locale: $locale,
-                );
-            } else {
-                $localizedStart = I18n::translate(
                     key: 'hksagentur.schema.day.'.$start.'.short',
                     locale: $locale,
                 );
 
                 $localizedEnd = I18n::translate(
                     key: 'hksagentur.schema.day.'.$end.'.short',
+                    locale: $locale,
+                );
+            } else {
+                $localizedStart = I18n::translate(
+                    key: 'hksagentur.schema.day.'.$start.'.long',
+                    locale: $locale,
+                );
+
+                $localizedEnd = I18n::translate(
+                    key: 'hksagentur.schema.day.'.$end.'.long',
                     locale: $locale,
                 );
             }
@@ -79,6 +83,6 @@ class OpeningHoursFormatter extends Formatter
             }
         }
 
-        return Html::tag('dl', $elements, $options['attributes'] ?? []);
+        return Html::tag('dl', $elements, $attributes);
     }
 }
