@@ -1,8 +1,7 @@
 type: date
 label:
-  *: hksagentur.schema.field.published.label
+  *: hksagentur.schema.field.created.label
 time: true
-update: true
 default: now
 step:
   unit: minute
