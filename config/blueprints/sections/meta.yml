@@ -1,6 +1,7 @@
 type: fields
 fields:
   cover: @hksagentur/schema/fields/cover
-  published: @hksagentur/schema/fields/published
+  created: @hksagentur/schema/fields/created
+  updated: @hksagentur/schema/fields/updated
   author: @hksagentur/schema/fields/author
   tags: @hksagentur/schema/fields/tags
