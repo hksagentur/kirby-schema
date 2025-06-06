@@ -12,7 +12,7 @@ fields:
   longitude:
     type: text
     label:
-      *: hksagentur.schema.field.coordinates.latitude
+      *: hksagentur.schema.field.coordinates.longitude
     width: 1/2
     counter: false
     translate: false
