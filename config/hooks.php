@@ -12,7 +12,7 @@ return [
         }
 
         $update = A::get(
-            array: $newPage->blueprint()->field('published'),
+            array: $newPage->blueprint()->field('published') ?? [],
             key: 'update',
             default: false,
         );
@@ -33,7 +33,7 @@ return [
         }
 
         $update = A::get(
-            array: $page->blueprint()->field('published'),
+            array: $page->blueprint()->field('published') ?? [],
             key: 'update',
             default: false,
         );
@@ -48,7 +48,7 @@ return [
     },
     'page.update:after' => function (Page $newPage, Page $oldPage) {
         $update = A::get(
-            array: $newPage->blueprint()->field('updated'),
+            array: $newPage->blueprint()->field('updated') ?? [],
             key: 'update',
             default: false,
         );
