@@ -1,10 +1,9 @@
 type: files
 label:
-  *: hksagentur.schema.field.image.label
+  *: hksagentur.schema.field.gallery.label
 query: page.images.template('image')
-layout: cards
-size: full
-multiple: false
+layout: cardlets
+multiple: true
 info: "{{ file.dimensions }} ({{ file.niceSize }})"
 uploads:
   template: image

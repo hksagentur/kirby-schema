@@ -37,6 +37,7 @@ return [
     'hksagentur.schema.field.currency.usd' => 'US Dollar ($)',
     'hksagentur.schema.field.email.label' => 'E-Mail',
     'hksagentur.schema.field.fax.label' => 'Fax',
+    'hksagentur.schema.field.gallery.label' => 'Gallery',
     'hksagentur.schema.field.hours.day.end' => 'Ends at',
     'hksagentur.schema.field.hours.day.label' => 'Day',
     'hksagentur.schema.field.hours.day.note' => 'Note',
