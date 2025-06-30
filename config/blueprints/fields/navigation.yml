@@ -3,6 +3,34 @@ label:
   *: hksagentur.schema.field.navigation.label
 fields:
   extends: @hksagentur/schema/fields/link
+  items:
+    type: structure
+    label:
+      *: hksagentur.schema.field.navigation.items
+    fields:
+      extends: @hksagentur/schema/fields/link
+      items:
+        type: structure
+        label:
+          *: hksagentur.schema.field.navigation.items
+        fields:
+          extends: @hksagentur/schema/fields/link
+        columns:
+          title:
+            width: 1/2
+          url:
+            width: 1/4
+          target:
+            width: 1/4
+            text: false
+    columns:
+      title:
+        width: 1/2
+      url:
+        width: 1/4
+      target:
+        width: 1/4
+        text: false
 columns:
   title:
     width: 1/2

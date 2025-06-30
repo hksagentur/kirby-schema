@@ -60,6 +60,7 @@ return [
     'hksagentur.schema.field.link.url' => 'URL',
     'hksagentur.schema.field.logo.label' => 'Logo',
     'hksagentur.schema.field.navigation.label' => 'Navigation',
+    'hksagentur.schema.field.navigation.items' => 'Untermenü',
     'hksagentur.schema.field.occupation.label' => 'Beruf',
     'hksagentur.schema.field.organization.label' => 'Organisation',
     'hksagentur.schema.field.organization.name' => 'Name',
