@@ -1,6 +1,7 @@
 type: select
 label:
   *: hksagentur.schema.field.license.label
+icon: info
 options:
   afl-3.0: Academic Free License v3.0
   apache-2.0: Apache license 2.0
@@ -38,3 +39,5 @@ options:
   ncsa: University of Illinois/NCSA Open Source License
   unlicense: The Unlicense
   zlib: zLib License
+  other:
+    *: hksagentur.schema.field.license.other

@@ -11,8 +11,8 @@ fields:
       *: hksagentur.schema.field.link.url
     required: true
     options:
-      - url
       - page
+      - url
       - anchor
       - email
       - tel
