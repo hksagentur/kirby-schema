@@ -1,21 +1,26 @@
 title:
-  *: hksagentur.schema.file.video.title
+  *: hksagentur.schema.file.document.title
+
+icon: document
 
 accept:
-  type: video
+  type:
+    - document
+    - archive
 
 image:
-  ratio: 16/9
+  query: model.cover.toFile
+  ratio: 3/2
   cover: false
 
 columns:
   main:
     width: 2/3
     fields:
-      caption:
+      description:
         type: textarea
         label:
-          *: hksagentur.schema.file.video.caption
+          *: hksagentur.schema.file.document.description
         size: medium
         buttons:
           - italic
@@ -25,17 +30,14 @@ columns:
   sidebar:
     width: 1/3
     fields:
-      poster:
+      cover:
         extends: @hksagentur/schema/fields/image
         label:
-          *: hksagentur.schema.file.video.poster
-        image:
-          ratio: 16/9
-          cover: true
+          *: hksagentur.schema.file.document.cover
       author:
         type: text
         label:
-          *: hksagentur.schema.file.video.author
+          *: hksagentur.schema.file.document.author
         icon: user
         counter: false
       source: fields/source

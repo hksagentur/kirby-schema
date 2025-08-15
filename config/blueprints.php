@@ -1,6 +1,7 @@
 <?php
 
 return [
+    '@hksagentur/schema/files/document' => __DIR__ . '/blueprints/files/document.yml',
     '@hksagentur/schema/files/image' => __DIR__ . '/blueprints/files/image.yml',
     '@hksagentur/schema/files/logo' => __DIR__ . '/blueprints/files/logo.yml',
     '@hksagentur/schema/files/video' => __DIR__ . '/blueprints/files/video.yml',
@@ -28,6 +29,7 @@ return [
     '@hksagentur/schema/fields/price' => __DIR__ . '/blueprints/fields/price.yml',
     '@hksagentur/schema/fields/published' => __DIR__ . '/blueprints/fields/published.yml',
     '@hksagentur/schema/fields/responsibilities' => __DIR__ . '/blueprints/fields/responsibilities.yml',
+    '@hksagentur/schema/fields/source' => __DIR__ . '/blueprints/fields/source.yml',
     '@hksagentur/schema/fields/tags' => __DIR__ . '/blueprints/fields/tags.yml',
     '@hksagentur/schema/fields/telephone' => __DIR__ . '/blueprints/fields/telephone.yml',
     '@hksagentur/schema/fields/updated' => __DIR__ . '/blueprints/fields/updated.yml',

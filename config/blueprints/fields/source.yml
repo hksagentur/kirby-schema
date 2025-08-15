@@ -1,0 +1,23 @@
+type: group
+fields:
+  source:
+    type: text
+    label:
+      *: hksagentur.schema.field.source.source
+    icon: quote
+    counter: false
+  sourceUrl:
+    type: url
+    label:
+      *: hksagentur.schema.field.source.sourceUrl
+  license:
+    extends: @hksagentur/schema/fields/license
+    label:
+      *: hksagentur.schema.field.source.license
+  customLicense:
+    type: text
+    label:
+      *: hksagentur.schema.field.source.customLicense
+    counter: false
+    when:
+      license: other
