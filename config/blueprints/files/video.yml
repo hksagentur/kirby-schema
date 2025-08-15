@@ -38,4 +38,4 @@ columns:
           *: hksagentur.schema.file.video.author
         icon: user
         counter: false
-      source: fields/source
+      source:  @hksagentur/schema/fields/source

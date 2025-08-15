@@ -39,4 +39,4 @@ columns:
           *: hksagentur.schema.file.image.author
         icon: user
         counter: false
-      source: fields/source
+      source:  @hksagentur/schema/fields/source

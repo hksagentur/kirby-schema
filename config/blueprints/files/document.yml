@@ -40,4 +40,4 @@ columns:
           *: hksagentur.schema.file.document.author
         icon: user
         counter: false
-      source: fields/source
+      source:  @hksagentur/schema/fields/source
