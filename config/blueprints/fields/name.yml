@@ -1,0 +1,20 @@
+type: group
+fields:
+  givenName:
+    type: text
+    label:
+      *: hksagentur.schema.field.name.givenname
+    required: false
+    counter: false
+  additionalName:
+    type: text
+    label:
+      *: hksagentur.schema.field.name.additionalname
+    required: false
+    counter: false
+  familyName:
+    type: text
+    label:
+      *: hksagentur.schema.field.name.familyname
+    required: false
+    counter: false
