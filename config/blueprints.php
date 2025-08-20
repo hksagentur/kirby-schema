@@ -22,6 +22,7 @@ return [
     '@hksagentur/schema/fields/license' => __DIR__ . '/blueprints/fields/license.yml',
     '@hksagentur/schema/fields/link' => __DIR__ . '/blueprints/fields/link.yml',
     '@hksagentur/schema/fields/logo' => __DIR__ . '/blueprints/fields/logo.yml',
+    '@hksagentur/schema/fields/name' => __DIR__ . '/blueprints/fields/name.yml',
     '@hksagentur/schema/fields/navigation' => __DIR__ . '/blueprints/fields/navigation.yml',
     '@hksagentur/schema/fields/occupation' => __DIR__ . '/blueprints/fields/occupation.yml',
     '@hksagentur/schema/fields/organization' => __DIR__ . '/blueprints/fields/organization.yml',
