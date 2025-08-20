@@ -7,6 +7,7 @@ return [
     '@hksagentur/schema/files/video' => __DIR__ . '/blueprints/files/video.yml',
     '@hksagentur/schema/fields/address' => __DIR__ . '/blueprints/fields/address.yml',
     '@hksagentur/schema/fields/author' => __DIR__ . '/blueprints/fields/author.yml',
+    '@hksagentur/schema/fields/category' => __DIR__ . '/blueprints/fields/category.yml',
     '@hksagentur/schema/fields/channels' => __DIR__ . '/blueprints/fields/channels.yml',
     '@hksagentur/schema/fields/coordinates' => __DIR__ . '/blueprints/fields/coordinates.yml',
     '@hksagentur/schema/fields/cover' => __DIR__ . '/blueprints/fields/cover.yml',

@@ -21,6 +21,7 @@ return [
     'hksagentur.schema.field.address.postalcode' => 'Postal Code',
     'hksagentur.schema.field.address.streetaddress' => 'Street Address',
     'hksagentur.schema.field.author.label' => 'Author',
+    'hksagentur.schema.field.category.label' => 'Category',
     'hksagentur.schema.field.channels.icon' => 'Icon',
     'hksagentur.schema.field.channels.label' => 'Channels',
     'hksagentur.schema.field.coordinates.label' => 'Coordinates',

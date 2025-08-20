@@ -1,0 +1,9 @@
+type: tags
+label:
+  *: hksagentur.schema.field.category.label
+layout: list
+required: true
+max: 1
+options:
+  type: query
+  query: page.siblings.pluck('category', ',', true)
