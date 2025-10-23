@@ -49,4 +49,5 @@ return [
     '@hksagentur/schema/sections/videos' => __DIR__ . '/blueprints/sections/videos.yml',
     '@hksagentur/schema/tabs/content' => __DIR__ . '/blueprints/tabs/content.yml',
     '@hksagentur/schema/tabs/media' => __DIR__ . '/blueprints/tabs/media.yml',
+    '@hksagentur/schema/tabs/settings' => __DIR__ . '/blueprints/tabs/settings.yml',
 ];
