@@ -1,0 +1,7 @@
+type: files
+label:
+  *: hksagentur.schema.section.images.label
+template: image
+layout: list
+info: "{{ file.dimensions }} ({{ file.niceSize }})"
+batch: true

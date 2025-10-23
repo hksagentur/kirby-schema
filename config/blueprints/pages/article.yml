@@ -1,0 +1,24 @@
+title:
+  *: hksagentur.schema.page.article.title
+
+icon: bookmark
+
+num: "{{ page.created.toDate('Ymd') }}"
+
+image:
+  query: page.cover.toFile
+  ratio: 3/2
+  cover: true
+
+tabs:
+  content:
+    extends: @hksagentur/schema/tabs/content
+    columns:
+      main:
+        fields:
+          blocks: @hksagentur/schema/field/blocks
+      sidebar:
+        sections:
+          meta: @hksagentur/schema/sections/meta
+          taxonomies: @hksagentur/schema/sections/taxonomies
+  media: @hksagentur/schema/tabs/media

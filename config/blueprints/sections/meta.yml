@@ -4,4 +4,3 @@ fields:
   created: @hksagentur/schema/fields/created
   updated: @hksagentur/schema/fields/updated
   author: @hksagentur/schema/fields/author
-  tags: @hksagentur/schema/fields/tags

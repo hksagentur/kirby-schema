@@ -1,0 +1,7 @@
+type: files
+label:
+  *: hksagentur.schema.section.videos.label
+template: video
+layout: list
+info: "{{ file.mime }} ({{ file.niceSize }})"
+batch: true

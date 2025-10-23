@@ -1,0 +1,6 @@
+type: pages
+label:
+  *: hksagentur.schema.section.pages.label
+layout: list
+text: "{{ page.title }}"
+info: "{{ page.slug }}"

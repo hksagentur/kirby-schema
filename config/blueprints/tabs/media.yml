@@ -1,0 +1,16 @@
+label:
+  *: hksagentur.schema.tab.media.label
+icon: images
+sections:
+  images:
+    extends: @hksagentur/schema/sections/images
+    layout: cards
+    size: large
+  videos:
+    extends: @hksagentur/schema/sections/videos
+    layout: cards
+    size: large
+  documents:
+    extends: @hksagentur/schema/sections/documents
+    layout: cards
+    size: large

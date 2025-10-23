@@ -1,0 +1,8 @@
+label:
+  *: hksagentur.schema.tab.content.label
+icon: document
+columns:
+  main:
+    width: 2/3
+  sidebar:
+    width: 1/3

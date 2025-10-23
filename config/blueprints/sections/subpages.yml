@@ -1,0 +1,3 @@
+extends: @hksagentur/schema/sections/pages
+label:
+  *: hksagentur.schema.section.subpages.label

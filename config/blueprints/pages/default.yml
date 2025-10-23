@@ -1,0 +1,22 @@
+title:
+  *: hksagentur.schema.page.default.title
+
+icon: page
+
+image:
+  query: page.cover.toFile
+  ratio: 3/2
+  cover: true
+
+tabs:
+  content:
+    extends: @hksagentur/schema/tabs/content
+    columns:
+      main:
+        fields:
+          blocks: @hksagentur/schema/field/blocks
+      sidebar:
+        sections:
+          meta: @hksagentur/schema/sections/meta
+          subpages: @hksagentur/schema/sections/subpages
+  media: @hksagentur/schema/tabs/media
