@@ -107,4 +107,5 @@ return [
     'hksagentur.schema.status.hours.opened' => 'Geöffnet',
     'hksagentur.schema.tab.content.label' => 'Inhalt',
     'hksagentur.schema.tab.media.label' => 'Medien',
+    'hksagentur.schema.tab.settings.label' => 'Einstellungen',
 ];
