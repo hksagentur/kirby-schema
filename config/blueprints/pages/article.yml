@@ -10,6 +10,10 @@ image:
   ratio: 3/2
   cover: true
 
+create:
+  fields:
+    - created
+
 tabs:
   content:
     extends: @hksagentur/schema/tabs/content
