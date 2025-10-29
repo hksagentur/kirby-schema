@@ -40,6 +40,7 @@ return [
     '@hksagentur/schema/fields/website' => __DIR__ . '/blueprints/fields/website.yml',
     '@hksagentur/schema/pages/article' => __DIR__ . '/blueprints/pages/article.yml',
     '@hksagentur/schema/pages/default' => __DIR__ . '/blueprints/pages/default.yml',
+    '@hksagentur/schema/pages/employee' => __DIR__ . '/blueprints/pages/employee.yml',
     '@hksagentur/schema/sections/documents' => __DIR__ . '/blueprints/sections/documents.yml',
     '@hksagentur/schema/sections/images' => __DIR__ . '/blueprints/sections/images.yml',
     '@hksagentur/schema/sections/meta' => __DIR__ . '/blueprints/sections/meta.yml',

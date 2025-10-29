@@ -98,6 +98,7 @@ return [
     'hksagentur.schema.file.video.title' => 'Video',
     'hksagentur.schema.page.article.title' => 'Artikel',
     'hksagentur.schema.page.default.title' => 'Seite',
+    'hksagentur.schema.page.employee.title' => 'Mitarbeiter',
     'hksagentur.schema.section.documents.label' => 'Dokumente',
     'hksagentur.schema.section.images.label' => 'Bilder',
     'hksagentur.schema.section.pages.label' => 'Seiten',

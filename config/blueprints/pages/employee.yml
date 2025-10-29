@@ -1,0 +1,30 @@
+title:
+  *: hksagentur.schema.page.employee.title
+
+icon: user
+
+image:
+  query: page.photo.toFile
+  ratio: 3/2
+  cover: true
+
+create:
+  title: "{{ page.givenName.append(' ', page.additionalName, ' ', page.familyName).deduplicate(' ') }}"
+  slug: "{{ page.givenName.append(' ', page.additionalName, ' ', page.familyName).deduplicate(' ').slug() }}"
+  fields:
+    - givenName
+    - additionalName
+    - familyName
+
+tabs:
+  content:
+    extends: @hksagentur/schema/tabs/content
+    columns:
+      main:
+        fields:
+          person: @hksagentur/schema/fields/person
+          blocks: @hksagentur/schema/field/blocks
+      sidebar:
+        sections:
+          meta: @hksagentur/schema/sections/meta
+  media: @hksagentur/schema/tabs/media
