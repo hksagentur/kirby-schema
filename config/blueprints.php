@@ -18,7 +18,7 @@ return [
     '@hksagentur/schema/fields/gallery' => __DIR__ . '/blueprints/fields/gallery.yml',
     '@hksagentur/schema/fields/fax' => __DIR__ . '/blueprints/fields/fax.yml',
     '@hksagentur/schema/fields/heading' => __DIR__ . '/blueprints/fields/heading.yml',
-    '@hksagentur/schema/fields/heading-level' => __DIR__ . '/blueprints/fields/heading-levl.yml',
+    '@hksagentur/schema/fields/heading-level' => __DIR__ . '/blueprints/fields/heading-level.yml',
     '@hksagentur/schema/fields/hours' => __DIR__ . '/blueprints/fields/hours.yml',
     '@hksagentur/schema/fields/hours-exception' => __DIR__ . '/blueprints/fields/hours-exception.yml',
     '@hksagentur/schema/fields/hours-day' => __DIR__ . '/blueprints/fields/hours-day.yml',
