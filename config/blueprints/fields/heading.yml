@@ -1,0 +1,12 @@
+type: writer
+label:
+  *: hksagentur.schema.field.heading.label
+placeholder:
+  *: hksagentur.schema.field.heading.placeholder
+nodes: false
+marks:
+  - bold
+  - italic
+  - underline
+  - strike
+  - code

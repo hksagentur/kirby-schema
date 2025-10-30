@@ -1,0 +1,7 @@
+type: writer
+label:
+  *: hksagentur.schema.field.inlineText.label
+placeholder:
+  *: hksagentur.schema.field.inlineText.placeholder
+nodes: false
+marks: true
