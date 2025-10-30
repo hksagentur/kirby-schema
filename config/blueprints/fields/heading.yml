@@ -3,6 +3,7 @@ label:
   *: hksagentur.schema.field.heading.label
 placeholder:
   *: hksagentur.schema.field.heading.placeholder
+inline: true
 nodes: false
 marks:
   - bold
