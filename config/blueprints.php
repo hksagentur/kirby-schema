@@ -1,6 +1,8 @@
 <?php
 
 return [
+    '@hksagentur/schema/blocks/card' => __DIR__ . '/blueprints/blocks/card.yml',
+    '@hksagentur/schema/blocks/cards' => __DIR__ . '/blueprints/blocks/cards.yml',
     '@hksagentur/schema/files/document' => __DIR__ . '/blueprints/files/document.yml',
     '@hksagentur/schema/files/image' => __DIR__ . '/blueprints/files/image.yml',
     '@hksagentur/schema/files/logo' => __DIR__ . '/blueprints/files/logo.yml',

@@ -1,0 +1,17 @@
+name:
+  *: hksagentur.schema.block.card.name
+label: "{{ title }}"
+icon: info-card
+fields:
+  level:
+    extends: @hksagentur/schema/fields/heading-level
+    default: h3
+  title: @hksagentur/schema/fields/heading
+  text: @hksagentur/schema/fields/inline-text
+  image:
+    extends: @hksagentur/schema/fields/image
+    layout: list
+  link:
+    type: object
+    fields:
+      extends: @hksagentur/schema/fields/link

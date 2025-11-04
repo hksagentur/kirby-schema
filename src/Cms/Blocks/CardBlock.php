@@ -1,0 +1,39 @@
+<?php
+
+namespace Hks\Schema\Cms\Blocks;
+
+use Hks\Schema\Cms\HasModelReference;
+use Kirby\Cms\Block;
+use Kirby\Cms\File;
+use Kirby\Content\Content;
+use Kirby\Content\Field;
+
+class CardBlock extends Block
+{
+    use HasModelReference;
+
+    public function level(): Field
+    {
+        return $this->content()->level()->or('h3');
+    }
+
+    public function title(): Field
+    {
+        return $this->content()->title()->or($this->referencedModel()?->title());
+    }
+
+    public function text(): Field
+    {
+        return $this->content()->text()->or($this->referencedModel()?->excerpt());
+    }
+
+    public function image(): ?File
+    {
+        return $this->content()->image()->or($this->referencedModel()?->cover())->toFile();
+    }
+
+    public function link(): Content
+    {
+        return $this->content()->link()->toObject();
+    }
+}

@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'hksagentur.schema.block.card.name' => 'Karte',
+    'hksagentur.schema.block.cards.name' => 'Karten',
+    'hksagentur.schema.block.cards.label' => 'Karten',
+    'hksagentur.schema.block.cards.empty' => 'Keine Karten',
     'hksagentur.schema.day.friday.long' => 'Freitag',
     'hksagentur.schema.day.friday.short' => 'Fr',
     'hksagentur.schema.day.monday.long' => 'Montag',
