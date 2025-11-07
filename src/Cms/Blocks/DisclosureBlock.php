@@ -4,7 +4,6 @@ namespace Hks\Schema\Cms\Blocks;
 
 use Kirby\Cms\Block;
 use Kirby\Cms\Blocks;
-use Kirby\Cms\Layout;
 use Kirby\Cms\Layouts;
 use Kirby\Content\Field;
 

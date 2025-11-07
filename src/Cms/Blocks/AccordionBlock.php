@@ -20,6 +20,7 @@ class AccordionBlock extends Block
 
     public function items(): Blocks
     {
-        return $this->content()->items()->toBlocks();;
+        return $this->content()->items()->toBlocks();
+        ;
     }
 }
