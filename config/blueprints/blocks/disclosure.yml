@@ -1,0 +1,21 @@
+name:
+  *: hksagentur.schema.block.disclosure.name
+label: "{{ title }}"
+icon: expand
+preview: fields
+wysiwyg: true
+fields:
+  level:
+    extends: @hksagentur/schema/fields/heading-level
+    default: h3
+  title:
+    extends: @hksagentur/schema/fields/heading
+    label:
+      *: hksagentur.schema.block.disclosure.summary
+    placeholder:
+      *: hksagentur.schema.block.disclosure.placeholder
+    required: true
+  layout: @hksagentur/schema/fields/content-layout
+  open:
+    extends: @hksagentur/schema/fields/open
+    default: false

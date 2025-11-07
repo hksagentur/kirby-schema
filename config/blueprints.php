@@ -1,8 +1,11 @@
 <?php
 
 return [
+    '@hksagentur/schema/blocks/accordion' => __DIR__ . '/blueprints/blocks/accordion.yml',
+    '@hksagentur/schema/blocks/accordion-item' => __DIR__ . '/blueprints/blocks/accordion-item.yml',
     '@hksagentur/schema/blocks/card' => __DIR__ . '/blueprints/blocks/card.yml',
     '@hksagentur/schema/blocks/cards' => __DIR__ . '/blueprints/blocks/cards.yml',
+    '@hksagentur/schema/blocks/disclosure' => __DIR__ . '/blueprints/blocks/disclosure.yml',
     '@hksagentur/schema/files/document' => __DIR__ . '/blueprints/files/document.yml',
     '@hksagentur/schema/files/image' => __DIR__ . '/blueprints/files/image.yml',
     '@hksagentur/schema/files/logo' => __DIR__ . '/blueprints/files/logo.yml',
@@ -12,11 +15,13 @@ return [
     '@hksagentur/schema/fields/blocks' => __DIR__ . '/blueprints/fields/blocks.yml',
     '@hksagentur/schema/fields/category' => __DIR__ . '/blueprints/fields/category.yml',
     '@hksagentur/schema/fields/channels' => __DIR__ . '/blueprints/fields/channels.yml',
+    '@hksagentur/schema/fields/content-layout' => __DIR__ . '/blueprints/fields/content-layout.yml',
     '@hksagentur/schema/fields/coordinates' => __DIR__ . '/blueprints/fields/coordinates.yml',
     '@hksagentur/schema/fields/cover' => __DIR__ . '/blueprints/fields/cover.yml',
     '@hksagentur/schema/fields/created' => __DIR__ . '/blueprints/fields/created.yml',
     '@hksagentur/schema/fields/currency' => __DIR__ . '/blueprints/fields/currency.yml',
     '@hksagentur/schema/fields/email' => __DIR__ . '/blueprints/fields/email.yml',
+    '@hksagentur/schema/fields/featured' => __DIR__ . '/blueprints/fields/featured.yml',
     '@hksagentur/schema/fields/gallery' => __DIR__ . '/blueprints/fields/gallery.yml',
     '@hksagentur/schema/fields/fax' => __DIR__ . '/blueprints/fields/fax.yml',
     '@hksagentur/schema/fields/heading' => __DIR__ . '/blueprints/fields/heading.yml',
@@ -32,6 +37,7 @@ return [
     '@hksagentur/schema/fields/name' => __DIR__ . '/blueprints/fields/name.yml',
     '@hksagentur/schema/fields/navigation' => __DIR__ . '/blueprints/fields/navigation.yml',
     '@hksagentur/schema/fields/occupation' => __DIR__ . '/blueprints/fields/occupation.yml',
+    '@hksagentur/schema/fields/open' => __DIR__ . '/blueprints/fields/open.yml',
     '@hksagentur/schema/fields/organization' => __DIR__ . '/blueprints/fields/organization.yml',
     '@hksagentur/schema/fields/person' => __DIR__ . '/blueprints/fields/person.yml',
     '@hksagentur/schema/fields/price' => __DIR__ . '/blueprints/fields/price.yml',

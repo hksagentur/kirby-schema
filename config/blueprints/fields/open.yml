@@ -1,0 +1,8 @@
+type: toggle
+label:
+  *: hksagentur.schema.field.open.label
+text:
+  -
+    *: hksagentur.schema.status.toggle.no
+  -
+    *: hksagentur.schema.status.toggle.yes
