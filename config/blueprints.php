@@ -11,6 +11,7 @@ return [
     '@hksagentur/schema/files/logo' => __DIR__ . '/blueprints/files/logo.yml',
     '@hksagentur/schema/files/video' => __DIR__ . '/blueprints/files/video.yml',
     '@hksagentur/schema/fields/address' => __DIR__ . '/blueprints/fields/address.yml',
+    '@hksagentur/schema/fields/align-content' => __DIR__ . '/blueprints/fields/align-content.yml',
     '@hksagentur/schema/fields/author' => __DIR__ . '/blueprints/fields/author.yml',
     '@hksagentur/schema/fields/blocks' => __DIR__ . '/blueprints/fields/blocks.yml',
     '@hksagentur/schema/fields/category' => __DIR__ . '/blueprints/fields/category.yml',

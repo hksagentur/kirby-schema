@@ -1,0 +1,21 @@
+type: toggles
+label:
+  *: hksagentur.schema.field.alignContent.label
+default: normal
+options:
+  - value: normal
+    icon: text-justify
+    text:
+      *: hksagentur.schema.field.alignContent.normal
+  - value: start
+    icon: text-top
+    text:
+      *: hksagentur.schema.field.alignContent.start
+  - value: center
+    icon: text-middle
+    text:
+      *: hksagentur.schema.field.alignContent.center
+  - value: end
+    icon: text-bottom
+    text:
+      *: hksagentur.schema.field.alignContent.end
