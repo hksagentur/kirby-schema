@@ -3,6 +3,7 @@
 return [
     '@hksagentur/schema/blocks/accordion' => __DIR__ . '/blueprints/blocks/accordion.yml',
     '@hksagentur/schema/blocks/accordion-item' => __DIR__ . '/blueprints/blocks/accordion-item.yml',
+    '@hksagentur/schema/blocks/billboard' => __DIR__ . '/blueprints/blocks/billboard.yml',
     '@hksagentur/schema/blocks/card' => __DIR__ . '/blueprints/blocks/card.yml',
     '@hksagentur/schema/blocks/cards' => __DIR__ . '/blueprints/blocks/cards.yml',
     '@hksagentur/schema/blocks/disclosure' => __DIR__ . '/blueprints/blocks/disclosure.yml',

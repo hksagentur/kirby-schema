@@ -5,6 +5,7 @@ return [
     'hksagentur.schema.block.accordion.label' => 'Elemente',
     'hksagentur.schema.block.accordion.empty' => 'Keine Elemente',
     'hksagentur.schema.block.accordionItem.name' => 'Akkordeon-Element',
+    'hksagentur.schema.block.billboard.name' => 'Anschlagbrett',
     'hksagentur.schema.block.card.name' => 'Karte',
     'hksagentur.schema.block.cards.name' => 'Karten',
     'hksagentur.schema.block.cards.label' => 'Karten',

@@ -5,6 +5,7 @@ return [
     'hksagentur.schema.block.accordion.label' => 'Items',
     'hksagentur.schema.block.accordion.empty' => 'No items yet',
     'hksagentur.schema.block.accordionItem.name' => 'Accordion Item',
+    'hksagentur.schema.block.billboard.name' => 'Billboard',
     'hksagentur.schema.block.card.name' => 'Card',
     'hksagentur.schema.block.cards.name' => 'Cards',
     'hksagentur.schema.block.cards.label' => 'Cards',
