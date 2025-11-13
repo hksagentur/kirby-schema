@@ -33,6 +33,7 @@ return [
     '@hksagentur/schema/fields/hours-day' => __DIR__ . '/blueprints/fields/hours-day.yml',
     '@hksagentur/schema/fields/image' => __DIR__ . '/blueprints/fields/image.yml',
     '@hksagentur/schema/fields/inline-text' => __DIR__ . '/blueprints/fields/inline-text.yml',
+    '@hksagentur/schema/fields/justify-content' => __DIR__ . '/blueprints/fields/justify-content.yml',
     '@hksagentur/schema/fields/license' => __DIR__ . '/blueprints/fields/license.yml',
     '@hksagentur/schema/fields/link' => __DIR__ . '/blueprints/fields/link.yml',
     '@hksagentur/schema/fields/logo' => __DIR__ . '/blueprints/fields/logo.yml',

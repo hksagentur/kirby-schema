@@ -1,0 +1,21 @@
+type: toggles
+label:
+  *: hksagentur.schema.field.justifyContent.label
+default: normal
+options:
+  - value: normal
+    icon: text-justify
+    text:
+      *: hksagentur.schema.field.justifyContent.normal
+  - value: start
+    icon: text-left
+    text:
+      *: hksagentur.schema.field.justifyContent.start
+  - value: center
+    icon: text-center
+    text:
+      *: hksagentur.schema.field.justifyContent.center
+  - value: end
+    icon: text-right
+    text:
+      *: hksagentur.schema.field.justifyContent.end
