@@ -17,6 +17,11 @@ class CardBlock extends Block
         return $this->content()->level()->or('h3');
     }
 
+    public function eyebrow(): Field
+    {
+        return $this->content()->eyebrow()->or($this->referencedModel()?->category());
+    }
+
     public function title(): Field
     {
         return $this->content()->title()->or($this->referencedModel()?->title());

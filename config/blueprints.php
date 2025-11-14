@@ -23,6 +23,7 @@ return [
     '@hksagentur/schema/fields/created' => __DIR__ . '/blueprints/fields/created.yml',
     '@hksagentur/schema/fields/currency' => __DIR__ . '/blueprints/fields/currency.yml',
     '@hksagentur/schema/fields/email' => __DIR__ . '/blueprints/fields/email.yml',
+    '@hksagentur/schema/fields/eyebrow' => __DIR__ . '/blueprints/fields/eyebrow.yml',
     '@hksagentur/schema/fields/featured' => __DIR__ . '/blueprints/fields/featured.yml',
     '@hksagentur/schema/fields/gallery' => __DIR__ . '/blueprints/fields/gallery.yml',
     '@hksagentur/schema/fields/fax' => __DIR__ . '/blueprints/fields/fax.yml',

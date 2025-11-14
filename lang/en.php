@@ -56,6 +56,7 @@ return [
     'hksagentur.schema.field.currency.label' => 'Currency',
     'hksagentur.schema.field.currency.usd' => 'US Dollar ($)',
     'hksagentur.schema.field.email.label' => 'E-Mail',
+    'hksagentur.schema.field.eyebrow.label' => 'Eyebrow',
     'hksagentur.schema.field.fax.label' => 'Fax',
     'hksagentur.schema.field.featured.label' => 'Featured?',
     'hksagentur.schema.field.gallery.label' => 'Gallery',

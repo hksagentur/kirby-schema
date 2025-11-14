@@ -1,0 +1,4 @@
+type: text
+label:
+  *: hksagentur.schema.field.eyebrow.label
+icon: tag
