@@ -18,6 +18,11 @@ class AccordionBlock extends Block
         return $this->content()->title();
     }
 
+    public function text(): Field
+    {
+        return $this->content()->text();
+    }
+
     public function items(): Blocks
     {
         return $this->content()->items()->toBlocks();
