@@ -280,6 +280,22 @@ class ResponsiveImage implements Stringable
             ], []),
         };
 
+        $sizes = A::filter($sizes, function (array $options) {
+            $width = $options['width'] ?? null;
+
+            if ($width !== null && $width > $this->image->width()) {
+                return false;
+            }
+
+            $height = $options['height'] ?? null;
+
+            if ($height !== null && $height > $this->image->height()) {
+                return false;
+            }
+
+            return true;
+        });
+
         $image = Html::img($thumbnail->url(), [
             'srcset' => $this->image->srcset(A::map($sizes, fn (array $options) => [
                 'quality' => $thumbnailQuality,
