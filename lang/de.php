@@ -92,6 +92,8 @@ return [
     'hksagentur.schema.field.link.title' => 'Titel',
     'hksagentur.schema.field.link.url' => 'URL',
     'hksagentur.schema.field.logo.label' => 'Logo',
+    'hksagentur.schema.field.markdown.label' => 'Text',
+    'hksagentur.schema.field.markdown.placeholder' => 'Markdown …',
     'hksagentur.schema.field.name.additionalname' => 'Zusätzlicher Name',
     'hksagentur.schema.field.name.familyname' => 'Nachname',
     'hksagentur.schema.field.name.givenname' => 'Vorname',
