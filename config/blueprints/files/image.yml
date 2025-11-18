@@ -20,16 +20,11 @@ columns:
         type: text
         label:
           *: hksagentur.schema.file.image.alt
+        icon: title
       caption:
-        type: textarea
+        extends: @hksagentur/schema/fields/caption
         label:
           *: hksagentur.schema.file.image.caption
-        size: medium
-        buttons:
-          - italic
-          - bold
-          - link
-          - email
   sidebar:
     width: 1/3
     fields:

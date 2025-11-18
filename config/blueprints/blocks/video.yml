@@ -1,0 +1,87 @@
+name:
+  *: hksagentur.schema.block.video.name
+icon: video
+preview: video
+fields:
+  location:
+    type: radio
+    label:
+      *: hksagentur.schema.block.video.location
+    columns: 2
+    default: kirby
+    required: true
+    options:
+      - value: kirby
+        text:
+          *: hksagentur.schema.block.video.internal
+      - value: web
+        text:
+          *: hksagentur.schema.block.video.external
+  url:
+    type: url
+    label:
+      *: hksagentur.schema.block.video.url
+    placeholder: https://youtube.com/?v=
+    when:
+      location: web
+  video:
+    extends: @hksagentur/schema/fields/video
+    label:
+      *: hksagentur.schema.block.video.video
+    layout: list
+    query: model.videos
+    when:
+      location: kirby
+  poster:
+    extends: @hksagentur/schema/fields/image
+    label:
+      *: hksagentur.schema.block.video.poster
+    query: model.images
+    when:
+      location: kirby
+  caption:
+    extends: @hksagentur/schema/fields/caption
+    label:
+      *: hksagentur.schema.block.video.caption
+  autoplay:
+    type: toggle
+    label:
+      *: hksagentur.schema.block.video.autoplay
+    width: 1/3
+    when:
+      location: kirby
+  muted:
+    type: toggle
+    label:
+      *: hksagentur.schema.block.video.muted
+    width: 1/3
+    default: true
+    when:
+      location: kirby
+  loop:
+    type: toggle
+    label:
+      *: hksagentur.schema.block.video.loop
+    width: 1/3
+    when:
+      location: kirby
+  controls:
+    label:
+      *: hksagentur.schema.block.video.controls
+    type: toggle
+    width: 1/3
+    default: true
+    when:
+      location: kirby
+  preload:
+    type: select
+    label:
+      *: hksagentur.schema.block.video.preload
+    width: 2/3
+    default: auto
+    options:
+      - auto
+      - metadata
+      - none
+    when:
+      location: kirby

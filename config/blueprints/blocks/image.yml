@@ -1,0 +1,57 @@
+name:
+  *: hksagentur.schema.block.image.name
+icon: image
+preview: image
+fields:
+  location:
+    type: radio
+    label:
+      *: hksagentur.schema.block.image.location
+    columns: 2
+    default: kirby
+    required: true
+    options:
+      - value: kirby
+        text:
+          *: hksagentur.schema.block.image.internal
+      - value: web
+        text:
+          *: hksagentur.schema.block.image.external
+  image:
+    extends: @hksagentur/schema/fields/image
+    label:
+      *: hksagentur.schema.block.image.image
+    layout: list
+    query: model.images
+    when:
+      location: kirby
+  src:
+    type: url
+    label:
+      *: hksagentur.schema.block.image.src
+    when:
+      location: web
+  alt:
+    type: text
+    label:
+      *: hksagentur.schema.block.image.alt
+    icon: title
+  caption:
+    extends: @hksagentur/schema/fields/caption
+    label:
+      *: hksagentur.schema.block.image.caption
+  link:
+    label:
+      *: hksagentur.schema.block.image.link
+    type: text
+    icon: url
+  ratio:
+    extends: @hksagentur/schema/fields/ratio
+    label:
+      *: hksagentur.schema.block.image.ratio
+    width: 1/2
+  crop:
+    type: toggle
+    label:
+      *: hksagentur.schema.block.image.crop
+    width: 1/2

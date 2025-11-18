@@ -1,0 +1,5 @@
+type: writer
+label:
+  *: hksagentur.schema.field.caption.label
+icon: text
+inline: true

@@ -1,6 +1,8 @@
 type: files
 label:
   *: hksagentur.schema.field.video.label
+placeholder:
+  *: hksagentur.schema.field.video.placeholder
 query: page.videos.template('video')
 layout: cards
 size: full
