@@ -36,6 +36,7 @@ fields:
     extends: @hksagentur/schema/fields/image
     label:
       *: hksagentur.schema.block.video.poster
+    layout: list
     query: model.images
     when:
       location: kirby
