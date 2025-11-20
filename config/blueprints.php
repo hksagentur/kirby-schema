@@ -7,6 +7,7 @@ return [
     '@hksagentur/schema/blocks/card' => __DIR__ . '/blueprints/blocks/card.yml',
     '@hksagentur/schema/blocks/cards' => __DIR__ . '/blueprints/blocks/cards.yml',
     '@hksagentur/schema/blocks/disclosure' => __DIR__ . '/blueprints/blocks/disclosure.yml',
+    '@hksagentur/schema/blocks/gallery' => __DIR__ . '/blueprints/blocks/gallery.yml',
     '@hksagentur/schema/blocks/hero' => __DIR__ . '/blueprints/blocks/hero.yml',
     '@hksagentur/schema/blocks/image' => __DIR__ . '/blueprints/blocks/image.yml',
     '@hksagentur/schema/blocks/video' => __DIR__ . '/blueprints/blocks/video.yml',

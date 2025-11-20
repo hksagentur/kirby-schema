@@ -1,0 +1,33 @@
+name:
+  *: hksagentur.schema.block.gallery.name
+icon: dashboard
+preview: image
+tabs:
+  content:
+    extends: @hksagentur/schema/tabs/content
+    fields:
+      images:
+        extends: @hksagentur/schema/fields/image
+        label:
+          *: hksagentur.schema.block.gallery.images
+        layout: cards
+        size: small
+        query: model.images
+        multiple: true
+      caption:
+        extends: @hksagentur/schema/fields/caption
+        label:
+          *: hksagentur.schema.block.gallery.caption
+  settings:
+    extends: @hksagentur/schema/tabs/settings
+    fields:
+      ratio:
+        extends: @hksagentur/schema/fields/ratio
+        label:
+          *: hksagentur.schema.block.image.ratio
+        width: 1/2
+      crop:
+        type: toggle
+        label:
+          *: hksagentur.schema.block.image.crop
+        width: 1/2

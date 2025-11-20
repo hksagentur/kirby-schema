@@ -1,8 +1,8 @@
 type: files
 label:
   *: hksagentur.schema.field.image.label
-placeholder:
-  *: hksagentur.schema.field.image.placeholder
+empty:
+  *: hksagentur.schema.field.image.empty
 query: page.images.template('image')
 layout: cards
 size: full
