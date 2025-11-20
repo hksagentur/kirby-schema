@@ -1,0 +1,10 @@
+type: structure
+label:
+  *: hksagentur.schema.field.actions.label
+empty:
+  *: hksagentur.schema.field.actions.empty
+fields:
+  extends: @hksagentur/schema/fields/link
+columns:
+  title: true
+  url: true

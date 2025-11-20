@@ -3,5 +3,3 @@ name:
   *: hksagentur.schema.block.billboard.name
 label: "{{ title }}"
 icon: megaphone
-preview: fields
-wysiwyg: true

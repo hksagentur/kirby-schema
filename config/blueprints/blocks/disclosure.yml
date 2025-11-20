@@ -2,8 +2,6 @@ name:
   *: hksagentur.schema.block.disclosure.name
 label: "{{ title }}"
 icon: expand
-preview: fields
-wysiwyg: true
 fields:
   level:
     extends: @hksagentur/schema/fields/heading-level

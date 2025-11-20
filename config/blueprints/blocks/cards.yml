@@ -2,8 +2,6 @@ name:
   *: hksagentur.schema.block.cards.name
 label: "{{ title }}"
 icon: layers
-preview: fields
-wysiwyg: true
 fields:
   level:
     extends: @hksagentur/schema/fields/heading-level

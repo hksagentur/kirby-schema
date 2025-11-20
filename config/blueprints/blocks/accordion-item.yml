@@ -1,5 +1,3 @@
 extends: @hksagentur/schema/blocks/disclosure
 name:
   *: hksagentur.schema.block.accordionItem.name
-preview: false
-wysiwyg: false

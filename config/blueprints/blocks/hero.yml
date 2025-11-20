@@ -1,0 +1,17 @@
+name:
+  *: hksagentur.schema.block.hero.name
+icon: star
+label: "{{ title }}"
+fields:
+  level:
+    extends: @hksagentur/schema/fields/heading-level
+    default: h1
+  title:
+    extends: @hksagentur/schema/fields/heading
+    required: true
+  eyebrow: @hksagentur/schema/fields/eyebrow
+  text: @hksagentur/schema/fields/inline-text
+  image:
+    extends: @hksagentur/schema/fields/image
+    layout: list
+  actions: @hksagentur/schema/fields/actions
