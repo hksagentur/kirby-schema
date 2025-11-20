@@ -30,6 +30,32 @@ return [
             'maxPrecision' => $maxPrecision,
         ]);
     },
+    'toDecimal' => function (Field $field, float $default = 0): Field {
+        return $field->value(function (?string $value) use ($default): float {
+            if (empty($value)) {
+                return $default;
+            }
+
+            if (is_numeric($value)) {
+                return (float) $value;
+            }
+
+            if (! str_contains($value, '/')) {
+                return $default;
+            }
+
+            [$numinator, $denominator] = array_map(
+                floatval(...),
+                explode('/', $value)
+            );
+
+            if ($numinator === 0 || $denominator === 0) {
+                return $default;
+            }
+
+            return $numinator / $denominator;
+        });
+    },
     'toOpeningHours' => function (Field $field): OpeningHours {
         return OpeningHoursFactory::createFromContent($field->toObject());
     },

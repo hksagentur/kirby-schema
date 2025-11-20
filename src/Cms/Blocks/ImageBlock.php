@@ -88,36 +88,16 @@ class ImageBlock extends Block
         return match ($this->thumbResizeStrategy()) {
             'cover' => $dimensions?->crop(
                 width: $containerWidth,
-                height: round($containerWidth / $this->thumbRatio()),
+                height: round($containerWidth / $this->ratio()->toDecimal()),
             ),
             'contain' => $dimensions?->resize(
                 width: $containerWidth,
-                height: round($containerWidth / $this->thumbRatio()),
+                height: round($containerWidth / $this->ratio()->toDecimal()),
             ),
             default => $dimensions?->resize(
                 width: $containerWidth,
             ),
         };
-    }
-
-    public function thumbRatio(): ?float
-    {
-        $ratio = $this->ratio()->value();
-
-        if ($ratio === 'auto') {
-            return null;
-        }
-
-        [$numinator, $denominator] = array_map(
-            floatval(...),
-            explode('/', $ratio)
-        );
-
-        if ($numinator === 0 || $denominator === 0) {
-            return null;
-        }
-
-        return $numinator / $denominator;
     }
 
     public function thumbResizeStrategy(): string
