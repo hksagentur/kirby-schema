@@ -33,18 +33,56 @@ class CollectionBlock extends Block
         return $this->content()->text();
     }
 
+    public function offset(): int
+    {
+        return $this->content()->offset()->toInt(0);
+    }
+
+    public function limit(): int
+    {
+        return $this->content()->limit()->toInt(-1);
+    }
+
+    public function flip(): bool
+    {
+        return $this->content()->flip()->isTrue();
+    }
+
     public function pages(): Pages
     {
         if ($this->useCurrentPage()) {
-            return $this->parent()->children();
+            return $this->applyConstraints($this->parent()->children());
         }
 
         $page = $this->query()->toPage();
 
-        if (! $page) {
-            return $page->children();
+        if ($page) {
+            return $this->applyConstraints($page->children());
         }
 
         return new Pages(parent: $this->parent());
+    }
+
+    protected function applyConstraints(Pages $pages): Pages
+    {
+        $offset = $this->offset();
+
+        if ($offset > 0) {
+            $pages = $pages->offset($offset);
+        }
+
+        $limit = $this->limit();
+
+        if ($limit >= 0) {
+            $pages = $pages->paginate($limit);
+        }
+
+        $flip = $this->flip();
+
+        if ($flip) {
+            $pages = $pages->flip();
+        }
+
+        return $pages;
     }
 }
