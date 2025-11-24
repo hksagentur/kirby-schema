@@ -1,0 +1,11 @@
+name:
+  *: hksagentur.schema.block.heading.name
+icon: title
+wysiwyg: true
+preview: heading
+fields:
+  level: @hksagentur/schema/fields/heading-level
+  text:
+    extends: @hksagentur/schema/fields/heading
+    label:
+      *: hksagentur.schema.block.heading.text

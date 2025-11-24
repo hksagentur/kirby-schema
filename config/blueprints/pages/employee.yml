@@ -4,8 +4,8 @@ title:
 icon: user
 
 image:
-  query: page.photo.toFile
-  ratio: 3/2
+  query: page.cover.toFile
+  ratio: 4/5
   cover: true
 
 create:

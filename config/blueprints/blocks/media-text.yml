@@ -1,0 +1,25 @@
+name:
+  *: hksagentur.schema.block.mediaText.name
+label: "{{ title }}"
+icon: grid-left
+tabs:
+  content:
+    extends: @hksagentur/schema/tabs/content
+    fields:
+      level:
+        extends: @hksagentur/schema/fields/heading-level
+        default: h2
+      eyebrow: @hksagentur/schema/fields/eyebrow
+      title: @hksagentur/schema/fields/heading
+      text: @hksagentur/schema/fields/rich-text
+      image:
+        extends: @hksagentur/schema/fields/image
+        layout: list
+      link:
+        type: object
+        fields:
+          extends: @hksagentur/schema/fields/link
+  settings:
+    extends: @hksagentur/schema/tabs/settings
+    fields:
+      alignment: @hksagentur/schema/fields/align-content
