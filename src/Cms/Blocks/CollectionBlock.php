@@ -10,12 +10,12 @@ class CollectionBlock extends Block
 {
     public function useCurrentPage(): bool
     {
-        return $this->parent()->value() === 'current';
+        return $this->content()->get('parent')->value() === 'current';
     }
 
     public function useCustomPage(): bool
     {
-        return $this->parent()->value() === 'custom';
+        return $this->content()->get('parent')->value() === 'custom';
     }
 
     public function level(): Field
