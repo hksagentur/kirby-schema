@@ -1,0 +1,39 @@
+name:
+  *: hksagentur.schema.block.collection.name
+icon: list-bullet
+label: "{{ title }}"
+tabs:
+  content:
+    extends: @hksagentur/schema/tabs/content
+    fields:
+      level: @hksagentur/schema/fields/heading-level
+      title: @hksagentur/schema/fields/heading
+      text: @hksagentur/schema/fields/inline-text
+  settings:
+    extends: @hksagentur/schema/tabs/settings
+    fields:
+      parent:
+        type: radio
+        label:
+          *: hksagentur.schema.block.collection.parent
+        columns: 2
+        default: current
+        required: true
+        options:
+          - value: current
+            text:
+              *: hksagentur.schema.block.collection.currentPage
+          - value: custom
+            text:
+              *: hksagentur.schema.block.collection.customPage
+      query:
+        type: pages
+        label:
+          *: hksagentur.schema.block.collection.query
+        required: true
+        multiple: false
+        when:
+          parent: custom
+      offset: @hksagentur/schema/fields/offset
+      limit: @hksagentur/schema/fields/limit
+      flip: @hksagentur/schema/fields/flip

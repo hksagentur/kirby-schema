@@ -1,0 +1,6 @@
+type: number
+label:
+  *: hksagentur.schema.field.offset.label
+default: 0
+min: 0
+step: 1
