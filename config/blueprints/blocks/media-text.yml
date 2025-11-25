@@ -1,7 +1,7 @@
 name:
   *: hksagentur.schema.block.mediaText.name
 label: "{{ title }}"
-icon: grid-left
+icon: layout-columns
 tabs:
   content:
     extends: @hksagentur/schema/tabs/content
