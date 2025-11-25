@@ -36,6 +36,8 @@ return [
     'hksagentur.schema.block.image.ratio' => 'Seitenverhältnis',
     'hksagentur.schema.block.image.crop' => 'Beschneiden',
     'hksagentur.schema.block.mediaText.name' => 'Medien & Text',
+    'hksagentur.schema.block.tabs.name' => 'Tabs',
+    'hksagentur.schema.block.tabs.tabs' => 'Einträge',
     'hksagentur.schema.block.video.name' => 'Video',
     'hksagentur.schema.block.video.location' => 'Location',
     'hksagentur.schema.block.video.internal' => 'Diese Webseite',

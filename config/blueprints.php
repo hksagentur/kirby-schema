@@ -13,6 +13,7 @@ return [
     '@hksagentur/schema/blocks/hero' => __DIR__ . '/blueprints/blocks/hero.yml',
     '@hksagentur/schema/blocks/image' => __DIR__ . '/blueprints/blocks/image.yml',
     '@hksagentur/schema/blocks/media-text' => __DIR__ . '/blueprints/blocks/media-text.yml',
+    '@hksagentur/schema/blocks/tabs' => __DIR__ . '/blueprints/blocks/tabs.yml',
     '@hksagentur/schema/blocks/video' => __DIR__ . '/blueprints/blocks/video.yml',
     '@hksagentur/schema/files/document' => __DIR__ . '/blueprints/files/document.yml',
     '@hksagentur/schema/files/image' => __DIR__ . '/blueprints/files/image.yml',

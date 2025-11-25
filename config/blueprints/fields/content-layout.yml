@@ -20,8 +20,3 @@ fieldsets:
 settings:
   fields:
     alignment: @hksagentur/schema/fields/align-content
-default:
-  - type: text
-    content: Text …
-    attrs:
-      alignment: normal

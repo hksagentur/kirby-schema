@@ -36,6 +36,8 @@ return [
     'hksagentur.schema.block.image.ratio' => 'Ratio',
     'hksagentur.schema.block.image.url' => 'Image URL',
     'hksagentur.schema.block.mediaText.name' => 'Media & Text',
+    'hksagentur.schema.block.tabs.name' => 'Tabs',
+    'hksagentur.schema.block.tabs.tabs' => 'Items',
     'hksagentur.schema.block.video.autoplay' => 'Autoplay',
     'hksagentur.schema.block.video.caption' => 'Caption',
     'hksagentur.schema.block.video.controls' => 'Controls',

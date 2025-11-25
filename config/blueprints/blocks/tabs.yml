@@ -1,0 +1,23 @@
+name:
+  *: hksagentur.schema.block.tabs.name
+icon: grid-bottom
+fields:
+  tabs:
+    type: structure
+    label:
+      *: hksagentur.schema.block.tabs.tabs
+    fields:
+      title:
+        extends: @hksagentur/schema/fields/heading
+        required: true
+      layout:
+        extends: @hksagentur/schema/fields/content-layout
+        required: true
+      open:
+        extends: @hksagentur/schema/fields/open
+        default: false
+    columns:
+      title: true
+      open: true
+    required: true
+    batch: true
