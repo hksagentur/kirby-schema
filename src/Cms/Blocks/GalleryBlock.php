@@ -8,11 +8,6 @@ use Kirby\Content\Field;
 
 class GalleryBlock extends Block
 {
-    public function images(): Files
-    {
-        return $this->content()->images()->toFiles();
-    }
-
     public function caption(): Field
     {
         return $this->content()->caption();
@@ -26,5 +21,10 @@ class GalleryBlock extends Block
     public function crop(): Field
     {
         return $this->content()->crop();
+    }
+
+    public function images(): Files
+    {
+        return $this->content()->images()->toFiles();
     }
 }

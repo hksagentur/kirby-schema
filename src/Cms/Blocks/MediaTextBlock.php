@@ -19,14 +19,14 @@ class MediaTextBlock extends Block
         return $this->content()->level()->or('h3');
     }
 
-    public function eyebrow(): Field
-    {
-        return $this->content()->eyebrow();
-    }
-
     public function title(): Field
     {
         return $this->content()->title();
+    }
+
+    public function eyebrow(): Field
+    {
+        return $this->content()->eyebrow();
     }
 
     public function text(): Field
