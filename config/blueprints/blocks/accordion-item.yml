@@ -1,3 +1,6 @@
 extends: @hksagentur/schema/blocks/disclosure
 name:
   *: hksagentur.schema.block.accordionItem.name
+fields:
+  level:
+    default: h3

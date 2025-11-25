@@ -5,7 +5,7 @@ icon: expand
 fields:
   level:
     extends: @hksagentur/schema/fields/heading-level
-    default: h3
+    default: h2
   title:
     extends: @hksagentur/schema/fields/heading
     label:
@@ -13,7 +13,9 @@ fields:
     placeholder:
       *: hksagentur.schema.block.disclosure.placeholder
     required: true
-  layout: @hksagentur/schema/fields/content-layout
+  layout:
+    extends: @hksagentur/schema/fields/content-layout
+    required: true
   open:
     extends: @hksagentur/schema/fields/open
     default: false
