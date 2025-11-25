@@ -1,10 +1,8 @@
 <?php
 
-use Kirby\Toolkit\A;
-use Kirby\Cms\App;
-use Kirby\Data\Yaml;
+use Hks\Schema\Plugin\Blueprint;
 
-return A::reduce([
+return Blueprint::register([
     'blocks/accordion-item',
     'blocks/accordion',
     'blocks/billboard',
@@ -86,15 +84,4 @@ return A::reduce([
     'tabs/content',
     'tabs/media',
     'tabs/settings',
-], static function (array $blueprints, string $name): array {
-    return $blueprints + [
-        "@hksagentur/schema/{$name}" => fn (App $kirby): array => $kirby->apply(
-            name: 'hksagentur.schema.blueprint:after',
-            args: [
-                'name' => $name,
-                'blueprint' => Yaml::read(__DIR__ . '/blueprints/' . $name . '.yml'),
-            ],
-            modify: 'blueprint',
-        ),
-    ];
-}, []);
+]);
