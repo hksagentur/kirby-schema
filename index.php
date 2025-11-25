@@ -3,14 +3,6 @@
 require __DIR__.'/config/helpers.php';
 
 Kirby::plugin('hksagentur/schema', [
-    'options' => [
-        'image' => [
-            'formats' => ['avif', 'webp', 'jpeg'],
-            'widths' => ['auto'],
-            'attributes' => [],
-            'quality' => 80,
-        ],
-    ],
     'blueprints' => require __DIR__ . '/config/blueprints.php',
     'translations' => require __DIR__ . '/config/translations.php',
     'hooks' => require __DIR__ . '/config/hooks.php',

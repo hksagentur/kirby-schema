@@ -32,11 +32,11 @@ class ResponsiveImage implements Stringable
 
         $this->image = $image;
 
-        $this->formats = $this->getPluginOptions('image.formats');
-        $this->widths = $this->getPluginOptions('image.widths');
-        $this->attributes = $this->getPluginOptions('image.attributes');
+        $this->formats = $this->getPluginOptions('image.formats', ['webp', 'jpeg']);
+        $this->widths = $this->getPluginOptions('image.widths', []);
+        $this->attributes = $this->getPluginOptions('image.attributes', []);
 
-        $this->quality = $this->getPluginOptions('image.quality');
+        $this->quality = $this->getPluginOptions('image.quality', 80);
     }
 
     public static function for(File|Asset $image): static
