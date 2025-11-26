@@ -36,4 +36,4 @@ tabs:
           parent: custom
       offset: @hksagentur/schema/fields/offset
       limit: @hksagentur/schema/fields/limit
-      flip: @hksagentur/schema/fields/flip
+      reverse: @hksagentur/schema/fields/reverse

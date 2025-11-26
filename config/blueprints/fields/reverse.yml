@@ -1,0 +1,4 @@
+type: toggle
+label:
+  *: hksagentur.schema.field.reverse.label
+default: false

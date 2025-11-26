@@ -43,9 +43,9 @@ class CollectionBlock extends Block
         return $this->content()->limit()->toInt(-1);
     }
 
-    public function flip(): bool
+    public function reverse(): bool
     {
-        return $this->content()->flip()->isTrue();
+        return $this->content()->reverse()->isTrue();
     }
 
     public function pages(): Pages
@@ -65,6 +65,12 @@ class CollectionBlock extends Block
 
     protected function applyConstraints(Pages $pages): Pages
     {
+        $reverse = $this->reverse();
+
+        if ($reverse) {
+            $pages = $pages->flip();
+        }
+
         $offset = $this->offset();
 
         if ($offset > 0) {
@@ -75,12 +81,6 @@ class CollectionBlock extends Block
 
         if ($limit >= 0) {
             $pages = $pages->paginate($limit);
-        }
-
-        $flip = $this->flip();
-
-        if ($flip) {
-            $pages = $pages->flip();
         }
 
         return $pages;

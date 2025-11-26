@@ -23,3 +23,4 @@ tabs:
     extends: @hksagentur/schema/tabs/settings
     fields:
       alignment: @hksagentur/schema/fields/align-content
+      reverse: @hksagentur/schema/fields/reverse

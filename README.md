@@ -130,7 +130,6 @@ Below is an overview of all available blueprints provided by this plugin. Each e
 | [Eyebrow](config/blueprints/fields/eyebrow.yml)                   | `@hksagentur/schema/fields/eyebrow`          | Small text above a headline.                        |
 | [Fax](config/blueprints/fields/fax.yml)                           | `@hksagentur/schema/fields/fax`              | Fax number of a person or organization.             |
 | [Featured](config/blueprints/fields/featured.yml)                 | `@hksagentur/schema/fields/featured`         | Mark content as featured.                           |
-| [Flip](config/blueprints/fields/flip.yml)                         | `@hksagentur/schema/fields/flip`             | Reverse the order of a sequence.                    |
 | [Gallery](config/blueprints/fields/gallery.yml)                   | `@hksagentur/schema/fields/gallery`          | Group related images in a gallery.                  |
 | [Heading Level](config/blueprints/fields/heading-level.yml)       | `@hksagentur/schema/fields/heading-level`    | HTML heading level to choose from.                  |
 | [Heading](config/blueprints/fields/heading.yml)                   | `@hksagentur/schema/fields/heading`          | Text input for headlines or titles.                 |
@@ -154,6 +153,7 @@ Below is an overview of all available blueprints provided by this plugin. Each e
 | [Published](config/blueprints/fields/published.yml)               | `@hksagentur/schema/fields/published`        | Date when the page was first published.             |
 | [Ratio](config/blueprints/fields/ratio.yml)                       | `@hksagentur/schema/fields/ratio`            | Selection of common aspect ratios.                  |
 | [Responsibilities](config/blueprints/fields/responsibilities.yml) | `@hksagentur/schema/fields/responsibilities` | Assign one or more responsibilities to a person.    |
+| [Reverse](config/blueprints/fields/reverse.yml)                   | `@hksagentur/schema/fields/reverse`          | Reverse the order of a sequence.                    |
 | [Rich Text](config/blueprints/fields/rich-text.yml)               | `@hksagentur/schema/fields/rich-text`        | Editor for formatted, rich content.                 |
 | [Source](config/blueprints/fields/source.yml)                     | `@hksagentur/schema/fields/source`           | Source and license information of a file.           |
 | [Tags](config/blueprints/fields/tags.yml)                         | `@hksagentur/schema/fields/tags`             | Associate an entity with tags.                      |

@@ -1,4 +1,0 @@
-type: toggle
-label:
-  *: hksagentur.schema.field.flip.label
-default: false
