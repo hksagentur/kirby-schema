@@ -88,9 +88,9 @@ class Blueprint implements Stringable
     }
 
     public function __debugInfo(): array
-	{
-		return $this->read();
-	}
+    {
+        return $this->read();
+    }
 
     public static function aliases(): array
     {
@@ -101,7 +101,7 @@ class Blueprint implements Stringable
     {
         $aliases = static::aliases();
 
-        if (in_array($blueprint,$aliases)) {
+        if (in_array($blueprint, $aliases)) {
             return $blueprint;
         }
 
