@@ -4,52 +4,65 @@ namespace Hks\Schema\Plugin;
 
 use Kirby\Cms\App;
 use Kirby\Data\Yaml;
+use Kirby\Exception\NotFoundException;
 use Kirby\Filesystem\F;
 use Kirby\Toolkit\A;
 use Stringable;
 
 class Blueprint implements Stringable
 {
-    protected static ?App $kirby = null;
-    protected static ?string $directory = null;
+    protected static ?array $aliases = null;
 
     public function __construct(
-        protected string $name
+        protected string $root
     ) {
-    }
-
-    public function kirby(): App
-    {
-        return static::$kirby ?? App::instance();
-    }
-
-    public function directory(): string
-    {
-        return static::$directory ??= $this->kirby()->plugin('hksagentur/schema')->root() . '/config/blueprints';
     }
 
     public function exists(): bool
     {
-        return F::exists($this->root());
-    }
-
-    public function name(): string
-    {
-        return $this->name;
+        return F::exists($this->root);
     }
 
     public function root(): string
     {
-        return $this->directory() . '/' . $this->name() . '.yml';
+        return $this->root;
+    }
+
+    public function type(): ?string
+    {
+        return match ($this->directory()) {
+            'blocks' => 'block',
+            'fields' => 'field',
+            'files' => 'file',
+            'pages' => 'page',
+            'sections' => 'section',
+            'tabs' => 'tab',
+            default => null,
+        };
+    }
+
+    public function name(): string
+    {
+        return $this->directory() . '/' . F::name($this->root);
+    }
+
+    public function directory(): string
+    {
+        return F::name(F::dirname($this->root));
+    }
+
+    public function extension(): string
+    {
+        return F::extension($this->root);
     }
 
     public function read(): array
     {
-        return $this->kirby()->apply(
+        return App::instance()->apply(
             'hksagentur.schema.blueprint:after',
             [
-                'name' => $this->name,
-                'blueprint' => Yaml::read($this->root()),
+                'name' => $this->name(),
+                'blueprint' => Yaml::read($this->root),
             ],
             'blueprint',
         );
@@ -71,20 +84,68 @@ class Blueprint implements Stringable
 
     public function __toString(): string
     {
-        return $this->root();
+        return $this->root;
     }
 
-    public static function create(string $name): static
+    public function __debugInfo(): array
+	{
+		return $this->read();
+	}
+
+    public static function aliases(): array
     {
-        return new static($name);
+        return static::$aliases ??= App::instance()->option('hksagentur.schema.aliases', []);
     }
 
-    public static function register(array $names): array
+    public static function alias(string $blueprint): ?string
+    {
+        $aliases = static::aliases();
+
+        if (in_array($blueprint,$aliases)) {
+            return $blueprint;
+        }
+
+        if (array_key_exists($blueprint, $aliases)) {
+            return $aliases[$blueprint];
+        }
+
+        return null;
+    }
+
+    public static function create(string $root): static
+    {
+        return new static($root);
+    }
+
+    public static function load(string $directory): array
+    {
+        $files = [];
+
+        foreach (glob($directory . '/*/*.yml') as $file) {
+            $files[] = F::name(F::dirname($file)) . '/' . F::name($file);
+        }
+
+        return static::register($directory, $files);
+    }
+
+    public static function register(string $directory, array $files): array
     {
         $blueprints = [];
 
-        foreach ($names as $name) {
-            $blueprints["@hksagentur/schema/{$name}"] = static::create($name);
+        foreach ($files as $file) {
+            $blueprint = static::create($directory . '/' . $file . '.yml');
+
+            if (! $blueprint->exists()) {
+                throw new NotFoundException(key: 'blueprint.notFound', data: ['name' => $file]);
+            }
+
+            $alias = static::alias($file);
+
+            if ($alias) {
+                $blueprints[$alias] = $blueprint;
+            }
+
+            $blueprints["@hksagentur/schema/{$file}"] = $blueprint;
         }
 
         return $blueprints;

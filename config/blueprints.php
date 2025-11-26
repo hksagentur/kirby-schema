@@ -2,7 +2,7 @@
 
 use Hks\Schema\Plugin\Blueprint;
 
-return Blueprint::register([
+return Blueprint::register(__DIR__ . '/blueprints', [
     'blocks/accordion-item',
     'blocks/accordion',
     'blocks/billboard',
