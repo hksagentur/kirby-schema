@@ -2,6 +2,7 @@
 
 namespace Hks\Schema\Cms\Blocks;
 
+use Kirby\Cms\App;
 use Kirby\Cms\Block;
 use Kirby\Cms\Pages;
 use Kirby\Content\Field;
@@ -20,7 +21,9 @@ class CollectionBlock extends Block
 
     public function source(): Field
     {
-        return $this->content()->get('parent')->or('current');
+        return $this->content()
+            ->get('parent')
+            ->or('current');
     }
 
     public function level(): Field
@@ -38,11 +41,6 @@ class CollectionBlock extends Block
         return $this->content()->text();
     }
 
-    public function paginate(): bool
-    {
-        return $this->content()->paginate()->isTrue();
-    }
-
     public function reverse(): bool
     {
         return $this->content()->reverse()->isTrue();
@@ -56,6 +54,42 @@ class CollectionBlock extends Block
     public function limit(): int
     {
         return $this->content()->limit()->toInt(-1);
+    }
+
+    public function paginate(): bool
+    {
+        return $this->content()->paginate()->isTrue();
+    }
+
+    public function paginationOptions(): array
+    {
+        return [
+            'method' => $this->paginationMethod(),
+            'variable' => $this->paginationVariable(),
+            'limit' => $this->limit(),
+        ];
+    }
+
+    public function paginationMethod(): ?string
+    {
+        $method = $this->content()->paginationMethod()->value();
+
+        if (! $method) {
+            return App::instance()->option('pagination.method');
+        }
+
+        return $method;
+    }
+
+    public function paginationVariable(): ?string
+    {
+        $variable = $this->content()->paginationVariable()->value();
+
+        if (! $variable) {
+            return App::instance()->option('pagination.variable');
+        }
+
+        return $variable;
     }
 
     public function pages(): Pages
@@ -89,10 +123,16 @@ class CollectionBlock extends Block
 
         $limit = $this->limit();
 
-        if ($limit >= 0) {
-            $pages = $this->paginate() ? $pages->paginate($limit) : $pages->limit($limit);
+        if ($limit === -1) {
+            return $pages;
         }
 
-        return $pages;
+        $paginate = $this->paginate();
+
+        if ($paginate) {
+            return $pages->paginate($this->paginationOptions());
+        }
+
+        return $pages->limit($limit);
     }
 }

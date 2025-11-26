@@ -1,0 +1,18 @@
+type: toggles
+label:
+  *: hksagentur.schema.field.paginationMethod.label
+help:
+  *: hksagentur.schema.field.paginationMethod.help
+options:
+  - value: ""
+    icon: clock
+    text:
+      *: hksagentur.schema.field.paginationMethod.default
+  - value: query
+    icon: url
+    text:
+      *: hksagentur.schema.field.paginationMethod.query
+  - value: param
+    icon: tag
+    text:
+      *: hksagentur.schema.field.paginationMethod.param

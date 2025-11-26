@@ -1,7 +1,7 @@
 type: number
 label:
   *: hksagentur.schema.field.limit.label
-default: 12
+default: -1
 min: -1
 step: 1
 help:

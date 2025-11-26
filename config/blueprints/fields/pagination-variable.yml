@@ -1,0 +1,9 @@
+type: text
+label:
+  *: hksagentur.schema.field.paginationVariable.label
+help:
+  *: hksagentur.schema.field.paginationVariable.help
+required: false
+font: monospace
+icon: key
+placeholder: "{{ kirby.option('pagination.variable', 'page') }}"
