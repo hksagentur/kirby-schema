@@ -34,6 +34,11 @@ tabs:
         multiple: false
         when:
           parent: custom
-      offset: @hksagentur/schema/fields/offset
-      limit: @hksagentur/schema/fields/limit
       reverse: @hksagentur/schema/fields/reverse
+      paginate: @hksagentur/schema/fields/reverse
+      offset: @hksagentur/schema/fields/offset
+      limit:
+        extends: @hksagentur/schema/fields/limit
+        default: -1
+        when:
+          paginate: true

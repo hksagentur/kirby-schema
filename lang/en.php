@@ -147,6 +147,7 @@ return [
     'hksagentur.schema.field.open.label' => 'Open?',
     'hksagentur.schema.field.organization.label' => 'Organization',
     'hksagentur.schema.field.organization.name' => 'Name',
+    'hksagentur.schema.field.paginate.label' => 'Pagination?',
     'hksagentur.schema.field.person.description' => 'Description',
     'hksagentur.schema.field.price.label' => 'Price',
     'hksagentur.schema.field.published.label' => 'Published on',

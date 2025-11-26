@@ -147,6 +147,7 @@ return [
     'hksagentur.schema.field.open.label' => 'Geöffnet?',
     'hksagentur.schema.field.organization.label' => 'Organisation',
     'hksagentur.schema.field.organization.name' => 'Name',
+    'hksagentur.schema.field.paginate.label' => 'Seitennummerierung?',
     'hksagentur.schema.field.person.description' => 'Beschreibung',
     'hksagentur.schema.field.published.label' => 'Veröffentlicht am',
     'hksagentur.schema.field.ratio.label' => 'Seitenverhältnis',

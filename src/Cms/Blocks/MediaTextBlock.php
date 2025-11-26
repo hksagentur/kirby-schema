@@ -9,11 +9,6 @@ use Kirby\Content\Field;
 
 class MediaTextBlock extends Block
 {
-    public function alignment(): Field
-    {
-        return $this->content()->alignment()->or('normal');
-    }
-
     public function level(): Field
     {
         return $this->content()->level()->or('h3');
@@ -42,5 +37,15 @@ class MediaTextBlock extends Block
     public function link(): Content
     {
         return $this->content()->link()->toObject();
+    }
+
+    public function alignment(): Field
+    {
+        return $this->content()->alignment()->or('normal');
+    }
+
+    public function reverse(): Field
+    {
+        return $this->content()->reverse();
     }
 }

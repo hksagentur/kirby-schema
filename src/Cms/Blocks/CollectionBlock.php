@@ -10,12 +10,17 @@ class CollectionBlock extends Block
 {
     public function useCurrentPage(): bool
     {
-        return $this->content()->get('parent')->value() === 'current';
+        return $this->source()->value() === 'current';
     }
 
     public function useCustomPage(): bool
     {
-        return $this->content()->get('parent')->value() === 'custom';
+        return $this->source()->value() === 'custom';
+    }
+
+    public function source(): Field
+    {
+        return $this->content()->get('parent')->or('current');
     }
 
     public function level(): Field
@@ -33,6 +38,16 @@ class CollectionBlock extends Block
         return $this->content()->text();
     }
 
+    public function paginate(): bool
+    {
+        return $this->content()->paginate()->isTrue();
+    }
+
+    public function reverse(): bool
+    {
+        return $this->content()->reverse()->isTrue();
+    }
+
     public function offset(): int
     {
         return $this->content()->offset()->toInt(0);
@@ -41,11 +56,6 @@ class CollectionBlock extends Block
     public function limit(): int
     {
         return $this->content()->limit()->toInt(-1);
-    }
-
-    public function reverse(): bool
-    {
-        return $this->content()->reverse()->isTrue();
     }
 
     public function pages(): Pages
@@ -80,7 +90,7 @@ class CollectionBlock extends Block
         $limit = $this->limit();
 
         if ($limit >= 0) {
-            $pages = $pages->paginate($limit);
+            $pages = $this->paginate() ? $pages->paginate($limit) : $pages->limit($limit);
         }
 
         return $pages;

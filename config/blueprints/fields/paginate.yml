@@ -1,0 +1,4 @@
+type: toggle
+label:
+  *: hksagentur.schema.field.paginate.label
+default: false
