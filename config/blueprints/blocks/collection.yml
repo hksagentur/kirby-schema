@@ -9,6 +9,10 @@ tabs:
       level: @hksagentur/schema/fields/heading-level
       title: @hksagentur/schema/fields/heading
       text: @hksagentur/schema/fields/inline-text
+      link:
+        type: object
+        fields:
+          extends: @hksagentur/schema/fields/link
   settings:
     extends: @hksagentur/schema/tabs/settings
     fields:
