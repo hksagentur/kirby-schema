@@ -61,6 +61,7 @@ return Blueprint::register(__DIR__ . '/blueprints', [
     'fields/responsibilities',
     'fields/reverse',
     'fields/rich-text',
+    'fields/paginate',
     'fields/source',
     'fields/tags',
     'fields/telephone',

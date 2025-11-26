@@ -35,7 +35,7 @@ tabs:
         when:
           parent: custom
       reverse: @hksagentur/schema/fields/reverse
-      paginate: @hksagentur/schema/fields/reverse
+      paginate: @hksagentur/schema/fields/paginate
       offset: @hksagentur/schema/fields/offset
       limit:
         extends: @hksagentur/schema/fields/limit
