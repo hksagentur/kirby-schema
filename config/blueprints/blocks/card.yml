@@ -6,8 +6,8 @@ fields:
   level:
     extends: @hksagentur/schema/fields/heading-level
     default: h3
-  eyebrow: @hksagentur/schema/fields/eyebrow
   title: @hksagentur/schema/fields/heading
+  eyebrow: @hksagentur/schema/fields/eyebrow
   text: @hksagentur/schema/fields/inline-text
   image:
     extends: @hksagentur/schema/fields/image

@@ -9,8 +9,8 @@ tabs:
       level:
         extends: @hksagentur/schema/fields/heading-level
         default: h2
-      eyebrow: @hksagentur/schema/fields/eyebrow
       title: @hksagentur/schema/fields/heading
+      eyebrow: @hksagentur/schema/fields/eyebrow
       text: @hksagentur/schema/fields/rich-text
       image:
         extends: @hksagentur/schema/fields/image
