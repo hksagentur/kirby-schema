@@ -3,6 +3,10 @@
 use Hks\Schema\Image\ResponsiveImage;
 
 return [
+
+    /**
+     * Convert the current file to a responsive image tag.
+     */
     'toResponsiveImage' => function (string|array|null $options = null): ResponsiveImage {
         if (is_null($options)) {
             $options = ['preset' => 'default'];
@@ -14,4 +18,5 @@ return [
 
         return ResponsiveImage::from(['image' => $this, ...$options]);
     },
+
 ];

@@ -4,7 +4,6 @@ namespace Hks\Schema\Cms\Blocks;
 
 use Kirby\Cms\Block;
 use Kirby\Cms\File;
-use Kirby\Content\Content;
 use Kirby\Content\Field;
 
 class MediaTextBlock extends Block
@@ -34,9 +33,9 @@ class MediaTextBlock extends Block
         return $this->content()->image()->toFile();
     }
 
-    public function link(): Content
+    public function link(): Field
     {
-        return $this->content()->link()->toObject();
+        return $this->content()->link();
     }
 
     public function alignment(): Field

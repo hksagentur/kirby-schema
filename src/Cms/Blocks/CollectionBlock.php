@@ -5,7 +5,6 @@ namespace Hks\Schema\Cms\Blocks;
 use Kirby\Cms\App;
 use Kirby\Cms\Block;
 use Kirby\Cms\Pages;
-use Kirby\Content\Content;
 use Kirby\Content\Field;
 
 class CollectionBlock extends Block
@@ -35,9 +34,9 @@ class CollectionBlock extends Block
         return $this->content()->text();
     }
 
-    public function link(): Content
+    public function link(): Field
     {
-        return $this->content()->link()->toObject();
+        return $this->content()->link();
     }
 
     public function source(): Field

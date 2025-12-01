@@ -9,4 +9,5 @@ Kirby::plugin('hksagentur/schema', [
     'collectionMethods' => require __DIR__ . '/config/methods/collection.php',
     'fieldMethods' => require __DIR__ . '/config/methods/field.php',
     'fileMethods' => require __DIR__ . '/config/methods/file.php',
+    'structureObjectMethods' => require __DIR__ . '/config/methods/structure-object.php',
 ]);

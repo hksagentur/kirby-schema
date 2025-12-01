@@ -16,9 +16,11 @@
     }
   },
   "require": {
-    "getkirby/composer-installer": "^1.1"
+    "php": ">=8.2.0",
+    "getkirby/composer-installer": "^1.2"
   },
   "require-dev": {
+    "getkirby/cms": "^5.1",
     "laravel/pint": "^1.20"
   },
   "suggest": {

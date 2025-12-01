@@ -5,7 +5,6 @@ namespace Hks\Schema\Cms\Blocks;
 use Hks\Schema\Cms\HasModelReference;
 use Kirby\Cms\Block;
 use Kirby\Cms\File;
-use Kirby\Content\Content;
 use Kirby\Content\Field;
 
 class CardBlock extends Block
@@ -37,8 +36,8 @@ class CardBlock extends Block
         return $this->content()->image()->or($this->referencedModel()?->cover())->toFile();
     }
 
-    public function link(): Content
+    public function link(): Field
     {
-        return $this->content()->link()->toObject();
+        return $this->content()->link();
     }
 }

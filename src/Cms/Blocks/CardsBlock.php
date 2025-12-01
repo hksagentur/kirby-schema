@@ -4,7 +4,6 @@ namespace Hks\Schema\Cms\Blocks;
 
 use Kirby\Cms\Block;
 use Kirby\Cms\Blocks;
-use Kirby\Content\Content;
 use Kirby\Content\Field;
 
 class CardsBlock extends Block
@@ -24,9 +23,9 @@ class CardsBlock extends Block
         return $this->content()->text();
     }
 
-    public function link(): Content
+    public function link(): Field
     {
-        return $this->content()->link()->toObject();
+        return $this->content()->link();
     }
 
     public function cards(): Blocks

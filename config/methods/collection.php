@@ -3,6 +3,10 @@
 use Kirby\Cms\Collection;
 
 return [
+
+    /**
+     * Run an associative map over each of the items.
+     */
     'mapWithKeys' => function (callable $callback): Collection {
         /** @var Collection $this */
         $data = [];
@@ -17,4 +21,5 @@ return [
 
         return new Collection($data);
     },
+
 ];
