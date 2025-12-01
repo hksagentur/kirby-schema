@@ -60,6 +60,7 @@ return Blueprint::register(__DIR__ . '/blueprints', [
     'fields/pagination-variable',
     'fields/person',
     'fields/price',
+    'fields/publication-status',
     'fields/published',
     'fields/ratio',
     'fields/responsibilities',
