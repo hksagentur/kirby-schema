@@ -20,13 +20,6 @@ class CollectionBlock extends Block
         return $this->source()->value() === 'custom';
     }
 
-    public function source(): Field
-    {
-        return $this->content()
-            ->get('parent')
-            ->or('current');
-    }
-
     public function level(): Field
     {
         return $this->content()->level()->or('h2');
@@ -47,9 +40,14 @@ class CollectionBlock extends Block
         return $this->content()->link()->toObject();
     }
 
-    public function reverse(): bool
+    public function source(): Field
     {
-        return $this->content()->reverse()->isTrue();
+        return $this->content()->get('parent')->or('current');
+    }
+
+    public function status(): Field
+    {
+        return $this->content()->get('status')->or('listed');
     }
 
     public function offset(): int
@@ -60,6 +58,11 @@ class CollectionBlock extends Block
     public function limit(): int
     {
         return $this->content()->limit()->toInt(-1);
+    }
+
+    public function reverse(): bool
+    {
+        return $this->content()->reverse()->isTrue();
     }
 
     public function paginate(): bool
@@ -115,6 +118,12 @@ class CollectionBlock extends Block
 
     protected function applyConstraints(Pages $pages): Pages
     {
+        $statuses = $this->status()->split();
+
+        if ($statuses) {
+            $pages = $pages->filter('status', 'in', $statuses);
+        }
+
         $reverse = $this->reverse();
 
         if ($reverse) {

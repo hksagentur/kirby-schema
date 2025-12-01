@@ -1,0 +1,16 @@
+type: checkboxes
+label:
+  *: hksagentur.schema.field.publicationStatus.label
+default: listed
+required: true
+columns: 3
+options:
+  - value: listed
+    text:
+      *: hksagetur.schema.field.publicationStatus.listed
+  - value: unlisted
+    text:
+      *: hksagetur.schema.field.publicationStatus.unlisted
+  - value: draft
+    text:
+      *: hksagetur.schema.field.publicationStatus.draft
