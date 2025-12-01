@@ -127,7 +127,7 @@ return [
             return $text;
         }
 
-        $icon = $this->icon()->toIcon();
+        $icon = $link->icon()->toIcon();
 
         $attr += [
             'rel' => $link->rel()->value() ?: null,
