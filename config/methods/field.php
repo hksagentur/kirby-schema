@@ -55,7 +55,7 @@ return [
     },
 
     /**
-	 * Converts numerics an fractals in a field value into a decimal number.
+     * Converts numerics an fractals in a field value into a decimal number.
      */
     'toDecimal' => function (Field $field, float $default = 0): float {
         if ($field->isEmpty()) {
