@@ -7,10 +7,10 @@ columns: 3
 options:
   - value: listed
     text:
-      *: hksagetur.schema.field.publicationStatus.listed
+      *: hksagentur.schema.field.publicationStatus.listed
   - value: unlisted
     text:
-      *: hksagetur.schema.field.publicationStatus.unlisted
+      *: hksagentur.schema.field.publicationStatus.unlisted
   - value: draft
     text:
-      *: hksagetur.schema.field.publicationStatus.draft
+      *: hksagentur.schema.field.publicationStatus.draft
