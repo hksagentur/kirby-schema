@@ -1,6 +1,6 @@
 <?php
 
-namespace Hks\Schema\Data;
+namespace Hks\Schema\Data\Factory;
 
 use Kirby\Cms\Structure;
 use Kirby\Cms\StructureObject;
@@ -9,27 +9,13 @@ use Spatie\OpeningHours\OpeningHours;
 
 class OpeningHoursFactory
 {
-    public static function createFromArray(array $data, ?string $timezone = null, ?string $outputTimezone = null): OpeningHours
+    public static function createFromArray(array $attributes): OpeningHours
     {
-        return OpeningHours::createAndMergeOverlappingRanges(
-            data: $data,
-            timezone: $timezone,
-            outputTimezone: $outputTimezone,
-        );
+        return OpeningHours::createAndMergeOverlappingRanges($attributes);
     }
 
     public static function createFromContent(Content $structure): OpeningHours
     {
-        $timezone = option(
-            key: 'hksagentur.schema.hours.timezone',
-            default: date_default_timezone_get(),
-        );
-
-        $outputTimezone = option(
-            key: 'hksagentur.schema.hours.outputTimezone',
-            default: $timezone,
-        );
-
         $regularHours = array_map(fn (Structure $timeRanges) => $timeRanges->toArray(fn (StructureObject $timeRange) => [
             'data' => $timeRange->note()->esc(),
             'hours' => sprintf(
@@ -58,10 +44,6 @@ class OpeningHoursFactory
             ],
         ])->toArray();
 
-        return static::createFromArray(
-            data: $regularHours + ['exceptions' => $exceptions],
-            timezone: $timezone,
-            outputTimezone: $outputTimezone,
-        );
+        return OpeningHours::createAndMergeOverlappingRanges($regularHours + ['exceptions' => $exceptions]);
     }
 }

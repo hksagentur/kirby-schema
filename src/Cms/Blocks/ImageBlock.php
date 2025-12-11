@@ -88,11 +88,11 @@ class ImageBlock extends Block
         return match ($this->thumbResizeStrategy()) {
             'cover' => $dimensions?->crop(
                 width: $containerWidth,
-                height: round($containerWidth / $this->ratio()->toDecimal()),
+                height: round($containerWidth / $this->ratio()->toRational()->toFloat()),
             ),
             'contain' => $dimensions?->resize(
                 width: $containerWidth,
-                height: round($containerWidth / $this->ratio()->toDecimal()),
+                height: round($containerWidth / $this->ratio()->toRational()->toFloat()),
             ),
             default => $dimensions?->resize(
                 width: $containerWidth,

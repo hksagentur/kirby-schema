@@ -24,7 +24,7 @@
     "laravel/pint": "^1.20"
   },
   "suggest": {
-    "commerceguys/addressing": "Required to associate models with an address.",
+    "commerceguys/addressing": "Required to format postal addresses.",
     "spatie/opening-hours": "Required to format the opening hours of models.",
     "getkirby/geo": "Required to calculate the distance between geographic locations."
   },

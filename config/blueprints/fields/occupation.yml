@@ -1,7 +1,0 @@
-type: tags
-label:
-  *: hksagentur.schema.field.occupation.label
-max: 3
-options:
-  type: query
-  query: page.siblings.pluck('occupation', ',', true)

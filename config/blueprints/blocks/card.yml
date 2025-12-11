@@ -3,6 +3,10 @@ name:
 label: "{{ title }}"
 icon: info-card
 fields:
+  link:
+    type: object
+    fields:
+      extends: @hksagentur/schema/fields/link
   level:
     extends: @hksagentur/schema/fields/heading-level
     default: h3
@@ -12,7 +16,3 @@ fields:
   image:
     extends: @hksagentur/schema/fields/image
     layout: list
-  link:
-    type: object
-    fields:
-      extends: @hksagentur/schema/fields/link

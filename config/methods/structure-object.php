@@ -1,41 +1,53 @@
 <?php
 
-use Kirby\Cms\Html;
+use Hks\Schema\Data\Factory\GeoCoordinateFactory;
+use Hks\Schema\Data\Factory\OpeningHoursFactory;
+use Hks\Schema\Data\Factory\OrganizationFactory;
+use Hks\Schema\Data\Factory\PersonFactory;
+use Hks\Schema\Data\Factory\PostalAddressFactory;
+use Hks\Schema\Data\GeoCoordinate;
+use Hks\Schema\Data\Organization;
+use Hks\Schema\Data\Person;
+use Hks\Schema\Data\PostalAddress;
+use Spatie\OpeningHours\OpeningHours;
 
 return [
 
+    // Converters
+
     /**
-     * Convert a link structure to HTML markup.
+     * Converts the content of the current structure object to a geo coordinate object.
      */
-    'toStructuredLink' => function (string|array|null $text = null, array $attr = []): string {
-        if (is_array($text)) {
-            $attr = $text;
-            $text = null;
-        }
+    'toGeoCoordinate' => function (): GeoCoordinate {
+        return GeoCoordinateFactory::createFromContent($this->content());
+    },
 
-        $text ??= $attr['title'] ?? $this->title()->kirbytags();
-        $href ??= $attr['href'] ?? $this->url()->toUrl();
+    /**
+     * Converts the content of the current structure object to an opening hours object.
+     */
+    'toOpeningHours' => function (): OpeningHours {
+        return OpeningHoursFactory::createFromContent($this->content());
+    },
 
-        if (! $href) {
-            return $text;
-        }
+    /**
+     * Converts the content of the current structure object to an organization object.
+     */
+    'toOrganization' => function (): Organization {
+        return OrganizationFactory::createFromContent($this->content());
+    },
 
-        $icon = $this->icon()->toIcon();
+    /**
+     * Converts the content of the current structure object to a person object.
+     */
+    'toPerson' => function (): Person {
+        return PersonFactory::createFromContent($this->content());
+    },
 
-        $attr += [
-            'rel' => $this->rel()->value() ?: null,
-            'target' => $this->target()->toBool() ? '_blank' : null,
-        ];
-
-        $page = $this->kirby()->site()->page();
-
-        if ($href === $page?->url()) {
-            $attr += [
-                'aria-current' => 'page',
-            ];
-        }
-
-        return Html::a($href, array_filter([$text, $icon]), $attr);
+    /**
+     * Converts the content of the current structure object to a postal address object.
+     */
+    'toPostalAddress' => function (): PostalAddress {
+        return PostalAddressFactory::createFromContent($this->content());
     },
 
 ];

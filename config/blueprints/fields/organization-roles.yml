@@ -1,0 +1,11 @@
+type: structure
+label:
+  *: hksagentur.schema.field.organizationRoles.label
+fields:
+  name:
+    type: text
+    label:
+      *: hksagentur.schema.field.organizationRoles.name
+    required: false
+    counter: false
+  responsibilities: @hksagentur/schema/fields/responsibilities

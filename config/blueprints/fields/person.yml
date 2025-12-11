@@ -2,22 +2,14 @@ type: group
 fields:
   extends: @hksagentur/schema/fields/name
   description:
-    type: textarea
+    extends: @hksagentur/schema/fields/inline-text
     label:
       *: hksagentur.schema.field.person.description
-    size: tiny
-    buttons:
-      - italic
-      - bold
-      - "|"
-      - link
-      - email
   lineContact:
     type: line
+  email: @hksagentur/schema/fields/email
   telephone: @hksagentur/schema/fields/telephone
   fax: @hksagentur/schema/fields/fax
-  email: @hksagentur/schema/fields/email
   lineTaxonomies:
     type: line
-  occupation: @hksagentur/schema/fields/occupation
-  responsibilities: @hksagentur/schema/fields/responsibilities
+  roles: @hksagentur/schema/fields/organization-roles
