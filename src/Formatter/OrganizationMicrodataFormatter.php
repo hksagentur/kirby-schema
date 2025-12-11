@@ -18,7 +18,7 @@ class OrganizationMicrodataFormatter extends MicrodataFormatter
     {
         return [
             'name' => fn () => $organization->name()?->toHtml(['itemprop' => 'name']),
-            'address' => fn () => $organization->address()?->format(PostalAddressMicrodataFormatter::class, $this->option('address', []),),
+            'address' => fn () => $organization->address()?->format(PostalAddressMicrodataFormatter::class, $this->option('address', []), ),
             'coordinates' => fn () => $organization->coordinates()?->format(GeoCoordinateMicrodataFormatter::class, $this->option('coordinates', [])),
             'email' => fn () => $organization->email()?->toHtml(['itemprop' => 'email']),
             'telephone' => fn () => $organization->telephone()?->toHtml(['itemprop' => 'telephone']),

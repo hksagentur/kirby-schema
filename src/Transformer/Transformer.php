@@ -2,7 +2,6 @@
 
 namespace Hks\Schema\Transformer;
 
-use Closure;
 use Kirby\Cms\App;
 use Kirby\Toolkit\A;
 

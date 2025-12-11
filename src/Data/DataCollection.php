@@ -18,9 +18,9 @@ class DataCollection extends Iterator implements Stringable
      * @param TValue[] $data
      */
     public function __construct(array $data = [])
-	{
-		$this->data = array_filter($data);
-	}
+    {
+        $this->data = array_filter($data);
+    }
 
     /**
      * @param TValue[] $data
@@ -72,17 +72,17 @@ class DataCollection extends Iterator implements Stringable
     public function slice(int $offset = 0, ?int $limit = null): static
     {
         return new static(array_slice($this->data, $offset, $limit));
-	}
+    }
 
     public function offset(int $offset): static
-	{
-		return $this->slice($offset);
-	}
+    {
+        return $this->slice($offset);
+    }
 
     public function limit(int $limit): static
-	{
-		return $this->slice(0, $limit);
-	}
+    {
+        return $this->slice(0, $limit);
+    }
 
     /**
      * @template TMapValue
@@ -123,9 +123,9 @@ class DataCollection extends Iterator implements Stringable
     }
 
     public function toJson(): string
-	{
-		return json_encode($this->toArray());
-	}
+    {
+        return json_encode($this->toArray());
+    }
 
     public function toHtml(array $attributes = []): string
     {

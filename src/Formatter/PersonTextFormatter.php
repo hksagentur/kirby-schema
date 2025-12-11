@@ -13,11 +13,11 @@ class PersonTextFormatter extends StructuredDataFormatter
     public function getAttributes(mixed $person): array
     {
         return [
-            'name' => fn() => $person->fullName()?->toString(),
-            'email' => fn() => $person->email()?->toString(),
-            'telephone' => fn() => $person->telephone()?->toString(),
-            'fax' => fn() => $person->fax()?->toString(),
-            'jobTitle' => fn() => I18n::oxfordList($person->roles()->pluck('name')),
+            'name' => fn () => $person->fullName()?->toString(),
+            'email' => fn () => $person->email()?->toString(),
+            'telephone' => fn () => $person->telephone()?->toString(),
+            'fax' => fn () => $person->fax()?->toString(),
+            'jobTitle' => fn () => I18n::oxfordList($person->roles()->pluck('name')),
         ];
     }
 

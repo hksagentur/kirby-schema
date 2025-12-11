@@ -9,7 +9,7 @@ use Kirby\Toolkit\Date;
 class I18n extends \Kirby\Toolkit\I18n
 {
     /** @var array<string, IntlDateFormatter> */
-	protected static array $dateFormatters = [];
+    protected static array $dateFormatters = [];
 
     public static function getDayNames(?string $locale = null, string $format = 'full'): array
     {
@@ -78,16 +78,16 @@ class I18n extends \Kirby\Toolkit\I18n
     protected static function dateFormatter(string $locale, string $pattern): ?IntlDateFormatter
     {
         if (! extension_loaded('intl') || ! class_exists(IntlDateFormatter::class)) {
-			return null;
-		}
+            return null;
+        }
 
         $formatter = static::$dateFormatters[$locale][$pattern] ?? null;
 
-		if ($formatter) {
-			return $formatter;
-		}
+        if ($formatter) {
+            return $formatter;
+        }
 
-		return static::$dateFormatters[$locale][$pattern] = new IntlDateFormatter($locale, pattern: $pattern);
-	}
+        return static::$dateFormatters[$locale][$pattern] = new IntlDateFormatter($locale, pattern: $pattern);
+    }
 
 }

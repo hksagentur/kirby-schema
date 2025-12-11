@@ -9,16 +9,16 @@ use UnexpectedValueException;
 class Manager
 {
     protected static string $namespace = 'Hks\\Schema\\Formatter';
-	protected static ?self $instance = null;
+    protected static ?self $instance = null;
 
-	public static function instance(self|null $instance = null): ?static
+    public static function instance(self|null $instance = null): ?static
     {
-		if ($instance !== null) {
-			return static::$instance = $instance;
-		}
+        if ($instance !== null) {
+            return static::$instance = $instance;
+        }
 
-		return static::$instance ?? new static();
-	}
+        return static::$instance ?? new static();
+    }
 
     /**
      * @template TFormatter of Formatter

@@ -24,7 +24,7 @@ class NumberCurrencyFormatter extends Formatter
 
         $locale = $this->option('locale');
 
-        $formatter = new IntlNumberFormatter($locale,IntlNumberFormatter::CURRENCY);
+        $formatter = new IntlNumberFormatter($locale, IntlNumberFormatter::CURRENCY);
 
         $currency = $this->option('currency');
 

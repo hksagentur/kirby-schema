@@ -6,7 +6,6 @@ use Hks\Schema\Formatter\FractionHtmlFormatter;
 use Hks\Schema\Formatter\FractionTextFormatter;
 use Hks\Schema\Toolkit\Math;
 use InvalidArgumentException;
-use Kirby\Cms\Html;
 use Kirby\Toolkit\Str;
 use RuntimeException;
 

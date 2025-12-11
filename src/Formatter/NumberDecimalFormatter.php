@@ -25,7 +25,7 @@ class NumberDecimalFormatter extends Formatter
 
         $locale = $this->option('locale');
 
-        $formatter = new IntlNumberFormatter($locale,IntlNumberFormatter::DECIMAL);
+        $formatter = new IntlNumberFormatter($locale, IntlNumberFormatter::DECIMAL);
 
         $maxPrecision = $this->option('maxPrecision');
         $precision = $this->option('precision');

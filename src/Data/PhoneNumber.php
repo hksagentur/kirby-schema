@@ -14,7 +14,7 @@ readonly class PhoneNumber extends Text
 
     public function toUri(): string
     {
-        return sprintf('tel:%s', preg_replace('![^0-9\+]+!', '',$this->value()));
+        return sprintf('tel:%s', preg_replace('![^0-9\+]+!', '', $this->value()));
     }
 
     protected function validate(): void

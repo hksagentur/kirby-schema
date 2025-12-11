@@ -6,7 +6,6 @@ use Hks\Schema\Data\DataCollection;
 use Hks\Schema\Data\Person;
 use Hks\Schema\Toolkit\I18n;
 use Kirby\Cms\Html;
-use Kirby\Toolkit\A;
 
 /**
  * @extends MicroformatFormatter<Person>
