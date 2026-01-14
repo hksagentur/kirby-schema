@@ -1,0 +1,13 @@
+type: group
+fields:
+  mediaType: @hksagentur/schema/fields/media-type
+  image:
+    extends: @hksagentur/schema/fields/image
+    layout: list
+    when:
+      mediaType: image
+  video:
+    extends: @hksagentur/schema/fields/video
+    layout: list
+    when:
+      mediaType: video

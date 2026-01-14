@@ -1,25 +1,11 @@
 name:
   *: hksagentur.schema.block.image.name
 icon: image
-preview: image
 tabs:
   content:
     extends: @hksagentur/schema/tabs/content
     fields:
-      location:
-        type: radio
-        label:
-          *: hksagentur.schema.block.image.location
-        columns: 2
-        default: kirby
-        required: true
-        options:
-          - value: kirby
-            text:
-              *: hksagentur.schema.block.image.internal
-          - value: web
-            text:
-              *: hksagentur.schema.block.image.external
+      location: @hksagentur/schema/fields/media-location
       image:
         extends: @hksagentur/schema/fields/image
         label:

@@ -1,0 +1,13 @@
+type: radio
+label:
+  *: hksagentur.schema.field.mediaLocation.location
+columns: 2
+default: kirby
+required: true
+options:
+  - value: kirby
+    text:
+      *: hksagentur.schema.field.mediaLocation.internal
+  - value: web
+    text:
+      *: hksagentur.schema.field.mediaLocation.external

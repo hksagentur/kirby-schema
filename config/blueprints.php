@@ -48,6 +48,8 @@ return Blueprint::register(__DIR__ . '/blueprints', [
     'fields/link',
     'fields/logo',
     'fields/markdown',
+    'fields/media',
+    'fields/media-type',
     'fields/name',
     'fields/navigation',
     'fields/occupation',

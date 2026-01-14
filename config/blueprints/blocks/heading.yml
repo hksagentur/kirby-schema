@@ -1,8 +1,7 @@
 name:
   *: hksagentur.schema.block.heading.name
+label: "{{ text }}"
 icon: title
-wysiwyg: true
-preview: heading
 fields:
   level: @hksagentur/schema/fields/heading-level
   text:

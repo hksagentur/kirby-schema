@@ -1,7 +1,7 @@
 name:
   *: hksagentur.schema.block.gallery.name
+label: "{{ caption }}"
 icon: dashboard
-preview: image
 tabs:
   content:
     extends: @hksagentur/schema/tabs/content

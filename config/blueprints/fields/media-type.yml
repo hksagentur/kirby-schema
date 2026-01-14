@@ -1,0 +1,13 @@
+type: radio
+label:
+  *: hksagentur.schema.field.mediaType.label
+columns: 2
+default: image
+required: true
+options:
+  - value: image
+    text:
+      *: hksagentur.schema.field.mediaType.image
+  - value: video
+    text:
+      *: hksagentur.schema.field.mediaType.video
