@@ -1,6 +1,6 @@
 type: radio
 label:
-  *: hksagentur.schema.field.mediaLocation.location
+  *: hksagentur.schema.field.mediaLocation.label
 columns: 2
 default: kirby
 required: true
