@@ -36,6 +36,16 @@ class VideoBlock extends Block
         return $this->content()->caption()->or($this->video()?->caption());
     }
 
+    public function ratio(): Field
+    {
+        return $this->content()->ratio()->or('16/9');
+    }
+
+    public function crop(): Field
+    {
+        return $this->content()->crop();
+    }
+
     public function autoplay(): Field
     {
         return $this->content()->autoplay();
@@ -56,8 +66,18 @@ class VideoBlock extends Block
         return $this->content()->controls();
     }
 
+    public function preloading(): Field
+    {
+        return $this->content()->preloading();
+    }
+
     public function preload(): Field
     {
-        return $this->content()->preload();
+        return $this->content()->preloading();
+    }
+
+    public function priority(): Field
+    {
+        return $this->content()->priority();
     }
 }

@@ -52,6 +52,16 @@ class ImageBlock extends Block
         return $this->content()->crop();
     }
 
+    public function loading(): Field
+    {
+        return $this->content()->loading();
+    }
+
+    public function priority(): Field
+    {
+        return $this->content()->priority();
+    }
+
     public function thumb(int $containerWidth): File|FileVersion|null
     {
         return $this->image()?->thumb(
