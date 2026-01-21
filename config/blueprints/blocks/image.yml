@@ -47,3 +47,13 @@ tabs:
         label:
           *: hksagentur.schema.block.image.crop
         width: 1/2
+      loading:
+        extends: @hksagentur/schema/fields/image-loading
+        label:
+          *: hksagentur.schema.block.image.loading
+        width: 1/2
+      priority:
+        extends: @hksagentur/schema/fields/image-priority
+        label:
+          *: hksagentur.schema.block.image.priority
+        width: 1/2

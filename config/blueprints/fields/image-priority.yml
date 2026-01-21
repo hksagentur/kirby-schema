@@ -1,0 +1,14 @@
+type: toggles
+label:
+  *: hksagentur.schema.field.imagePriority.label
+default: auto
+options:
+  - value: auto
+    text:
+      *: hksagentur.schema.field.imagePriority.auto
+  - value: high
+    text:
+      *: hksagentur.schema.field.imagePriority.high
+  - value: low
+    text:
+      *: hksagentur.schema.field.imagePriority.low

@@ -36,35 +36,46 @@ tabs:
   settings:
     extends: @hksagentur/schema/tabs/settings
     fields:
+      ratio:
+        extends: @hksagentur/schema/fields/ratio
+        label:
+          *: hksagentur.schema.block.video.ratio
+        default: 16/9
+        width: 1/2
+      crop:
+        type: toggle
+        label:
+          *: hksagentur.schema.block.video.crop
+        width: 1/2
       autoplay:
         type: toggle
         label:
           *: hksagentur.schema.block.video.autoplay
-        width: 1/3
+        width: 1/2
       muted:
         type: toggle
         label:
           *: hksagentur.schema.block.video.muted
-        width: 1/3
+        width: 1/2
         default: true
       loop:
         type: toggle
         label:
           *: hksagentur.schema.block.video.loop
-        width: 1/3
+        width: 1/2
       controls:
         label:
           *: hksagentur.schema.block.video.controls
         type: toggle
-        width: 1/3
+        width: 1/2
         default: true
-      preload:
-        type: select
+      preloading:
+        extends: @hksagentur/schema/fields/video-preloading
         label:
-          *: hksagentur.schema.block.video.preload
-        width: 2/3
-        default: auto
-        options:
-          - auto
-          - metadata
-          - none
+          *: hksagentur.schema.block.video.preloading
+        width: 1/2
+      priority:
+        extends: @hksagentur/schema/fields/image-priority
+        label:
+          *: hksagentur.schema.block.video.priority
+        width: 1/2
