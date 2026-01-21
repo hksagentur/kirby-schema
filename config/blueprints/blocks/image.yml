@@ -9,7 +9,7 @@ tabs:
       image:
         extends: @hksagentur/schema/fields/image
         label:
-          *: hksagentur.schema.block.image.image
+          *: hksagentur.schema.block.image.file
         layout: list
         query: model.images
         when:

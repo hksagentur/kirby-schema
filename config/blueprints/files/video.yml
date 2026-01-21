@@ -12,20 +12,18 @@ columns:
   main:
     width: 2/3
     fields:
-      caption:
-        extends: @hksagentur/schema/fields/caption
-        label:
-          *: hksagentur.schema.file.video.caption
-  sidebar:
-    width: 1/3
-    fields:
       poster:
         extends: @hksagentur/schema/fields/image
         label:
           *: hksagentur.schema.file.video.poster
+        query: file.parent.images.template('image')
+        layout: list
         image:
           ratio: 16/9
           cover: true
+  sidebar:
+    width: 1/3
+    fields:
       author:
         type: text
         label:

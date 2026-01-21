@@ -2,14 +2,25 @@
 
 namespace Hks\Schema\Cms\Blocks;
 
+use Hks\Schema\Cms\Contracts\HasKeyVisual;
 use Hks\Schema\Cms\HasMedia;
 use Kirby\Cms\Block;
+use Kirby\Cms\File;
 use Kirby\Cms\Structure;
 use Kirby\Content\Field;
 
-class HeroBlock extends Block
+class HeroBlock extends Block implements HasKeyVisual
 {
     use HasMedia;
+
+    public function keyVisual(): ?File
+    {
+        return match ($this->mediaType()) {
+            'video' => $this->video()?->poster()->toFile(),
+            'image' => $this->image(),
+            default => null,
+        };
+    }
 
     public function level(): Field
     {

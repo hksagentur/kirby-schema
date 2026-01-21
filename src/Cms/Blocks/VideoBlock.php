@@ -9,7 +9,6 @@ use Kirby\Content\Field;
 class VideoBlock extends Block
 {
     protected ?File $video = null;
-    protected ?File $poster = null;
 
     public function location(): Field
     {
@@ -24,11 +23,6 @@ class VideoBlock extends Block
     public function video(): ?File
     {
         return $this->video ??= $this->content()->video()->toFile();
-    }
-
-    public function poster(): ?File
-    {
-        return $this->poster ??= $this->content()->poster()->toFile();
     }
 
     public function caption(): Field
