@@ -5,6 +5,7 @@ accept:
   type: video
 
 image:
+  query: model.poster.toFile
   ratio: 16/9
   cover: false
 
@@ -12,15 +13,9 @@ columns:
   main:
     width: 2/3
     fields:
-      poster:
-        extends: @hksagentur/schema/fields/image
-        label:
-          *: hksagentur.schema.file.video.poster
-        query: file.parent.images.template('image')
-        layout: list
-        image:
-          ratio: 16/9
-          cover: true
+      poster: @hksagentur/schema/fields/video-poster
+      formats: @hksagentur/schema/fields/video-formats
+      subtitles: @hksagentur/schema/fields/video-subtitles
   sidebar:
     width: 1/3
     fields:

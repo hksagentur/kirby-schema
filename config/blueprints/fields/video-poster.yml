@@ -1,0 +1,8 @@
+extends: @hksagentur/schema/fields/image
+label:
+  *: hksagentur.schema.field.videoPoster.label
+query: model.parent.images.template('image')
+layout: list
+image:
+  ratio: 16/9
+  cover: true

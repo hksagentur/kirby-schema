@@ -1,0 +1,26 @@
+type: structure
+label:
+  *: hksagentur.schema.field.videoSubtitles.label
+fields:
+  title:
+    type: text
+    label:
+      *: hksagentur.schema.field.videoSubtitles.title
+    placeholder: Deutsch
+    required: true
+    counter: true
+  language:
+    type: text
+    label:
+      *: hksagentur.schema.field.videoSubtitles.language
+    placeholder: de
+    required: true
+    counter: false
+    pattern: ^[a-z]{2}$
+  file:
+    type: files
+    label:
+      *: hksagentur.schema.field.videoSubtitles.file
+    query: model.siblings.filterBy('extension', 'vtt')
+    required: true
+    multiple: false

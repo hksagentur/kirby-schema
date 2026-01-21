@@ -1,0 +1,12 @@
+type: select
+label:
+  *: hksagentur.schema.field.videoCodec.label
+options:
+  - value: avc1
+    text: AVC (H.264)
+  - value: hvc1
+    text: HEVC (H.265)
+  - value: vp9
+    text: VP9
+  - value: av01
+    text: AV1
