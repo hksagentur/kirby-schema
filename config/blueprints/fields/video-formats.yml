@@ -9,4 +9,11 @@ fields:
     query: model.siblings.filterBy('mime', 'in', ['video/webm', 'video/mp4'])
     required: true
     multiple: false
-  codec: @hksagentur/schema/fields/video-codec
+  videoCodec:
+    extends: @hksagentur/schema/fields/video-codec
+    label:
+      *: hksagentur.schema.field.videoFormats.videoCodec
+  audioCodec:
+    extends: @hksagentur/schema/fields/audio-codec
+    label:
+      *: hksagentur.schema.field.videoFormats.audioCodec
