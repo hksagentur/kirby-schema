@@ -49,6 +49,16 @@ class ResponsiveImage implements Stringable
         return static::for($options['image'])->options($options);
     }
 
+    public function isVectorImage(): bool
+    {
+        return in_array($this->image->mime(), ['image/svg+xml']);
+    }
+
+    public function isRasterImage(): bool
+    {
+        return ! $this->isVectorImage();
+    }
+
     public function usePreset(): bool
     {
         return $this->getPreset() !== null;
@@ -244,6 +254,15 @@ class ResponsiveImage implements Stringable
             ...$this->attributes,
             ...$attributes,
         ];
+
+        if (! $this->isRasterImage()) {
+            return Html::img($this->image->url(), [
+                'width' => $this->image->width(),
+                'height' => $this->image->height(),
+                'alt' => $this->image->alt(),
+                ...A::without($attributes, ['srcset', 'sizes']),
+            ]);
+        }
 
         $widths = $this->getWidths();
         $formats = $this->getFormats();

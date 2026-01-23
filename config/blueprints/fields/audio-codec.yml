@@ -1,0 +1,12 @@
+type: select
+label:
+  *: hksagentur.schema.field.audioCodec.label
+options:
+  - value: opus
+    text: Opus
+  - value: vorbis
+    text: Vorbis
+  - value: mp4a.40.2
+    text: ACC-LC
+  - value: flac
+    text: FLAC

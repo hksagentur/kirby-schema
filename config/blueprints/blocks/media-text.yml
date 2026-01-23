@@ -12,13 +12,11 @@ tabs:
       title: @hksagentur/schema/fields/heading
       eyebrow: @hksagentur/schema/fields/eyebrow
       text: @hksagentur/schema/fields/rich-text
-      image:
-        extends: @hksagentur/schema/fields/image
-        layout: list
       link:
         type: object
         fields:
           extends: @hksagentur/schema/fields/link
+      media: @hksagentur/schema/fields/media
   settings:
     extends: @hksagentur/schema/tabs/settings
     fields:

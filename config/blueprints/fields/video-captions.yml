@@ -1,0 +1,3 @@
+extends: @hksagentur/schema/fields/video-tracks
+label:
+  *: hksagentur.schema.field.videoCaptions.label

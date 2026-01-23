@@ -1,0 +1,31 @@
+type: structure
+label:
+  *: hksagentur.schema.field.videoTracks.label
+fields:
+  file:
+    type: files
+    label:
+      *: hksagentur.schema.field.videoTracks.file
+    query: model.siblings.filterBy('extension', 'vtt')
+    required: true
+    multiple: false
+  title:
+    type: text
+    label:
+      *: hksagentur.schema.field.videoTracks.title
+    placeholder: Deutsch
+    required: true
+    counter: true
+  language:
+    type: text
+    label:
+      *: hksagentur.schema.field.videoTracks.language
+    placeholder: de
+    required: true
+    counter: false
+    pattern: ^[a-z]{2}$
+  default:
+    type: toggle
+    label:
+      *: hksagentur.schema.field.videoTracks.default
+    default: false

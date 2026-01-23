@@ -1,0 +1,11 @@
+type: toggles
+label:
+  *: hksagentur.schema.field.imageLoading.label
+default: lazy
+options:
+  - value: eager
+    text:
+      *: hksagentur.schema.field.imageLoading.eager
+  - value: lazy
+    text:
+      *: hksagentur.schema.field.imageLoading.lazy

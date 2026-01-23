@@ -1,0 +1,14 @@
+type: toggles
+label:
+  *: hksagentur.schema.field.videoPreloading.label
+default: auto
+options:
+  - value: auto
+    text:
+      *: hksagentur.schema.field.videoPreloading.auto
+  - value: metadata
+    text:
+      *: hksagentur.schema.field.videoPreloading.metadata
+  - value: none
+    text:
+      *: hksagentur.schema.field.videoPreloading.none

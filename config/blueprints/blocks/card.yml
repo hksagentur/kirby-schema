@@ -16,3 +16,8 @@ fields:
   image:
     extends: @hksagentur/schema/fields/image
     layout: list
+    multiple: true
+  link:
+    type: object
+    fields:
+      extends: @hksagentur/schema/fields/link

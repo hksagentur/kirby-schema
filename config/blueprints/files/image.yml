@@ -21,10 +21,6 @@ columns:
         label:
           *: hksagentur.schema.file.image.alt
         icon: title
-      caption:
-        extends: @hksagentur/schema/fields/caption
-        label:
-          *: hksagentur.schema.file.image.caption
   sidebar:
     width: 1/3
     fields:
