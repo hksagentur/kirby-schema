@@ -1,6 +1,6 @@
 <?php
 
-use Hks\Schema\Plugin\Blueprint;
+use Hks\Schema\Cms\Blueprint;
 
 return Blueprint::register(__DIR__ . '/blueprints', [
     'blocks/accordion-item',

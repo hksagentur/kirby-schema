@@ -49,14 +49,14 @@ class I18n extends \Kirby\Toolkit\I18n
         }
 
         if ($total === 2) {
-            return I18n::template('hksagentur.schema.tookit.oxfordList.two', replace: [
+            return I18n::template('hksagentur.schema.oxfordList.two', replace: [
                 'first' => (string) A::first($values),
                 'second' => (string) A::last($values),
             ], locale: $locale);
         }
 
         if ($limit === null || $limit >= $total) {
-            return I18n::template('hksagentur.schema.tookit.oxfordList.many', replace: [
+            return I18n::template('hksagentur.schema.oxfordList.many', replace: [
                 'list' => (string) A::join(A::slice($values, 0, -1)),
                 'last' => (string) A::last($values),
             ], locale: $locale);
@@ -65,7 +65,7 @@ class I18n extends \Kirby\Toolkit\I18n
         $items = A::slice(A::map($values, strval(...)), 0, $limit);
 
         $message = I18n::translateCount(
-            key: 'hksagentur.schema.tookit.oxfordList.truncated',
+            key: 'hksagentur.schema.oxfordList.truncated',
             count: $total - count($items),
             locale: $locale,
         );

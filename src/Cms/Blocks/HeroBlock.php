@@ -3,7 +3,7 @@
 namespace Hks\Schema\Cms\Blocks;
 
 use Hks\Schema\Cms\Contracts\HasKeyVisual;
-use Hks\Schema\Cms\HasMedia;
+use Hks\Schema\Cms\Concerns\HasMediaFile;
 use Kirby\Cms\Block;
 use Kirby\Cms\File;
 use Kirby\Cms\Structure;
@@ -11,7 +11,7 @@ use Kirby\Content\Field;
 
 class HeroBlock extends Block implements HasKeyVisual
 {
-    use HasMedia;
+    use HasMediaFile;
 
     public function keyVisual(): ?File
     {
