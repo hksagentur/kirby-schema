@@ -10,12 +10,12 @@ readonly class FileUrl extends Url
 {
     public function name(): string
     {
-		return pathinfo($this->path ?? '', PATHINFO_FILENAME);
+        return pathinfo($this->path ?? '', PATHINFO_FILENAME);
     }
 
     public function filename(): string
     {
-		return pathinfo($this->path ?? '', PATHINFO_BASENAME);
+        return pathinfo($this->path ?? '', PATHINFO_BASENAME);
     }
 
     public function extension(): string

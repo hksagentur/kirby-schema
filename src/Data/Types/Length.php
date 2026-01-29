@@ -5,7 +5,6 @@ namespace Hks\Schema\Data\Types;
 use Hks\Schema\Data\Contracts\Arrayable;
 use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Contracts\Localizable;
-use InvalidArgumentException;
 use Kirby\Toolkit\Html;
 use Kirby\Toolkit\I18n;
 use Throwable;
