@@ -9,22 +9,34 @@ Kirby::plugin('hksagentur/schema', [
                 '{{ postalCode }} {{ addressLocality }}',
                 '{{ addressCountry }}',
             ],
-            'localityRegionPostalCode' => [
-                '{{ streetAddress }}',
-                '{{ addressLocality }}, {{ addressRegion }} {{ postalCode }}',
-                '{{ addressCountry }}'
-            ],
             'localityPostalCode' => [
                 '{{ streetAddress }}',
                 '{{ addressLocality }}',
                 '{{ postalCode }}',
                 '{{ addressCountry }}',
             ],
+            'localityRegionPostalCode' => [
+                '{{ streetAddress }}',
+                '{{ addressLocality }}, {{ addressRegion }} {{ postalCode }}',
+                '{{ addressCountry }}'
+            ],
+            'localityRegionPostalCodeMultiline' => [
+                '{{ streetAddress }}',
+                '{{ addressLocality }}',
+                '{{ addressRegion }}',
+                '{{ postalCode }}',
+                '{{ addressCountry }}',
+            ],
         ],
         'addressFormats' => [
+            'AU' => 'localityRegionPostalCodeMultiline',
+            'CA' => 'localityRegionPostalCode',
             'GB' => 'localityPostalCode',
+            'IE' => 'localityRegionPostalCodeMultiline',
+            'MT' => 'localityPostalCode',
             'US' => 'localityRegionPostalCode',
         ],
+        'blueprintAliases' => [],
     ],
     'blueprints' => require __DIR__ . '/config/blueprints.php',
     'translations' => require __DIR__ . '/config/translations.php',

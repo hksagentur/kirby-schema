@@ -20,7 +20,7 @@ class Blueprint implements Stringable
 
     public static function aliases(): array
     {
-        return static::$aliases ??= App::instance()->option('hksagentur.schema.aliases', []);
+        return static::$aliases ??= App::instance()->option('hksagentur.schema.blueprintAliases', []);
     }
 
     public static function alias(string $blueprint): ?string
