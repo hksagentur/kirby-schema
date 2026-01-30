@@ -39,6 +39,7 @@ Kirby::plugin('hksagentur/schema', [
         'blueprintAliases' => [],
     ],
     'blueprints' => require __DIR__ . '/config/blueprints.php',
+    'snippets' => require __DIR__ . '/config/snippets.php',
     'translations' => require __DIR__ . '/config/translations.php',
     'hooks' => require __DIR__ . '/config/hooks.php',
     'collectionMethods' => require __DIR__ . '/config/methods/collection.php',

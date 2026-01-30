@@ -6,6 +6,7 @@ use Hks\Schema\Data\Contracts\Arrayable;
 use Hks\Schema\Data\Contracts\Localizable;
 use InvalidArgumentException;
 use Kirby\Cms\App;
+use Kirby\Toolkit\A;
 use Kirby\Toolkit\I18n;
 use Kirby\Toolkit\Str;
 use RuntimeException;
@@ -136,7 +137,7 @@ readonly class PostalAddress extends DataType implements Arrayable, Localizable
         return $this->countryCode() !== null;
     }
 
-    public function streetAdress(): ?string
+    public function streetAddress(): ?string
     {
         return $this->streetAddress;
     }
@@ -183,45 +184,6 @@ readonly class PostalAddress extends DataType implements Arrayable, Localizable
         return I18n::translate("hksagentur.schema.country.{$countryCode}", $this->country(), $locale);
     }
 
-    public function format(string $mode = 'text', ?string $locale = null): string
-    {
-        $addressFormat = static::addressFormat($this->countryCode());
-
-        if (! $addressFormat) {
-            throw new RuntimeException(sprintf(
-                'Missing a valid address format for country "%s".',
-                $this->countryCode(),
-            ));
-        }
-
-        $addressData = $this->getLocalizedAddressData($locale);
-
-        // Hide the country name from domestic addresses
-        if ($this->isDomestic()) {
-            unset($addressData['addressCountry']);
-        }
-
-        $addressFields = match ($mode) {
-            'html' => $this->renderAddressFields($addressData),
-            default => array_filter($addressData),
-        };
-
-        if (! $addressFields) {
-            return '';
-        }
-
-        $addressLines = $this->renderAddressLines($addressFormat, $addressFields);
-
-        if (! $addressLines) {
-            return '';
-        }
-
-        return match ($mode) {
-            'html' => Html::breaks(implode("\n", $addressLines)),
-            default => implode("\n", $addressLines),
-        };
-    }
-
     public function toArray(): array
     {
         return [
@@ -233,54 +195,103 @@ readonly class PostalAddress extends DataType implements Arrayable, Localizable
         ];
     }
 
-    public function toHtml(array $attributes = []): string
+    public function toSchema(): array
     {
-        return Html::tag('div', [$this->format('html')], [
-            'itemscope' => true,
-            'itemtype' => 'https://schema.org/PostalAddress',
-            'translate' => 'no',
-            ...$attributes,
-        ]);
+        return [
+            '@type' => 'PostalAddress',
+            ...$this->toArray(),
+        ];
     }
 
     public function toString(): string
     {
-        return $this->format('text');
+        return $this->toLocaleString();
     }
 
     public function toLocaleString(?string $locale = null): string
     {
-        return $this->format('text', $locale);
+        return $this->render('text', $locale);
     }
 
-    protected function getLocalizedAddressData(?string $locale = null): array
+    public function toHtml(array $attributes = []): string
     {
-        $data = $this->toArray();
+        return App::instance()->snippet('schema/postal-address', [
+            'item' => $this,
+            'formatted' => $this->render('html'),
+            'attrs' => $attributes,
+        ]);
+    }
+
+    protected function getTemplateData(?string $locale = null): array
+    {
+        $addressData = $this->toArray();
 
         if ($countryName = $this->countryName($locale)) {
-            $data['addressCountry'] = $countryName;
+            $addressData['addressCountry'] = $countryName;
         }
 
-        return $data;
+        return array_filter($addressData);
     }
 
-    protected function renderAddressFields(array $data): array
+    protected function render(string $mode, ?string $locale = null): string
     {
-        $fields = array_filter($data);
+        $addressFormat = static::addressFormat($this->countryCode());
 
-        $fields = array_map(function ($value, $field) {
-            return Html::tag('span', $value, ['itemprop' => $field]);
-        }, $fields, array_keys($fields));
+        if (! $addressFormat) {
+            throw new RuntimeException(sprintf(
+                'Missing a valid address format for country "%s".',
+                $this->countryCode(),
+            ));
+        }
 
-        return $fields;
+        $templateData = $this->getTemplateData($locale);
+
+        if ($this->isDomestic()) {
+            $templateData = A::without($templateData, ['addressCountry']);
+        }
+
+        $templateData = $this->prepareTemplateData($mode, $templateData);
+
+        if (! $templateData) {
+            return '';
+        }
+
+        $addressLines = $this->applyFormat($addressFormat, $templateData);
+
+        if (! $addressLines) {
+            return '';
+        }
+
+        return match ($mode) {
+            'html' => implode("<br>\n", $addressLines),
+            default => implode("\n", $addressLines),
+        };
     }
 
-    protected function renderAddressLines(array $lines, array $data): array
+    protected function prepareTemplateData(string $mode, array $templateData): array
     {
-        $lines = array_map(function (string $line) use ($data) {
-            return Str::trim(Str::template($line, $data, ['fallback' => '']), ', ');
-        }, $lines);
+        $formattedTemplateData = [];
 
-        return array_filter($lines);
+        foreach ($templateData as $field => $value) {
+            $formattedTemplateData[$field] = match ($mode) {
+                'html' => Html::tag('span', $value, ['itemprop' => $field]),
+                default => Str::esc($value),
+            };
+        }
+
+        return $formattedTemplateData;
+    }
+
+    protected function applyFormat(array $addressFormat, array $templateData): array
+    {
+        $formattedLines = [];
+
+        foreach ($addressFormat as $addressFormatLine) {
+            if ($formattedLine = Str::trim(Str::template($addressFormatLine, $templateData, ['fallback' => '']), ', ')) {
+                $formattedLines[] = $formattedLine;
+            }
+        }
+
+        return $formattedLines;
     }
 }
