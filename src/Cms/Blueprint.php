@@ -43,7 +43,7 @@ class Blueprint implements Stringable
         $blueprints = [];
 
         foreach ($files as $file) {
-            $blueprint = new static(($directory . '/' . $file . '.yml');
+            $blueprint = new static(($directory . '/' . $file . '.yml'));
 
             if (! $blueprint->exists()) {
                 throw new NotFoundException(key: 'blueprint.notFound', data: ['name' => $file]);
