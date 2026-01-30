@@ -39,6 +39,7 @@
     "lint": "pint --verbose --test"
   },
   "extra": {
-    "installer-name": "schema"
+    "installer-name": "schema",
+    "kirby-cms-path": false
   }
 }
