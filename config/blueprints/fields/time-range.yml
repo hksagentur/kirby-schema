@@ -1,0 +1,22 @@
+type: group
+fields:
+  start:
+    type: time
+    label:
+      *: hksagentur.schema.field.timeRange.start
+    step:
+      unit: minute
+      size: 15
+    required: true
+    translate: false
+    width: 1/2
+  end:
+    type: time
+    label:
+      *: hksagentur.schema.field.timeRange.end
+    step:
+      unit: minute
+      size: 15
+    required: true
+    translate: false
+    width: 1/2

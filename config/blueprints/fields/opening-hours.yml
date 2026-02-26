@@ -1,0 +1,63 @@
+  type: object
+  label:
+    *: hksagentur.schema.field.openingHours.label
+  help:
+    *: hksagentur.schema.field.openingHours.help
+  fields:
+    monday:
+      extends: @hksagentur/schema/fields/opening-hours-specification
+      label:
+        *: hksagentur.schema.weekDay.monday.long
+    tuesday:
+      extends: @hksagentur/schema/fields/opening-hours-specification
+      label:
+        *: hksagentur.schema.weekDay.tuesday.long
+    wednesday:
+      extends: @hksagentur/schema/fields/opening-hours-specification
+      label:
+        *: hksagentur.schema.weekDay.wednesday.long
+    thursday:
+      extends: @hksagentur/schema/fields/opening-hours-specification
+      label:
+        *: hksagentur.schema.weekDay.thursday.long
+    friday:
+      extends: @hksagentur/schema/fields/opening-hours-specification
+      label:
+        *: hksagentur.schema.weekDay.friday.long
+    saturday:
+      extends: @hksagentur/schema/fields/opening-hours-specification
+      label:
+        *: hksagentur.schema.weekDay.saturday.long
+    sunday:
+      extends: @hksagentur/schema/fields/opening-hours-specification
+      label:
+        *: hksagentur.schema.weekDay.sunday.long
+    exceptions:
+      extends: @hksagentur/schema/fields/opening-hours-exception
+      label:
+        *: hksagentur.schema.field.openingHours.exceptions
+  default:
+    monday:
+      -
+        start: "09:00"
+        end: "19:00"
+    tuesday:
+      -
+        start: "09:00"
+        end: "19:00"
+    wednesday:
+      -
+        start: "09:00"
+        end: "19:00"
+    thursday:
+      -
+        start: "09:00"
+        end: "19:00"
+    friday:
+      -
+        start: "09:00"
+        end: "19:00"
+    saturday:
+      -
+        start: "08:00"
+        end: "14:00"

@@ -1,0 +1,23 @@
+type: structure
+label:
+  *: hksagentur.schema.field.openingHoursSpecification.label
+fields:
+  timespan:
+    extends: @hksagentur/schema/fields/time-range
+    fields:
+      start:
+        label:
+          *: hksagentur.schema.field.openingHoursSpecification.start
+      end:
+        label:
+          *: hksagentur.schema.field.openingHoursSpecification.end
+  note:
+    type: text
+    icon: info
+    label:
+      *: hksagentur.schema.field.openingHoursSpecification.note
+columns:
+  start: true
+  end: true
+sortable: false
+sortBy: start

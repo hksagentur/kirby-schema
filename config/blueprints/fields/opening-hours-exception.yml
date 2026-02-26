@@ -1,18 +1,18 @@
 type: structure
 label:
-  *: hksagentur.schema.field.hours.exception.label
+  *: hksagentur.schema.field.openingHoursException.label
 fields:
   date:
     type: date
     label:
-      *: hksagentur.schema.field.hours.exception.date
+      *: hksagentur.schema.field.openingHoursException.date
     required: true
     time: false
     default: today
   start:
     type: time
     label:
-      *: hksagentur.schema.field.hours.exception.start
+      *: hksagentur.schema.field.openingHoursException.start
     step:
       unit: minute
       size: 15
@@ -22,7 +22,7 @@ fields:
   end:
     type: time
     label:
-      *: hksagentur.schema.field.hours.exception.end
+      *: hksagentur.schema.field.openingHoursException.end
     step:
       unit: minute
       size: 15
@@ -33,7 +33,7 @@ fields:
     type: text
     icon: info
     label:
-      *: hksagentur.schema.field.hours.exception.note
+      *: hksagentur.schema.field.openingHoursException.note
 columns:
   date: true
   note: true

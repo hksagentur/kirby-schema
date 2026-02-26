@@ -11,14 +11,20 @@ fields:
       *: hksagentur.schema.field.address.postalcode
     width: 1/4
     counter: false
-  locality:
+  addressLocality:
     label:
-      *: hksagentur.schema.field.address.locality
+      *: hksagentur.schema.field.address.addressLocality
     type: text
-    width: 3/4
+    width: 2/4
     counter: false
-  country:
+  addressRegion:
+    label:
+      *: hksagentur.schema.field.address.addressRegion
+    type: text
+    width: 1/4
+    counter: false
+  addressCountry:
     type: text
     label:
-      *: hksagentur.schema.field.address.country
+      *: hksagentur.schema.field.address.addressCountry
     counter: false

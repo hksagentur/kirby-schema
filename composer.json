@@ -20,13 +20,8 @@
     "getkirby/composer-installer": "^1.2"
   },
   "require-dev": {
-    "getkirby/cms": "^5.1",
-    "laravel/pint": "^1.20"
-  },
-  "suggest": {
-    "commerceguys/addressing": "Required to format postal addresses.",
-    "spatie/opening-hours": "Required to format the opening hours of models.",
-    "getkirby/geo": "Required to calculate the distance between geographic locations."
+    "getkirby/cms": "^5.3",
+    "laravel/pint": "^1.27"
   },
   "config": {
     "optimize-autoloader": true,

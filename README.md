@@ -133,7 +133,7 @@ Below is an overview of all available blueprints provided by this plugin. Each e
 | [Gallery](config/blueprints/fields/gallery.yml)                   | `@hksagentur/schema/fields/gallery`          | Group related images in a gallery.                  |
 | [Heading Level](config/blueprints/fields/heading-level.yml)       | `@hksagentur/schema/fields/heading-level`    | HTML heading level to choose from.                  |
 | [Heading](config/blueprints/fields/heading.yml)                   | `@hksagentur/schema/fields/heading`          | Text input for headlines or titles.                 |
-| [Hours](config/blueprints/fields/hours.yml)                       | `@hksagentur/schema/fields/hours`            | Opening hours of a store or local business.         |
+| [Hours](config/blueprints/fields/opening-hours.yml)               | `@hksagentur/schema/fields/opening-hours`    | Opening hours of a store or local business.         |
 | [Image](config/blueprints/fields/image.yml)                       | `@hksagentur/schema/fields/image`            | File picker for image files.                        |
 | [Inline Text](config/blueprints/fields/inline-text.yml)           | `@hksagentur/schema/fields/inline-text`      | Formatted inline text elements.                     |
 | [Justify Content](config/blueprints/fields/justify-content.yml)   | `@hksagentur/schema/fields/justify-content`  | Horizontal alignment of content items.              |
