@@ -2,6 +2,11 @@ name:
   *: hksagentur.schema.block.tabs.name
 icon: grid-bottom
 fields:
+  level:
+    extends: @hksagentur/schema/fields/heading-level
+    default: h2
+  title: @hksagentur/schema/fields/heading
+  text: @hksagentur/schema/fields/inline-text
   tabs:
     type: structure
     label:

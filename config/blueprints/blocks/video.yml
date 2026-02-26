@@ -1,5 +1,6 @@
 name:
   *: hksagentur.schema.block.video.name
+label: "{{ caption }}"
 icon: video
 tabs:
   content:
@@ -11,6 +12,7 @@ tabs:
         label:
           *: hksagentur.schema.block.video.url
         placeholder: https://youtube.com/?v=
+        required: true
         when:
           location: web
       video:
@@ -19,6 +21,7 @@ tabs:
           *: hksagentur.schema.block.video.file
         layout: list
         query: model.videos
+        required: true
         when:
           location: kirby
       caption:
