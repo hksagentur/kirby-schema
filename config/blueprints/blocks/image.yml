@@ -1,5 +1,6 @@
 name:
   *: hksagentur.schema.block.image.name
+label: "{{ alt }}"
 icon: image
 tabs:
   content:
@@ -12,12 +13,14 @@ tabs:
           *: hksagentur.schema.block.image.file
         layout: list
         query: model.images
+        required: true
         when:
           location: kirby
       src:
         type: url
         label:
           *: hksagentur.schema.block.image.src
+        required: true
         when:
           location: web
       alt:
