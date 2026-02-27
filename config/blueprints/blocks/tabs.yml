@@ -1,5 +1,6 @@
 name:
   *: hksagentur.schema.block.tabs.name
+label: "{{ title }}"
 icon: grid-bottom
 fields:
   level:
