@@ -2,18 +2,21 @@ name:
   *: hksagentur.schema.block.accordion.name
 label: "{{ title }}"
 icon: bars
-fields:
-  level:
-    extends: @hksagentur/schema/fields/heading-level
-    default: h2
-  title: @hksagentur/schema/fields/heading
-  text: @hksagentur/schema/fields/inline-text
-  items:
-    type: blocks
-    label:
-      *: hksagentur.schema.block.accordion.label
-    empty:
-      *: hksagentur.schema.block.accordion.empty
-    required: true
-    fieldsets:
-      - accordion-item
+tabs:
+  content:
+    extends: @hksagentur/schema/tabs/content
+    fields:
+      level:
+        extends: @hksagentur/schema/fields/heading-level
+        default: h2
+      title: @hksagentur/schema/fields/heading
+      text: @hksagentur/schema/fields/inline-text
+      items:
+        type: blocks
+        label:
+          *: hksagentur.schema.block.accordion.label
+        empty:
+          *: hksagentur.schema.block.accordion.empty
+        required: true
+        fieldsets:
+          - accordion-item

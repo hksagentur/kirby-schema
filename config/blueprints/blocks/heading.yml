@@ -2,9 +2,12 @@ name:
   *: hksagentur.schema.block.heading.name
 label: "{{ text }}"
 icon: title
-fields:
-  level: @hksagentur/schema/fields/heading-level
-  text:
-    extends: @hksagentur/schema/fields/heading
-    label:
-      *: hksagentur.schema.block.heading.text
+tabs:
+  content:
+    extends: @hksagentur/schema/tabs/content
+    fields:
+      level: @hksagentur/schema/fields/heading-level
+      text:
+        extends: @hksagentur/schema/fields/heading
+        label:
+          *: hksagentur.schema.block.heading.text

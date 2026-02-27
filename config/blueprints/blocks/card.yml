@@ -2,18 +2,21 @@ name:
   *: hksagentur.schema.block.card.name
 label: "{{ title }}"
 icon: info-card
-fields:
-  level:
-    extends: @hksagentur/schema/fields/heading-level
-    default: h3
-  title: @hksagentur/schema/fields/heading
-  eyebrow: @hksagentur/schema/fields/eyebrow
-  text: @hksagentur/schema/fields/inline-text
-  image:
-    extends: @hksagentur/schema/fields/image
-    layout: list
-    multiple: true
-  link:
-    type: object
+tabs:
+  content:
+    extends: @hksagentur/schema/tabs/content
     fields:
-      extends: @hksagentur/schema/fields/link
+      level:
+        extends: @hksagentur/schema/fields/heading-level
+        default: h3
+      title: @hksagentur/schema/fields/heading
+      eyebrow: @hksagentur/schema/fields/eyebrow
+      text: @hksagentur/schema/fields/inline-text
+      image:
+        extends: @hksagentur/schema/fields/image
+        layout: list
+        multiple: true
+      link:
+        type: object
+        fields:
+          extends: @hksagentur/schema/fields/link

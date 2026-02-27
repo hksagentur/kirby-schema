@@ -2,22 +2,25 @@ name:
   *: hksagentur.schema.block.cards.name
 label: "{{ title }}"
 icon: layers
-fields:
-  level:
-    extends: @hksagentur/schema/fields/heading-level
-    default: h2
-  title: @hksagentur/schema/fields/heading
-  text: @hksagentur/schema/fields/inline-text
-  link:
-    type: object
+tabs:
+  content:
+    extends: @hksagentur/schema/tabs/content
     fields:
-      extends: @hksagentur/schema/fields/link
-  cards:
-    type: blocks
-    label:
-      *: hksagentur.schema.block.cards.label
-    empty:
-      *: hksagentur.schema.block.cards.empty
-    required: true
-    fieldsets:
-      - card
+      level:
+        extends: @hksagentur/schema/fields/heading-level
+        default: h2
+      title: @hksagentur/schema/fields/heading
+      text: @hksagentur/schema/fields/inline-text
+      link:
+        type: object
+        fields:
+          extends: @hksagentur/schema/fields/link
+      cards:
+        type: blocks
+        label:
+          *: hksagentur.schema.block.cards.label
+        empty:
+          *: hksagentur.schema.block.cards.empty
+        required: true
+        fieldsets:
+          - card
