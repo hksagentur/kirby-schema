@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'hksagentur.schema.block.accordion.name' => 'Accordion',
-    'hksagentur.schema.block.accordion.label' => 'Items',
     'hksagentur.schema.block.accordion.empty' => 'No items yet',
+    'hksagentur.schema.block.accordion.label' => 'Items',
+    'hksagentur.schema.block.accordion.name' => 'Accordion',
     'hksagentur.schema.block.accordionItem.name' => 'Accordion Item',
     'hksagentur.schema.block.billboard.name' => 'Billboard',
     'hksagentur.schema.block.card.name' => 'Card',
@@ -18,10 +18,6 @@ return [
     'hksagentur.schema.block.disclosure.name' => 'Disclosure',
     'hksagentur.schema.block.disclosure.placeholder' => 'Summary …',
     'hksagentur.schema.block.disclosure.summary' => 'Summary',
-    'hksagentur.schema.block.faq.name' => 'FAQ',
-    'hksagentur.schema.block.faq.label' => 'Items',
-    'hksagentur.schema.block.faq.empty' => 'No items yet',
-    'hksagentur.schema.block.faqItem.name' => 'FAQ Item',
     'hksagentur.schema.block.gallery.caption' => 'Caption',
     'hksagentur.schema.block.gallery.images' => 'Images',
     'hksagentur.schema.block.gallery.name' => 'Gallery',

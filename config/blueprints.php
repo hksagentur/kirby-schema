@@ -3,15 +3,13 @@
 use Hks\Schema\Plugin\Blueprint;
 
 return Blueprint::register(__DIR__ . '/blueprints', [
-    'blocks/accordion',
     'blocks/accordion-item',
+    'blocks/accordion',
     'blocks/billboard',
     'blocks/card',
     'blocks/cards',
     'blocks/collection',
     'blocks/disclosure',
-    'blocks/faq',
-    'blocks/faq-item',
     'blocks/gallery',
     'blocks/heading',
     'blocks/hero',

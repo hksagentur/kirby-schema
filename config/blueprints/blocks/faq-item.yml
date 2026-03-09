@@ -1,9 +1,0 @@
-extends: @hksagentur/schema/blocks/disclosure
-name:
-  *: hksagentur.schema.block.faqItem.name
-tabs:
-  content:
-    extends: @hksagentur/schema/tabs/content
-    fields:
-      level:
-        default: h3
