@@ -2,9 +2,9 @@
 
 return [
     'hksagentur.schema.block.accordion.name' => 'Akkordeon',
-    'hksagentur.schema.block.accordion.label' => 'Elemente',
-    'hksagentur.schema.block.accordion.empty' => 'Keine Elemente',
-    'hksagentur.schema.block.accordionItem.name' => 'Akkordeon-Element',
+    'hksagentur.schema.block.accordion.label' => 'Einträge',
+    'hksagentur.schema.block.accordion.empty' => 'Keine Einträge',
+    'hksagentur.schema.block.accordionItem.name' => 'Akkordeon-Eintrag',
     'hksagentur.schema.block.billboard.name' => 'Anschlagbrett',
     'hksagentur.schema.block.card.name' => 'Karte',
     'hksagentur.schema.block.cards.name' => 'Karten',
@@ -18,6 +18,10 @@ return [
     'hksagentur.schema.block.disclosure.name' => 'Aufklappbereich',
     'hksagentur.schema.block.disclosure.summary' => 'Kurzfassung',
     'hksagentur.schema.block.disclosure.placeholder' => 'Kurzfassung …',
+    'hksagentur.schema.block.faq.name' => 'FAQ',
+    'hksagentur.schema.block.faq.label' => 'Einträge',
+    'hksagentur.schema.block.faq.empty' => 'Keine Einträge',
+    'hksagentur.schema.block.faqItem.name' => 'FAQ-Eintrag',
     'hksagentur.schema.block.gallery.name' => 'Galerie',
     'hksagentur.schema.block.gallery.images' => 'Bilder',
     'hksagentur.schema.block.gallery.caption' => 'Beschriftung',

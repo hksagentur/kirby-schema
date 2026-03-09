@@ -4,7 +4,7 @@ namespace Hks\Schema\Cms\Blocks;
 
 use Kirby\Content\Field;
 
-class AccordionItemBlock extends DisclosureBlock
+class FaqItemBlock extends DisclosureBlock
 {
     public function level(): Field
     {
