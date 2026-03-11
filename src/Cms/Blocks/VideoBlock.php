@@ -32,7 +32,7 @@ class VideoBlock extends Block
 
     public function ratio(): Field
     {
-        return $this->content()->ratio()->or('16/9');
+        return $this->content()->ratio()->or('auto');
     }
 
     public function crop(): Field

@@ -35,7 +35,6 @@ tabs:
         extends: @hksagentur/schema/fields/ratio
         label:
           *: hksagentur.schema.block.video.ratio
-        default: 16/9
         width: 1/2
       crop:
         type: toggle
