@@ -2,16 +2,9 @@ type: group
 fields:
   extends: @hksagentur/schema/fields/name
   description:
-    type: textarea
+    extends: @hksagentur/schema/fields/inline-text
     label:
       *: hksagentur.schema.field.person.description
-    size: tiny
-    buttons:
-      - italic
-      - bold
-      - "|"
-      - link
-      - email
   lineContact:
     type: line
   telephone: @hksagentur/schema/fields/telephone

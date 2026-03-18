@@ -17,16 +17,14 @@ columns:
   main:
     width: 2/3
     fields:
+      label:
+        extends: @hksagentur/schema/fields/heading
+        label:
+          *: hksagentur.schema.file.document.label
       description:
-        type: textarea
+        extends: @hksagentur/schema/fields/inline-text
         label:
           *: hksagentur.schema.file.document.description
-        size: medium
-        buttons:
-          - italic
-          - bold
-          - link
-          - email
   sidebar:
     width: 1/3
     fields:

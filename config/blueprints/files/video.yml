@@ -13,6 +13,14 @@ columns:
   main:
     width: 2/3
     fields:
+      label:
+        extends: @hksagentur/schema/fields/heading
+        label:
+          *: hksagentur.schema.file.video.label
+      description:
+        extends: @hksagentur/schema/fields/inline-text
+        label:
+          *: hksagentur.schema.file.video.description
       poster: @hksagentur/schema/fields/video-poster
       formats: @hksagentur/schema/fields/video-formats
       subtitles: @hksagentur/schema/fields/video-subtitles
