@@ -2,6 +2,7 @@
 
 namespace Hks\Schema\Cms\Blocks;
 
+use Hks\Schema\Cms\HasMedia;
 use Hks\Schema\Cms\HasModelReference;
 use Kirby\Cms\Block;
 use Kirby\Cms\File;
@@ -10,6 +11,7 @@ use Kirby\Content\Field;
 
 class CardBlock extends Block
 {
+    use HasMedia;
     use HasModelReference;
 
     public function level(): Field
@@ -37,13 +39,13 @@ class CardBlock extends Block
         return $this->content()->link();
     }
 
-    public function image(): ?File
-    {
-        return $this->images()->first();
-    }
-
     public function images(): Files
     {
         return $this->content()->image()->or($this->referencedModel()?->cover())->toFiles();
+    }
+
+    public function image(): ?File
+    {
+        return $this->images()->first();
     }
 }
