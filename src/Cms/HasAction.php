@@ -28,12 +28,21 @@ trait HasAction
 
     public function target(): ?ModelWithContent
     {
-        $uuid = $this->link()->url()->value();
+        return $this->target ??= $this->resolveTarget($this->link()->url()->value());
+    }
 
-        if (! $uuid) {
+    protected function resolveTarget(?string $uuid): ?ModelWithContent
+    {
+        if (! $uuid || ! Uuid::is($uuid)) {
             return null;
         }
 
-        return Uuid::for($uuid)?->model();
+        $model = Uuid::for($uuid)?->model();
+
+        if (! $model) {
+            return null;
+        }
+
+        return $model;
     }
 }
