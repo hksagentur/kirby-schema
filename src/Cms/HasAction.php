@@ -37,12 +37,6 @@ trait HasAction
             return null;
         }
 
-        $model = Uuid::for($uuid)?->model();
-
-        if (! $model) {
-            return null;
-        }
-
-        return $model;
+        return Uuid::for($uuid)?->model();
     }
 }
