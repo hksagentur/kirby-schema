@@ -3,6 +3,7 @@
 namespace Hks\Schema\Cms\Blocks;
 
 use Hks\Schema\Cms\Contracts\HasKeyVisual;
+use Hks\Schema\Cms\HasAction;
 use Hks\Schema\Cms\HasMedia;
 use Kirby\Cms\Block;
 use Kirby\Cms\File;
@@ -10,6 +11,7 @@ use Kirby\Content\Field;
 
 class MediaTextBlock extends Block implements HasKeyVisual
 {
+    use HasAction;
     use HasMedia;
 
     public function keyVisual(): ?File
@@ -39,11 +41,6 @@ class MediaTextBlock extends Block implements HasKeyVisual
     public function text(): Field
     {
         return $this->content()->text();
-    }
-
-    public function link(): Field
-    {
-        return $this->content()->link();
     }
 
     public function alignment(): Field

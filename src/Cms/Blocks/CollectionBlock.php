@@ -2,6 +2,7 @@
 
 namespace Hks\Schema\Cms\Blocks;
 
+use Hks\Schema\Cms\HasAction;
 use Kirby\Cms\App;
 use Kirby\Cms\Block;
 use Kirby\Cms\Pages;
@@ -9,6 +10,8 @@ use Kirby\Content\Field;
 
 class CollectionBlock extends Block
 {
+    use HasAction;
+
     public function useCurrentPage(): bool
     {
         return $this->source()->value() === 'current';
@@ -32,11 +35,6 @@ class CollectionBlock extends Block
     public function text(): Field
     {
         return $this->content()->text();
-    }
-
-    public function link(): Field
-    {
-        return $this->content()->link();
     }
 
     public function source(): Field
