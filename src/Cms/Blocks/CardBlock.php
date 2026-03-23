@@ -3,16 +3,12 @@
 namespace Hks\Schema\Cms\Blocks;
 
 use Hks\Schema\Cms\HasMedia;
-use Hks\Schema\Cms\HasModelReference;
 use Kirby\Cms\Block;
-use Kirby\Cms\File;
-use Kirby\Cms\Files;
 use Kirby\Content\Field;
 
 class CardBlock extends Block
 {
     use HasMedia;
-    use HasModelReference;
 
     public function level(): Field
     {
@@ -21,31 +17,21 @@ class CardBlock extends Block
 
     public function eyebrow(): Field
     {
-        return $this->content()->eyebrow()->or($this->referencedModel()?->category());
+        return $this->content()->eyebrow()->category();
     }
 
     public function title(): Field
     {
-        return $this->content()->title()->or($this->referencedModel()?->title());
+        return $this->content()->title()->title();
     }
 
     public function text(): Field
     {
-        return $this->content()->text()->or($this->referencedModel()?->excerpt());
+        return $this->content()->text()->excerpt();
     }
 
     public function link(): Field
     {
         return $this->content()->link();
-    }
-
-    public function images(): Files
-    {
-        return $this->content()->image()->or($this->referencedModel()?->cover())->toFiles();
-    }
-
-    public function image(): ?File
-    {
-        return $this->images()->first();
     }
 }

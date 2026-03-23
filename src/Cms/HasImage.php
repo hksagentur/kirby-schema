@@ -3,10 +3,21 @@
 namespace Hks\Schema\Cms;
 
 use Kirby\Cms\File;
+use Kirby\Cms\Files;
 
 trait HasImage
 {
-    protected ?File $image = null;
+    protected ?Files $images = null;
+
+    public function hasImages(): bool
+    {
+        return $this->images()->isNotEmpty();
+    }
+
+    public function images(): Files
+    {
+        return $this->images ??= $this->content()->image()->toFiles();
+    }
 
     public function hasImage(): bool
     {
@@ -15,6 +26,6 @@ trait HasImage
 
     public function image(): ?File
     {
-        return $this->image ??= $this->content()->image()->toFile();
+        return $this->images()->first();
     }
 }

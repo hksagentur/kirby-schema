@@ -15,7 +15,7 @@ class MediaTextBlock extends Block implements HasKeyVisual
     public function keyVisual(): ?File
     {
         return match ($this->mediaType()) {
-            'video' => $this->video()?->poster()->toFile(),
+            'video' => $this->poster(),
             'image' => $this->image(),
             default => null,
         };

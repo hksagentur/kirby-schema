@@ -3,10 +3,21 @@
 namespace Hks\Schema\Cms;
 
 use Kirby\Cms\File;
+use Kirby\Cms\Files;
 
 trait HasVideo
 {
-    protected ?File $video = null;
+    protected ?Files $videos = null;
+
+    public function hasVideos(): bool
+    {
+        return $this->videos()->isNotEmpty();
+    }
+
+    public function videos(): Files
+    {
+        return $this->videos ??= $this->content()->video()->toFiles();
+    }
 
     public function hasVideo(): bool
     {
@@ -15,15 +26,15 @@ trait HasVideo
 
     public function video(): ?File
     {
-        return $this->video ??= $this->content()->video()->toFile();
+        return $this->videos()->first();
     }
 
-    public function hasVideoPoster(): bool
+    public function hasPoster(): bool
     {
-        return $this->videoPoster() !== null;
+        return $this->poster() !== null;
     }
 
-    public function videoPoster(): ?File
+    public function poster(): ?File
     {
         return $this->video()?->poster()->toFile();
     }
