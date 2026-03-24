@@ -1,0 +1,19 @@
+name:
+  *: hksagentur.schema.block.quote.name
+label: "{{ text }}"
+icon: quote
+fields:
+  text:
+    extends: @hksagentur/schema/fields/inline-text
+    label:
+      *: hksagentur.schema.block.quote.text.label
+    placeholder:
+      *: hksagentur.schema.block.quote.text.placeholder
+    icon: quote
+  citation:
+    extends: @hksagentur/schema/fields/inline-text
+    label:
+      *: hksagentur.schema.block.quote.citation.label
+    placeholder:
+      *: hksagentur.schema.block.quote.citation.placeholder
+    icon: user

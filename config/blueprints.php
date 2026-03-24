@@ -15,6 +15,7 @@ return Blueprint::register(__DIR__ . '/blueprints', [
     'blocks/hero',
     'blocks/image',
     'blocks/media-text',
+    'blocks/quote',
     'blocks/tabs',
     'blocks/video',
     'fields/actions',
