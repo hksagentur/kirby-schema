@@ -3,5 +3,5 @@ label:
   *: hksagentur.schema.section.documents.label
 template: document
 layout: list
-info: "{{ file.mime }} ({{ file.niceSize }})"
+info: "{{ file.label }} ({{ file.niceSize }})"
 batch: true

@@ -32,6 +32,7 @@ return Blueprint::register(__DIR__ . '/blueprints', [
     'fields/cover',
     'fields/created',
     'fields/currency',
+    'fields/document',
     'fields/email',
     'fields/eyebrow',
     'fields/fax',

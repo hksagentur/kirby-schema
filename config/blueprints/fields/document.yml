@@ -1,0 +1,11 @@
+type: files
+label:
+  *: hksagentur.schema.field.document.label
+empty:
+  *: hksagentur.schema.field.document.empty
+query: page.documents.template('document')
+layout: cardlets
+multiple: false
+info: "{{ file.label }} ({{ file.niceSize }})"
+uploads:
+  template: document
