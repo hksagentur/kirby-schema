@@ -32,6 +32,7 @@ columns:
         extends: @hksagentur/schema/fields/image
         label:
           *: hksagentur.schema.file.document.cover
+        query: model.parent.images.template('image')
       author:
         type: text
         label:
