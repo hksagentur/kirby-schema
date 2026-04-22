@@ -81,6 +81,7 @@ return [
     'hksagentur.schema.field.audioCodec.label' => 'Codec',
     'hksagentur.schema.field.author.label' => 'Author',
     'hksagentur.schema.field.blocks.label' => 'Blocks',
+    'hksagentur.schema.field.caption.label' => 'Caption',
     'hksagentur.schema.field.category.label' => 'Category',
     'hksagentur.schema.field.channels.icon' => 'Icon',
     'hksagentur.schema.field.channels.label' => 'Channels',

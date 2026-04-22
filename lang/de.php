@@ -83,6 +83,7 @@ return [
     'hksagentur.schema.field.audioCodec.label' => 'Codec',
     'hksagentur.schema.field.author.label' => 'Autor',
     'hksagentur.schema.field.blocks.label' => 'Blöcke',
+    'hksagentur.schema.field.caption.label' => 'Beschriftung',
     'hksagentur.schema.field.category.label' => 'Kategorie',
     'hksagentur.schema.field.channels.icon' => 'Icon',
     'hksagentur.schema.field.channels.label' => 'Kanäle',
