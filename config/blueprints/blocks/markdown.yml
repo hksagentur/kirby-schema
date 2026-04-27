@@ -1,0 +1,9 @@
+name:
+  *: hksagentur.schema.block.markdown.name
+label: "{{ text }}"
+icon: markdown
+tabs:
+  content:
+    extends: @hksagentur/schema/tabs/content
+    fields:
+      text: @hksagentur/schema/fields/markdown

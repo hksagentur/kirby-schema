@@ -1,0 +1,7 @@
+label:
+  *: hksagentur.schema.field.markup.label
+placeholder:
+  *: hksagentur.schema.field.markup.placeholder
+type: textarea
+font: monospace
+buttons: false
