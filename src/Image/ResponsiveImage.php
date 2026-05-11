@@ -164,31 +164,46 @@ class ResponsiveImage implements Stringable
         return $this;
     }
 
-    public function width(int $width): static
+    public function id(?string $id): static
+    {
+        $this->attributes['id'] = $id;
+
+        return $this;
+    }
+
+    public function width(?int $width): static
     {
         $this->attributes['width'] = $width;
 
         return $this;
     }
 
-    public function height(int $height): static
+    public function height(?int $height): static
     {
         $this->attributes['height'] = $height;
 
         return $this;
     }
 
-    public function alt(string $text): static
+    public function alt(?string $text): static
     {
         $this->attributes['alt'] = $text;
 
         return $this;
     }
 
-    /** @param string $id */
-    public function id(string $id): static
+    /** @param string|string[]|null $styles */
+    public function style(string|array|null $styles): static
     {
-        $this->attributes['id'] = $id;
+        $this->attributes['style'] = is_array($styles) ? A::join($styles, ';') : $styles;
+
+        return $this;
+    }
+
+    /** @param string|string[]|null $classes */
+    public function class(string|array|null $classes): static
+    {
+        $this->attributes['class'] = is_array($classes) ? A::join($classes, ' ') : $classes;
 
         return $this;
     }
@@ -196,9 +211,7 @@ class ResponsiveImage implements Stringable
     /** @param string|string[]|null $classList */
     public function classList(string|array|null $classList): static
     {
-        $this->attributes['class'] = is_array($classList) ? A::join($classList, ' ') : $classList;
-
-        return $this;
+        return $this->class($classList);
     }
 
     /** @param ?array<string, string> $dataList */
@@ -239,6 +252,14 @@ class ResponsiveImage implements Stringable
     public function decoding(?string $strategy): static
     {
         $this->attributes['decoding'] = $strategy;
+
+        return $this;
+    }
+
+    /** @param ?bool $draggable */
+    public function draggable(?bool $draggable = true): static
+    {
+        $this->attributes['draggable'] = empty($draggable) ? 'false' : null;
 
         return $this;
     }
