@@ -193,52 +193,52 @@ class ResponsiveImage implements Stringable
         return $this;
     }
 
-    /** @param string|string[] $classList */
-    public function classList(string|array $classList): static
+    /** @param string|string[]|null $classList */
+    public function classList(string|array|null $classList): static
     {
         $this->attributes['class'] = is_array($classList) ? A::join($classList, ' ') : $classList;
 
         return $this;
     }
 
-    /** @param Array<string, string> $dataList */
-    public function dataList(array $dataList): static
+    /** @param ?array<string, string> $dataList */
+    public function dataList(?array $dataList): static
     {
-        foreach ($dataList as $key => $value) {
+        foreach ((array) $dataList as $key => $value) {
             $this->attributes['data-' . Str::kebab($key)] = $value;
         }
 
         return $this;
     }
 
-    /** @param string|string[] $sizes */
-    public function sizes(string|array $sizes): static
+    /** @param string|string[]|null $sizes */
+    public function sizes(string|array|null $sizes): static
     {
         $this->attributes['sizes'] = is_array($sizes) ? A::join($sizes) : $sizes;
 
         return $this;
     }
 
-    /** @param {'lazy'|'eager'} $strategy */
-    public function loading(string $strategy): static
+    /** @param 'auto'|'high'|'low'|null $priority */
+    public function fetchPriority(?string $priority): static
+    {
+        $this->attributes['fetchpriority'] = $priority;
+
+        return $this;
+    }
+
+    /** @param 'lazy'|'eager'|null $strategy */
+    public function loading(?string $strategy): static
     {
         $this->attributes['loading'] = $strategy;
 
         return $this;
     }
 
-    /** @param {'auto'|'sync'|'async'} $strategy */
-    public function decoding(string $strategy): static
+    /** @param 'auto'|'sync'|'async'|null $strategy */
+    public function decoding(?string $strategy): static
     {
         $this->attributes['decoding'] = $strategy;
-
-        return $this;
-    }
-
-    /** @param {'auto'|'high'|'low'} $priority */
-    public function fetchPriority(string $priority): static
-    {
-        $this->attributes['fetchpriority'] = $priority;
 
         return $this;
     }
