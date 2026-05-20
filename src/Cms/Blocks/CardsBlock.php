@@ -21,6 +21,11 @@ class CardsBlock extends Block
         return $this->content()->title();
     }
 
+    public function eyebrow(): Field
+    {
+        return $this->content()->eyebrow();
+    }
+
     public function text(): Field
     {
         return $this->content()->text();

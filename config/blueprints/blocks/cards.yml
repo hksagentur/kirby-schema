@@ -10,6 +10,7 @@ tabs:
         extends: @hksagentur/schema/fields/heading-level
         default: h2
       title: @hksagentur/schema/fields/heading
+      eyebrow: @hksagentur/schema/fields/eyebrow
       text: @hksagentur/schema/fields/inline-text
       link:
         type: object
