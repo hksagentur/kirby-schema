@@ -259,7 +259,7 @@ class ResponsiveImage implements Stringable
     /** @param ?bool $draggable */
     public function draggable(?bool $draggable = true): static
     {
-        $this->attributes['draggable'] = empty($draggable) ? 'false' : null;
+        $this->attributes['draggable'] = $draggable === false ? 'false' : null;
 
         return $this;
     }

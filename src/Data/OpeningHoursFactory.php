@@ -34,8 +34,8 @@ class OpeningHoursFactory
             'data' => $timeRange->note()->esc(),
             'hours' => sprintf(
                 '%s-%s',
-                $timeRange->start()->toDate('H:i'),
-                $timeRange->end()->toDate('H:i')
+                substr($timeRange->start()->value(), 0, 5),
+                substr($timeRange->end()->value(), 0, 5),
             ),
         ]), [
             'monday' => $structure->monday()->toStructure(),
@@ -52,8 +52,8 @@ class OpeningHoursFactory
                 'data' => $timeRange->note()->value(),
                 'hours' => sprintf(
                     '%s-%s',
-                    $timeRange->start()->toDate('H:i'),
-                    $timeRange->end()->toDate('H:i')
+                    substr($timeRange->start()->value(), 0, 5),
+                    substr($timeRange->end()->value(), 0, 5),
                 ),
             ],
         ])->toArray();
