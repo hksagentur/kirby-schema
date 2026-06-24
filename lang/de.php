@@ -171,6 +171,7 @@ return [
     'hksagentur.schema.field.open.label' => 'Geöffnet?',
     'hksagentur.schema.field.organization.label' => 'Organisation',
     'hksagentur.schema.field.organization.name' => 'Name',
+    'hksagentur.schema.field.organization.alternateName' => 'Alternativer Name',
     'hksagentur.schema.field.paginate.label' => 'Seitenumbruch?',
     'hksagentur.schema.field.pagination.label' => 'Seitenumbruch',
     'hksagentur.schema.field.paginationMethod.label' => 'Methode',

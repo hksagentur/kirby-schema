@@ -6,6 +6,12 @@ fields:
       *: hksagentur.schema.field.organization.name
     required: false
     counter: false
+  alternateName:
+    type: text
+    label:
+      *: hksagentur.schema.field.organization.alternateName
+    required: false
+    counter: false
   lineAddress:
     type: line
   address: @hksagentur/schema/fields/address
