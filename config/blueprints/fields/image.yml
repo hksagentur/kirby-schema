@@ -3,7 +3,7 @@ label:
   *: hksagentur.schema.field.image.label
 empty:
   *: hksagentur.schema.field.image.empty
-query: page.images.template('image')
+query: model.images.template('image')
 layout: cards
 size: full
 multiple: false

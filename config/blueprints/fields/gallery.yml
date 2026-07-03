@@ -1,7 +1,7 @@
 type: files
 label:
   *: hksagentur.schema.field.gallery.label
-query: page.images.template('image')
+query: model.images.template('image')
 layout: cardlets
 multiple: true
 info: "{{ file.dimensions }} ({{ file.niceSize }})"
