@@ -4,14 +4,14 @@ fields:
   image:
     extends: @hksagentur/schema/fields/image
     layout: list
-    required: true
+    required: false
     multiple: true
     when:
       mediaType: image
   video:
     extends: @hksagentur/schema/fields/video
     layout: list
-    required: true
+    required: false
     multiple: false
     when:
       mediaType: video
