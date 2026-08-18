@@ -1,0 +1,19 @@
+type: group
+fields:
+  name:
+    type: text
+    label:
+      *: hksagentur.schema.field.place.name
+    required: true
+    counter: false
+  id:
+    type: slug
+    label:
+      *: hksagentur.schema.field.place.id
+    icon: key
+    sync: name
+    required: true
+  lineAddress:
+    type: line
+  address: @hksagentur/schema/fields/address
+  coordinates: @hksagentur/schema/fields/coordinates

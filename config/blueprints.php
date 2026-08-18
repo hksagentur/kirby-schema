@@ -70,6 +70,7 @@ return Blueprint::register(__DIR__ . '/blueprints', [
     'fields/pagination-method',
     'fields/pagination-variable',
     'fields/person',
+    'fields/place',
     'fields/price',
     'fields/publication-status',
     'fields/published',
