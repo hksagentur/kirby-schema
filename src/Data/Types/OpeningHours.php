@@ -4,6 +4,8 @@ namespace Hks\Schema\Data\Types;
 
 use DateTime;
 use DateTimeInterface;
+use Hks\Schema\Data\Collections\TimeRanges;
+use Hks\Schema\Data\Collections\WeekDays;
 use Hks\Schema\Data\Contracts\Arrayable;
 use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Contracts\Localizable;
@@ -40,11 +42,38 @@ readonly class OpeningHours extends DataType implements Arrayable, Htmlable, Loc
 
     public static function fromArray(array $value): static
     {
+        $weekDaysByTimeRanges = [];
+        $timeRangesByKey = [];
+
+        foreach (WeekDay::cases() as $weekDay) {
+            $items = $value[$weekDay->key()] ?? [];
+
+            if ($items === []) {
+                continue;
+            }
+
+            $timeRanges = new TimeRanges(array_map(
+                static fn (array $item) => TimeRange::from($item['timespan']),
+                $items,
+            ));
+
+            $key = $timeRanges->toString();
+
+            $weekDaysByTimeRanges[$key][] = $weekDay;
+            $timeRangesByKey[$key] ??= $timeRanges;
+        }
+
+        $specifications = [];
+
+        foreach ($weekDaysByTimeRanges as $key => $weekDays) {
+            $specifications[] = new OpeningHoursSpecification(
+                weekDays: new WeekDays($weekDays),
+                timeRanges: $timeRangesByKey[$key],
+            );
+        }
+
         return new static(
-            specifications: array_map(
-                OpeningHoursSpecification::from(...),
-                $value['specifications'] ?? [],
-            ),
+            specifications: $specifications,
             exceptions: array_map(
                 OpeningHoursException::from(...),
                 $value['exceptions'] ?? [],
