@@ -1,3 +1,4 @@
 kirby/
 vendor/
+site/plugins/
 composer.lock
