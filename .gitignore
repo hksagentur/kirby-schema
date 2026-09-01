@@ -2,3 +2,4 @@ kirby/
 vendor/
 site/plugins/
 composer.lock
+.phpunit.result.cache
