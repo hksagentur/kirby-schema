@@ -7,6 +7,7 @@ use InvalidArgumentException;
 use Kirby\Http\Idn;
 use Kirby\Toolkit\A;
 use Kirby\Toolkit\Html;
+use Kirby\Toolkit\Str;
 use Kirby\Toolkit\V;
 
 readonly class Url extends StringType implements Arrayable

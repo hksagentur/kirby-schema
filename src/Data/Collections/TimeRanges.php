@@ -36,4 +36,21 @@ readonly class TimeRanges extends DataCollection
     {
         return $this->timeRanges;
     }
+
+    public function format(int|string|null $timeFormat = null, string $timeSeparator = ' – ', ?string $locale = null): string
+    {
+        $timeRanges = array_map(
+            fn (TimeRange $timeRange) => $timeRange->format($timeFormat, $timeSeparator, $locale),
+            $this->timeRanges,
+        );
+
+        return implode(', ', $timeRanges);
+    }
+
+    public function toString(): string
+    {
+        $timeRanges = array_map(fn (TimeRange $timeRange) => $timeRange->toString(), $this->timeRanges);
+
+        return implode(', ', $timeRanges);
+    }
 }

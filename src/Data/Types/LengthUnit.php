@@ -3,9 +3,10 @@
 namespace Hks\Schema\Data\Types;
 
 use Hks\Schema\Data\Contracts\Localizable;
-use Stringable;
+use Kirby\Toolkit\I18n;
+use Kirby\Toolkit\Str;
 
-enum LengthUnit: string implements Localizable, Stringable
+enum LengthUnit: string implements Localizable
 {
     public const float METERS_PER_INCH = 0.0254;
     public const float INCHES_PER_FOOT = 12;
@@ -106,10 +107,5 @@ enum LengthUnit: string implements Localizable, Stringable
     public function toLocaleString(?string $locale = null): string
     {
         return I18n::translate("hksagentur.schema.unit.{$this->key()}", $this->name(), $locale);
-    }
-
-    public function __toString(): string
-    {
-        return $this->toString();
     }
 }

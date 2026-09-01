@@ -4,14 +4,16 @@ namespace Hks\Schema\Data\Types;
 
 use DateTime;
 use DateTimeInterface;
+use Hks\Schema\Data\Contracts\Comparable;
 use Hks\Schema\Data\Contracts\Localizable;
+use Hks\Schema\Data\Exceptions\TypeMismatchException;
 use IntlCalendar;
 use Kirby\Toolkit\A;
 use Kirby\Toolkit\Date;
+use Kirby\Toolkit\I18n;
 use Kirby\Toolkit\Str;
-use Stringable;
 
-enum WeekDay: int implements Localizable, Stringable
+enum WeekDay: int implements Comparable, Localizable
 {
     case Monday = 1;
     case Tuesday = 2;
@@ -93,8 +95,12 @@ enum WeekDay: int implements Localizable, Stringable
         return $this === $other;
     }
 
-    public function compare(self $other): int
+    public function compare(mixed $other): int
     {
+        if (! ($other instanceof self)) {
+            throw TypeMismatchException::between($this, $other);
+        }
+
         return $this->dayOfWeekIso() <=> $other->dayOfWeekIso();
     }
 
@@ -110,7 +116,7 @@ enum WeekDay: int implements Localizable, Stringable
 
     public function name(): string
     {
-        return $this->toLocaleString(locale: 'en', options: ['style' => 'full']);
+        return $this->name;
     }
 
     public function shortName(): string
@@ -170,10 +176,5 @@ enum WeekDay: int implements Localizable, Stringable
             fallback: $this->name(),
             locale: $locale,
         );
-    }
-
-    public function __toString(): string
-    {
-        return $this->toString();
     }
 }

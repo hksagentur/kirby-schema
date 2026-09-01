@@ -5,9 +5,8 @@ namespace Hks\Schema\Data\Types;
 use Hks\Schema\Data\Contracts\Localizable;
 use Kirby\Toolkit\I18n;
 use Kirby\Toolkit\Str;
-use Stringable;
 
-enum UnitSystem implements Stringable, Localizable
+enum UnitSystem implements Localizable
 {
     case Imperial;
     case Metric;
@@ -38,10 +37,5 @@ enum UnitSystem implements Stringable, Localizable
     public function toLocaleString(?string $locale = null): string
     {
         return I18n::translate("hksagentur.schema.unitSystem.{$this->key()}", $this->name(), $locale);
-    }
-
-    public function __toString(): string
-    {
-        return $this->toString();
     }
 }

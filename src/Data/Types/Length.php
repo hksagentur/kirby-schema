@@ -83,7 +83,7 @@ readonly class Length extends DataType implements Arrayable, Htmlable, Localizab
             return false;
         }
 
-        $delta = abs($this->toMeters()->value() - $this->toMeters()->value());
+        $delta = abs($this->toMeters()->value() - $other->toMeters()->value());
 
         if ($delta >= PHP_FLOAT_EPSILON) {
             return false;

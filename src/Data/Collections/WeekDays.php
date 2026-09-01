@@ -72,6 +72,22 @@ readonly class WeekDays extends DataCollection implements Stringable, Localizabl
         return $this->days;
     }
 
+    public function format(?string $dayFormat = null, string $daySeparator = ' – ', ?string $locale = null): string
+    {
+        $options = $dayFormat !== null ? ['style' => $dayFormat] : [];
+
+        $days = array_map(
+            fn (WeekDay $day) => $day->toLocaleString(locale: $locale, options: $options),
+            $this->days,
+        );
+
+        if ($this->isRange()) {
+            return sprintf('%s%s%s', A::first($days), $daySeparator, A::last($days));
+        }
+
+        return implode(', ', $days);
+    }
+
     public function toString(): string
     {
         $days = array_map(fn (WeekDay $day) => $day->shortName(), $this->days);

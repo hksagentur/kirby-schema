@@ -7,6 +7,7 @@ use DateTimeInterface;
 use DateTimeZone;
 use Hks\Schema\Data\Concerns\ComparesMoments;
 use Hks\Schema\Data\Contracts\Arrayable;
+use Hks\Schema\Data\Contracts\Comparable;
 use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Contracts\Localizable;
 use Hks\Schema\Data\Exceptions\TypeMismatchException;
@@ -17,7 +18,7 @@ use Kirby\Toolkit\I18n;
 use Kirby\Toolkit\Str;
 use Throwable;
 
-readonly class Time extends DataType implements Arrayable, Htmlable, Localizable
+readonly class Time extends DataType implements Arrayable, Comparable, Htmlable, Localizable
 {
     use ComparesMoments;
 

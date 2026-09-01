@@ -5,9 +5,8 @@ namespace Hks\Schema\Data\Types;
 use Hks\Schema\Data\Contracts\Localizable;
 use Hks\Schema\Toolkit\I18n;
 use Hks\Schema\Toolkit\Str;
-use Stringable;
 
-enum CardinalDirection implements Localizable, Stringable
+enum CardinalDirection implements Localizable
 {
     case North;
     case South;
@@ -52,10 +51,5 @@ enum CardinalDirection implements Localizable, Stringable
     public function toLocaleString(?string $locale = null): string
     {
         return I18n::translate("hksagentur.schema.cardinalDirection.{$this->key()}", $this->name(), $locale);
-    }
-
-    public function __toString(): string
-    {
-        return $this->toString();
     }
 }

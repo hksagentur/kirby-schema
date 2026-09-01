@@ -3,14 +3,16 @@
 namespace Hks\Schema\Data\Types;
 
 use Hks\Schema\Data\Contracts\Arrayable;
+use Hks\Schema\Data\Contracts\Comparable;
 use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Contracts\Localizable;
+use Hks\Schema\Data\Exceptions\TypeMismatchException;
 use Hks\Schema\Data\Exceptions\ValidationException;
 use Kirby\Toolkit\Html;
 use Kirby\Toolkit\Str;
 use Throwable;
 
-readonly class TimeRange extends DataType implements Arrayable, Htmlable, Localizable
+readonly class TimeRange extends DataType implements Arrayable, Comparable, Htmlable, Localizable
 {
     public const string SEPARATOR = '/';
 
@@ -86,6 +88,15 @@ readonly class TimeRange extends DataType implements Arrayable, Htmlable, Locali
     public function overlaps(self $other): bool
     {
         return $this->contains($other->start) || $this->contains($other->end);
+    }
+
+    public function compare(mixed $other): int
+    {
+        if (! ($other instanceof self)) {
+            throw TypeMismatchException::between($this, $other);
+        }
+
+        return $this->start->compare($other->start);
     }
 
     public function start(): Time
