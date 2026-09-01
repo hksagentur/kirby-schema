@@ -52,16 +52,19 @@ readonly class OpeningHoursException extends DataType implements Arrayable, Html
 
     public function toArray(): array
     {
-        throw new \Exception('Not implemented');
+        return [
+            'timeRange' => $this->timeRange->toArray(),
+            'data' => $this->data,
+        ];
     }
 
     public function toString(): string
     {
-        throw new \Exception('Not implemented');
+        return $this->timeRange->toString();
     }
 
     public function toHtml(array $attributes = []): string
     {
-        throw new \Exception('Not implemented');
+        return $this->timeRange->toHtml($attributes);
     }
 }

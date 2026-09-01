@@ -96,8 +96,14 @@ readonly class OpeningHoursSpecification extends DataType implements Arrayable, 
     public function toArray(): array
     {
         return [
-            'weekDays' => $this->weekDays->toArray(),
-            'timeRanges' => $this->timeRanges->toArray(),
+            'weekDays' => array_map(
+                fn (WeekDay $weekDay) => $weekDay->name(),
+                $this->weekDays->toArray(),
+            ),
+            'timeRanges' => array_map(
+                fn (TimeRange $timeRange) => $timeRange->toArray(),
+                $this->timeRanges->toArray(),
+            ),
             'data' => $this->data,
         ];
     }
