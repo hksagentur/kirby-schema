@@ -18,7 +18,7 @@
   "require": {
     "php": ">=8.2.0",
     "getkirby/composer-installer": "^1.2",
-    "hksagentur/kirby-media-kit": "^1.0"
+    "hksagentur/kirby-media-kit": "^2.0"
   },
   "require-dev": {
     "getkirby/cms": "^5.1",

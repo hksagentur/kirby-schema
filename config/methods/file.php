@@ -1,6 +1,7 @@
 <?php
 
 use Hks\Schema\Image\ResponsiveImage;
+use Hks\Schema\Video\ResponsiveVideo;
 
 return [
 
@@ -17,6 +18,13 @@ return [
         }
 
         return ResponsiveImage::from(['image' => $this, ...$options]);
+    },
+
+    /**
+     * Convert the current file to a video tag.
+     */
+    'toResponsiveVideo' => function (array $options = []): ResponsiveVideo {
+        return ResponsiveVideo::from(['video' => $this, ...$options]);
     },
 
 ];

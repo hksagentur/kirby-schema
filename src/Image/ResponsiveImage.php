@@ -2,31 +2,31 @@
 
 namespace Hks\Schema\Image;
 
-use Hks\MediaKit\ResponsiveImage as BaseResponsiveImage;
+use Hks\MediaKit\Cms\PendingImage;
+use Hks\MediaKit\Html\Attributes;
 use Kirby\Cms\App;
 use Kirby\Toolkit\A;
 
 /**
- * @deprecated Use \Hks\MediaKit\ResponsiveImage instead. This class is kept for backwards
- *             compatibility and will be removed in v2.0. It merges the legacy
+ * @deprecated Use \Hks\MediaKit\Cms\PendingImage instead. This class is kept for backwards
+ *             compatibility and will be removed in a future major. It merges the legacy
  *             `hksagentur.schema.image.*` options into `hksagentur.media-kit.image.*`.
  */
-class ResponsiveImage extends BaseResponsiveImage
+class ResponsiveImage extends PendingImage
 {
-    protected function getPluginOptions(?string $key = null, mixed $default = null): mixed
+    protected function optionsFromConfig(): static
     {
-        $options = [
-            'image' => A::merge(
-                App::instance()->option('hksagentur.schema.image', []),
-                App::instance()->option('hksagentur.media-kit.image', []),
-                A::MERGE_REPLACE
-            ),
-        ];
+        $options = A::merge(
+            App::instance()->option('hksagentur.schema.image', []),
+            App::instance()->option('hksagentur.media-kit.image', []),
+            A::MERGE_REPLACE
+        );
 
-        if (is_null($key)) {
-            return $options;
-        }
+        $this->formats = $options['formats'] ?? ['jpeg'];
+        $this->widths = $options['widths'] ?? ['auto'];
 
-        return A::get($options, $key, $default);
+        $this->attributes = Attributes::from($options['attributes'] ?? []);
+
+        return $this;
     }
 }
