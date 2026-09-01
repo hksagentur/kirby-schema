@@ -7,6 +7,7 @@ use Hks\Schema\Data\Contracts\Localizable;
 use InvalidArgumentException;
 use Kirby\Cms\App;
 use Kirby\Toolkit\A;
+use Kirby\Toolkit\Html;
 use Kirby\Toolkit\I18n;
 use Kirby\Toolkit\Str;
 use RuntimeException;

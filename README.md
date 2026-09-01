@@ -67,7 +67,7 @@ If you only want to use a blueprint without extending it, you can let the plugin
 
 // site/config/config.php
 return [
-  'hksagentur.schema.aliases' => [
+  'hksagentur.schema.blueprintAliases' => [
     'files/image',
     'files/video',
   ],
@@ -81,7 +81,7 @@ This would make the image and video blueprints available without the namespace a
 
 // site/config/config.php
 return [
-  'hksagentur.schema.aliases' => [
+  'hksagentur.schema.blueprintAliases' => [
     'files/image' => 'files/gallery-image',
     'files/video' => 'files/gallery-video',
   ],
