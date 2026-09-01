@@ -1,6 +1,6 @@
 name:
   *: hksagentur.schema.block.image.name
-label: "{{ alt }}"
+label: "{{ caption }}"
 icon: image
 tabs:
   content:

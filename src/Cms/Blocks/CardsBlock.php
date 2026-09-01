@@ -2,12 +2,15 @@
 
 namespace Hks\Schema\Cms\Blocks;
 
+use Hks\Schema\Cms\HasAction;
 use Kirby\Cms\Block;
 use Kirby\Cms\Blocks;
 use Kirby\Content\Field;
 
 class CardsBlock extends Block
 {
+    use HasAction;
+
     public function level(): Field
     {
         return $this->content()->level()->or('h2');
@@ -18,14 +21,14 @@ class CardsBlock extends Block
         return $this->content()->title();
     }
 
+    public function eyebrow(): Field
+    {
+        return $this->content()->eyebrow();
+    }
+
     public function text(): Field
     {
         return $this->content()->text();
-    }
-
-    public function link(): Field
-    {
-        return $this->content()->link();
     }
 
     public function cards(): Blocks

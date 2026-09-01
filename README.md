@@ -149,6 +149,7 @@ Below is an overview of all available blueprints provided by this plugin. Each e
 | [Open](config/blueprints/fields/open.yml)                         | `@hksagentur/schema/fields/open`             | Toggle open/closed state of blocks.                 |
 | [Organization](config/blueprints/fields/organization.yml)         | `@hksagentur/schema/fields/organization`     | Organization details with address and contact info. |
 | [Person](config/blueprints/fields/person.yml)                     | `@hksagentur/schema/fields/person`           | Contact details for a person.                       |
+| [Place](config/blueprints/fields/place.yml)                       | `@hksagentur/schema/fields/place`            | Name and address of a physical location.            |
 | [Price](config/blueprints/fields/price.yml)                       | `@hksagentur/schema/fields/price`            | The offer price of a product.                       |
 | [Published](config/blueprints/fields/published.yml)               | `@hksagentur/schema/fields/published`        | Date when the page was first published.             |
 | [Ratio](config/blueprints/fields/ratio.yml)                       | `@hksagentur/schema/fields/ratio`            | Selection of common aspect ratios.                  |

@@ -1,0 +1,8 @@
+name:
+  *: hksagentur.schema.block.html.name
+icon: code
+tabs:
+  content:
+    extends: @hksagentur/schema/tabs/content
+    fields:
+      markup: @hksagentur/schema/fields/markup

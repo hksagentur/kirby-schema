@@ -8,7 +8,6 @@ use Kirby\Http\Idn;
 use Kirby\Toolkit\A;
 use Kirby\Toolkit\Html;
 use Kirby\Toolkit\V;
-use SensitiveParameter;
 
 readonly class Url extends StringType implements Arrayable
 {
@@ -18,10 +17,7 @@ readonly class Url extends StringType implements Arrayable
     public ?string $path;
     public ?string $query;
     public ?string $fragment;
-
-    #[SensitiveParameter]
     public ?string $user;
-    #[SensitiveParameter]
     public ?string $password;
 
     public function __construct(

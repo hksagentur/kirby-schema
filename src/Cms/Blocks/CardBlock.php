@@ -2,48 +2,33 @@
 
 namespace Hks\Schema\Cms\Blocks;
 
-use Hks\Schema\Cms\HasModelReference;
+use Hks\Schema\Cms\HasAction;
+use Hks\Schema\Cms\HasMedia;
 use Kirby\Cms\Block;
-use Kirby\Cms\File;
-use Kirby\Cms\Files;
 use Kirby\Content\Field;
 
 class CardBlock extends Block
 {
-    use HasModelReference;
+    use HasAction;
+    use HasMedia;
 
     public function level(): Field
     {
         return $this->content()->level()->or('h3');
     }
 
-    public function eyebrow(): Field
-    {
-        return $this->content()->eyebrow()->or($this->referencedModel()?->category());
-    }
-
     public function title(): Field
     {
-        return $this->content()->title()->or($this->referencedModel()?->title());
+        return $this->content()->title()->or($this->target()?->title());
+    }
+
+    public function eyebrow(): Field
+    {
+        return $this->content()->eyebrow()->or($this->target()?->category());
     }
 
     public function text(): Field
     {
-        return $this->content()->text()->or($this->referencedModel()?->excerpt());
-    }
-
-    public function link(): Field
-    {
-        return $this->content()->link();
-    }
-
-    public function image(): ?File
-    {
-        return $this->images()->first();
-    }
-
-    public function images(): Files
-    {
-        return $this->content()->image()->or($this->referencedModel()?->cover())->toFiles();
+        return $this->content()->text()->or($this->target()?->excerpt());
     }
 }

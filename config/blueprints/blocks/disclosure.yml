@@ -2,20 +2,23 @@ name:
   *: hksagentur.schema.block.disclosure.name
 label: "{{ title }}"
 icon: expand
-fields:
-  level:
-    extends: @hksagentur/schema/fields/heading-level
-    default: h2
-  title:
-    extends: @hksagentur/schema/fields/heading
-    label:
-      *: hksagentur.schema.block.disclosure.summary
-    placeholder:
-      *: hksagentur.schema.block.disclosure.placeholder
-    required: true
-  layout:
-    extends: @hksagentur/schema/fields/content-layout
-    required: true
-  open:
-    extends: @hksagentur/schema/fields/open
-    default: false
+tabs:
+  content:
+    extends: @hksagentur/schema/tabs/content
+    fields:
+      level:
+        extends: @hksagentur/schema/fields/heading-level
+        default: h2
+      title:
+        extends: @hksagentur/schema/fields/heading
+        label:
+          *: hksagentur.schema.block.disclosure.summary
+        placeholder:
+          *: hksagentur.schema.block.disclosure.placeholder
+        required: true
+      layout:
+        extends: @hksagentur/schema/fields/content-layout
+        required: true
+      open:
+        extends: @hksagentur/schema/fields/open
+        default: false

@@ -1,7 +1,7 @@
 name:
   *: hksagentur.schema.block.collection.name
-icon: list-bullet
 label: "{{ title }}"
+icon: list-bullet
 tabs:
   content:
     extends: @hksagentur/schema/tabs/content

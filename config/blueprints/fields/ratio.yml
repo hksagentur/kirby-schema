@@ -4,6 +4,7 @@ label:
 placeholder:
   *: hksagentur.schema.field.ratio.placeholder
 options:
+  9/16: "9:16"
   4/5: "4:5"
   1/1: "1:1"
   10/8: "10:8"
