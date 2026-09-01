@@ -2,15 +2,15 @@
 
 namespace Hks\Schema\Cms\Blocks;
 
-use Hks\Schema\Cms\HasAction;
-use Hks\Schema\Cms\HasMedia;
+use Hks\Schema\Cms\Concerns\HasMediaFile;
+use Hks\Schema\Cms\Concerns\HasLink;
 use Kirby\Cms\Block;
 use Kirby\Content\Field;
 
 class CardBlock extends Block
 {
-    use HasAction;
-    use HasMedia;
+    use HasLink;
+    use HasMediaFile;
 
     public function level(): Field
     {

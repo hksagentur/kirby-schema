@@ -4,7 +4,7 @@ namespace Hks\Schema\Cms\Concerns;
 
 use Kirby\Cms\Files;
 
-trait HasImageGallery
+trait HasGalleryImages
 {
     protected ?Files $galleryImages = null;
 

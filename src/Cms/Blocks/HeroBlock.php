@@ -9,6 +9,11 @@ use Kirby\Cms\File;
 use Kirby\Cms\Structure;
 use Kirby\Content\Field;
 
+/**
+ * @method Field title()
+ * @method Field eyebrow()
+ * @method Field text()
+ */
 class HeroBlock extends Block implements HasKeyVisual
 {
     use HasMediaFile;
@@ -25,21 +30,6 @@ class HeroBlock extends Block implements HasKeyVisual
     public function level(): Field
     {
         return $this->content()->level()->or('h1');
-    }
-
-    public function title(): Field
-    {
-        return $this->content()->title();
-    }
-
-    public function eyebrow(): Field
-    {
-        return $this->content()->eyebrow();
-    }
-
-    public function text(): Field
-    {
-        return $this->content()->text();
     }
 
     public function actions(): ?Structure

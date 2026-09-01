@@ -2,15 +2,19 @@
 
 namespace Hks\Schema\Cms\Blocks;
 
-use Hks\Schema\Cms\HasAction;
+use Hks\Schema\Cms\Concerns\HasLink;
 use Kirby\Cms\App;
 use Kirby\Cms\Block;
 use Kirby\Cms\Pages;
 use Kirby\Content\Field;
 
+/**
+ * @method Field title()
+ * @method Field text()
+ */
 class CollectionBlock extends Block
 {
-    use HasAction;
+    use HasLink;
 
     public function useCurrentPage(): bool
     {
@@ -25,16 +29,6 @@ class CollectionBlock extends Block
     public function level(): Field
     {
         return $this->content()->level()->or('h2');
-    }
-
-    public function title(): Field
-    {
-        return $this->content()->title();
-    }
-
-    public function text(): Field
-    {
-        return $this->content()->text();
     }
 
     public function source(): Field

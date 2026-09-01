@@ -6,14 +6,19 @@ use Kirby\Cms\Block;
 use Kirby\Cms\File;
 use Kirby\Content\Field;
 
+/**
+ * @method Field location()
+ * @method Field crop()
+ * @method Field autoplay()
+ * @method Field muted()
+ * @method Field loop()
+ * @method Field controls()
+ * @method Field preloading()
+ * @method Field priority()
+ */
 class VideoBlock extends Block
 {
     protected ?File $video = null;
-
-    public function location(): Field
-    {
-        return $this->content()->location();
-    }
 
     public function url(): Field
     {
@@ -35,43 +40,8 @@ class VideoBlock extends Block
         return $this->content()->ratio()->or('auto');
     }
 
-    public function crop(): Field
-    {
-        return $this->content()->crop();
-    }
-
-    public function autoplay(): Field
-    {
-        return $this->content()->autoplay();
-    }
-
-    public function muted(): Field
-    {
-        return $this->content()->muted();
-    }
-
-    public function loop(): Field
-    {
-        return $this->content()->loop();
-    }
-
-    public function controls(): Field
-    {
-        return $this->content()->controls();
-    }
-
-    public function preloading(): Field
-    {
-        return $this->content()->preloading();
-    }
-
     public function preload(): Field
     {
         return $this->content()->preloading();
-    }
-
-    public function priority(): Field
-    {
-        return $this->content()->priority();
     }
 }

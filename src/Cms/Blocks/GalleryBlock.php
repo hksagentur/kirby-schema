@@ -6,21 +6,15 @@ use Kirby\Cms\Block;
 use Kirby\Cms\Files;
 use Kirby\Content\Field;
 
+/**
+ * @method Field caption()
+ * @method Field crop()
+ */
 class GalleryBlock extends Block
 {
-    public function caption(): Field
-    {
-        return $this->content()->caption();
-    }
-
     public function ratio(): Field
     {
         return $this->content()->ratio()->or('auto');
-    }
-
-    public function crop(): Field
-    {
-        return $this->content()->crop();
     }
 
     public function images(): Files

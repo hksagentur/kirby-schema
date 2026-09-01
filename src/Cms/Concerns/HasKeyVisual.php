@@ -2,20 +2,15 @@
 
 namespace Hks\Schema\Cms\Concerns;
 
-use Hks\Schema\Cms\Contracts\HasKeyVisual;
-use Kirby\Cms\Blocks;
+use Hks\Schema\Cms\Contracts\HasKeyVisual as HasKeyVisualContract;
 use Kirby\Cms\Block;
-use Kirby\Cms\Files;
+use Kirby\Cms\Blocks;
 use Kirby\Cms\File;
+use Kirby\Cms\Files;
 
-trait HasBlockContent
+trait HasKeyVisual
 {
-    protected ?Blocks $blocks = null;
-
-    public function blocks(): Blocks
-    {
-        return $this->blocks ??= $this->content()->blocks()->toBlocks();
-    }
+    abstract public function blocks(): Blocks;
 
     public function keyVisuals(): Files
     {
@@ -37,7 +32,7 @@ trait HasBlockContent
 
     protected function getKeyVisualFromBlock(Block $block): ?File
     {
-        if ($block instanceof HasKeyVisual) {
+        if ($block instanceof HasKeyVisualContract) {
             return $block->keyVisual();
         }
 

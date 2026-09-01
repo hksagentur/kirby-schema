@@ -1,12 +1,12 @@
 <?php
 
-namespace Hks\Schema\Cms;
+namespace Hks\Schema\Cms\Concerns;
 
 use Kirby\Cms\ModelWithContent;
 use Kirby\Content\Content;
 use Kirby\Uuid\Uuid;
 
-trait HasAction
+trait HasLink
 {
     protected ?Content $link = null;
     protected ?ModelWithContent $target = null;
