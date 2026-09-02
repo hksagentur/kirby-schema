@@ -2,4 +2,8 @@ kirby/
 vendor/
 site/plugins/
 composer.lock
+AGENTS.md
+CLAUDE.md
+TODO.md
+ROADMAP.md
 .phpunit.result.cache
