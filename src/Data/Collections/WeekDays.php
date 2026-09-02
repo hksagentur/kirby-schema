@@ -67,7 +67,7 @@ readonly class WeekDays extends DataCollection implements Stringable, Localizabl
         return A::last($this->days);
     }
 
-    public function toArray(): array
+    public function all(): array
     {
         return $this->days;
     }

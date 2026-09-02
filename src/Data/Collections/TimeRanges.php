@@ -2,7 +2,9 @@
 
 namespace Hks\Schema\Data\Collections;
 
+use DateTimeInterface;
 use Hks\Schema\Data\Concerns\InteractsWithValues;
+use Hks\Schema\Data\Types\Time;
 use Hks\Schema\Data\Types\TimeRange;
 use Hks\Schema\Toolkit\Assert;
 
@@ -27,14 +29,15 @@ readonly class TimeRanges extends DataCollection
         $this->timeRanges = $timeRanges;
     }
 
-    public function simplify(): static
+    public function contains(string|Time|DateTimeInterface $time): bool
     {
-        throw new \Exception('Not implemented yet.');
-    }
+        foreach ($this->timeRanges as $timeRange) {
+            if ($timeRange->contains($time)) {
+                return true;
+            }
+        }
 
-    public function toArray(): array
-    {
-        return $this->timeRanges;
+        return false;
     }
 
     public function format(int|string|null $timeFormat = null, string $timeSeparator = ' – ', ?string $locale = null): string
@@ -47,10 +50,36 @@ readonly class TimeRanges extends DataCollection
         return implode(', ', $timeRanges);
     }
 
+    public function simplify(): static
+    {
+        $timeRanges = [];
+        $previousTimeRange = null;
+
+        foreach ($this->timeRanges as $timeRange) {
+            if ($previousTimeRange?->overlaps($timeRange) || $previousTimeRange?->touches($timeRange)) {
+                $timeRange = $previousTimeRange->merge($timeRange);
+                array_pop($timeRanges);
+            }
+
+            $timeRanges[] = $timeRange;
+            $previousTimeRange = $timeRange;
+        }
+
+        return new static($timeRanges);
+    }
+
     public function toString(): string
     {
-        $timeRanges = array_map(fn (TimeRange $timeRange) => $timeRange->toString(), $this->timeRanges);
+        return implode(', ', array_map(strval(...), $this->timeRanges));
+    }
 
-        return implode(', ', $timeRanges);
+    public function all(): array
+    {
+        return $this->timeRanges;
+    }
+
+    public function toArray(): array
+    {
+        return array_map(fn (TimeRange $timeRange) => $timeRange->toArray(), $this->timeRanges);
     }
 }

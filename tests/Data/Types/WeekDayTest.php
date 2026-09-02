@@ -34,6 +34,11 @@ class WeekDayTest extends TestCase
         $this->assertTrue(WeekDay::Sunday->compare(WeekDay::Monday) > 0);
     }
 
+    public function testToIriStringReturnsTheSchemaOrgDayOfWeekReference(): void
+    {
+        $this->assertSame('https://schema.org/Monday', WeekDay::Monday->toIriString());
+    }
+
     public function testFollowsAndPrecedesDescribeAdjacentDays(): void
     {
         $this->assertTrue(WeekDay::Tuesday->follows(WeekDay::Monday));

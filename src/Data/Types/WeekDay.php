@@ -164,6 +164,11 @@ enum WeekDay: int implements Comparable, Localizable
         return $this->name();
     }
 
+    public function toIriString(): string
+    {
+        return "https://schema.org/{$this->name()}";
+    }
+
     public function toLocaleString(?string $locale = null, array $options = []): string
     {
         $style = match ($options['style'] ?? null) {

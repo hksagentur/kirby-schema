@@ -5,6 +5,7 @@ namespace Hks\Schema\Data\Types;
 use Hks\Schema\Data\Contracts\Arrayable;
 use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Contracts\Localizable;
+use Hks\Schema\Data\Contracts\Schemable;
 use Hks\Schema\Toolkit\Geo;
 use InvalidArgumentException;
 use Kirby\Toolkit\Html;
@@ -12,7 +13,7 @@ use Kirby\Toolkit\Str;
 use Stringable;
 use Throwable;
 
-readonly class GeoCoordinate extends DataType implements Arrayable, Htmlable, Localizable
+readonly class GeoCoordinate extends DataType implements Arrayable, Htmlable, Localizable, Schemable
 {
     public function __construct(
         public float $latitude,
@@ -86,6 +87,14 @@ readonly class GeoCoordinate extends DataType implements Arrayable, Htmlable, Lo
         return [
             'latitude' => $this->latitude(),
             'longitude' => $this->longitude(),
+        ];
+    }
+
+    public function toStructuredData(): array
+    {
+        return [
+            '@type' => 'GeoCoordinates',
+            ...$this->toArray(),
         ];
     }
 

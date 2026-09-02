@@ -16,7 +16,7 @@ class OpeningHoursSpecificationTest extends TestCase
 
         $this->assertSame(
             [WeekDay::Monday, WeekDay::Tuesday],
-            $specification->weekDays()->toArray(),
+            $specification->weekDays()->all(),
         );
         $this->assertSame('09:00:00/17:00:00', $specification->timeRanges()->toString());
     }
@@ -49,9 +49,71 @@ class OpeningHoursSpecificationTest extends TestCase
 
         $roundTripped = OpeningHoursSpecification::from($specification->toArray());
 
-        $this->assertSame($specification->weekDays()->toArray(), $roundTripped->weekDays()->toArray());
+        $this->assertSame($specification->weekDays()->all(), $roundTripped->weekDays()->all());
         $this->assertSame($specification->timeRanges()->toString(), $roundTripped->timeRanges()->toString());
         $this->assertSame($specification->data(), $roundTripped->data());
+    }
+
+    public function testDataReturnsASingleValueByKeyOrTheWholeArrayWhenNoKeyIsGiven(): void
+    {
+        $specification = OpeningHoursSpecification::from([
+            'weekDays' => ['Monday'],
+            'timeRanges' => [['09:00', '17:00']],
+            'data' => ['note' => 'Kitchen closes early'],
+        ]);
+
+        $this->assertSame('Kitchen closes early', $specification->data('note'));
+        $this->assertNull($specification->data('missing'));
+        $this->assertSame(['note' => 'Kitchen closes early'], $specification->data());
+    }
+
+    public function testContainsMatchesAWeekDayCoveredByTheSpecification(): void
+    {
+        $specification = OpeningHoursSpecification::from([
+            'weekDays' => ['Monday', 'Tuesday'],
+            'timeRanges' => [['09:00', '17:00']],
+        ]);
+
+        $this->assertTrue($specification->contains(WeekDay::Monday));
+        $this->assertFalse($specification->contains(WeekDay::Wednesday));
+    }
+
+    public function testSimplifyMergesOverlappingTimeRangesButKeepsWeekDaysAndData(): void
+    {
+        $specification = OpeningHoursSpecification::from([
+            'weekDays' => ['Monday'],
+            'timeRanges' => [['09:00', '12:00'], ['12:00', '17:00']],
+            'data' => ['note' => 'Kitchen closes early'],
+        ]);
+
+        $simplified = $specification->simplify();
+
+        $this->assertSame([WeekDay::Monday], $simplified->weekDays()->all());
+        $this->assertSame('09:00:00/17:00:00', $simplified->timeRanges()->toString());
+        $this->assertSame(['note' => 'Kitchen closes early'], $simplified->data());
+    }
+
+    public function testToStructuredDataRendersOneNodePerTimeRangeSharingTheSameDayOfWeek(): void
+    {
+        $specification = OpeningHoursSpecification::from([
+            'weekDays' => ['Monday'],
+            'timeRanges' => [['09:00', '12:00'], ['13:00', '17:00']],
+        ]);
+
+        $this->assertSame([
+            [
+                '@type' => 'OpeningHoursSpecification',
+                'dayOfWeek' => ['https://schema.org/Monday'],
+                'opens' => '09:00:00',
+                'closes' => '12:00:00',
+            ],
+            [
+                '@type' => 'OpeningHoursSpecification',
+                'dayOfWeek' => ['https://schema.org/Monday'],
+                'opens' => '13:00:00',
+                'closes' => '17:00:00',
+            ],
+        ], $specification->toStructuredData());
     }
 
     public function testToStringRendersWeekDaysAndTimeRangesAsIsoValues(): void

@@ -5,26 +5,21 @@
     'itemtype' => 'https://schema.org/OpeningHoursSpecification',
     ...$attrs ?? [],
 ]) ?>>
-    <?php foreach ($item->forThisWeek() as [$weekDay, $openingHours]) : ?>
+    <?php foreach ($item->specifications() as $specification) : ?>
         <dt>
-            <time itemprop="dayOfWeek" datetime="<?= $weekDay->current()->format('Y-m-d') ?>">
-                <?= $weekDay->toLocaleString() ?>
-            </time>
+            <?php foreach ($specification->weekDays()->all() as $weekDay) : ?>
+                <time itemprop="dayOfWeek" datetime="<?= $weekDay->current()->format('Y-m-d') ?>">
+                    <?= esc($weekDay->toLocaleString()) ?>
+                </time>
+            <?php endforeach ?>
         </dt>
         <dd>
-            <?php if (count($openingHours) > 0) : ?>
-                <?php foreach ($openingHours as [$startDate, $endDate]) : ?>
-                    <time itemprop="opens" datetime="<?= $startDate->format(DateTime::W3C) ?>">
-                        <?= $startDate->format('H:i') ?>
-                    </time>
-                    -
-                    <time itemprop="closes" datetime="<?= $endDate->format(DateTime::W3C) ?>">
-                        <?= $endDate->format('H:i') ?>
-                    </time><br>
-                <?php endforeach ?>
-            <?php else : ?>
-                <?= t('hksagentur.schema.openingHours.closed') ?>
-            <?php endif ?>
+            <?= $specification->toHtml() ?>
         </dd>
+    <?php endforeach ?>
+
+    <?php foreach ($item->exceptions() as $exception) : ?>
+        <dt><?= esc($exception->date()->format('Y-m-d')) ?></dt>
+        <dd><?= $exception->toHtml() ?></dd>
     <?php endforeach ?>
 </dl>

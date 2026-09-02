@@ -11,11 +11,22 @@ class OpeningHoursExceptionTest extends TestCase
     {
         $exception = OpeningHoursException::from([
             'timeRange' => ['start' => '00:00', 'end' => '00:00'],
-            'data' => ['date' => '2026-12-25', 'note' => 'Closed on Christmas'],
+            'date' => '2026-12-25',
+            'data' => ['note' => 'Closed on Christmas'],
         ]);
 
         $this->assertSame('00:00:00/00:00:00', $exception->timeRange()->toString());
-        $this->assertSame(['date' => '2026-12-25', 'note' => 'Closed on Christmas'], $exception->data());
+        $this->assertSame('2026-12-25', $exception->date()->format('Y-m-d'));
+        $this->assertSame(['note' => 'Closed on Christmas'], $exception->data());
+    }
+
+    public function testFromThrowsGivenNoDate(): void
+    {
+        $this->expectException(ValidationException::class);
+
+        OpeningHoursException::from([
+            'timeRange' => ['start' => '00:00', 'end' => '00:00'],
+        ]);
     }
 
     public function testFromThrowsGivenAnUnparsableTimeRange(): void
@@ -24,6 +35,7 @@ class OpeningHoursExceptionTest extends TestCase
 
         OpeningHoursException::from([
             'timeRange' => ['start' => 'not a time', 'end' => '10:00'],
+            'date' => '2026-12-25',
         ]);
     }
 
@@ -31,14 +43,39 @@ class OpeningHoursExceptionTest extends TestCase
     {
         $this->assertNull(OpeningHoursException::tryFrom([
             'timeRange' => ['start' => 'not a time', 'end' => '10:00'],
+            'date' => '2026-12-25',
         ]));
+    }
+
+    public function testDataReturnsASingleValueByKeyOrTheWholeArrayWhenNoKeyIsGiven(): void
+    {
+        $exception = OpeningHoursException::from([
+            'timeRange' => ['start' => '00:00', 'end' => '00:00'],
+            'date' => '2026-12-25',
+            'data' => ['note' => 'Closed on Christmas'],
+        ]);
+
+        $this->assertSame('Closed on Christmas', $exception->data('note'));
+        $this->assertNull($exception->data('missing'));
+        $this->assertSame(['note' => 'Closed on Christmas'], $exception->data());
+    }
+
+    public function testContainsMatchesOnlyTheExceptionsOwnCalendarDate(): void
+    {
+        $exception = OpeningHoursException::from([
+            'timeRange' => ['start' => '00:00', 'end' => '00:00'],
+            'date' => '2026-12-25',
+        ]);
+
+        $this->assertTrue($exception->contains(new \DateTime('2026-12-25 10:00:00')));
+        $this->assertFalse($exception->contains(new \DateTime('2026-12-26 10:00:00')));
     }
 
     public function testToStringRendersAnIsoFormattedTimeSpan(): void
     {
         $exception = OpeningHoursException::from([
             'timeRange' => ['start' => '00:00', 'end' => '00:00'],
-            'data' => ['date' => '2026-12-25'],
+            'date' => '2026-12-25',
         ]);
 
         $this->assertSame('00:00:00/00:00:00', $exception->toString());
@@ -48,6 +85,7 @@ class OpeningHoursExceptionTest extends TestCase
     {
         $exception = OpeningHoursException::from([
             'timeRange' => ['start' => '00:00', 'end' => '00:00'],
+            'date' => '2026-12-25',
         ]);
 
         $this->assertSame(
@@ -56,16 +94,34 @@ class OpeningHoursExceptionTest extends TestCase
         );
     }
 
-    public function testToArrayIncludesTheTimeRangeAndData(): void
+    public function testToArrayIncludesTheTimeRangeDateAndData(): void
     {
         $exception = OpeningHoursException::from([
             'timeRange' => ['start' => '00:00', 'end' => '00:00'],
-            'data' => ['date' => '2026-12-25'],
+            'date' => '2026-12-25',
+            'data' => ['note' => 'Closed on Christmas'],
         ]);
 
         $this->assertSame([
             'timeRange' => ['00:00:00', '00:00:00'],
-            'data' => ['date' => '2026-12-25'],
+            'date' => '2026-12-25',
+            'data' => ['note' => 'Closed on Christmas'],
         ], $exception->toArray());
+    }
+
+    public function testToStructuredDataRendersAnOpeningHoursSpecificationValidOnlyForItsOwnDate(): void
+    {
+        $exception = OpeningHoursException::from([
+            'timeRange' => ['start' => '00:00', 'end' => '00:00'],
+            'date' => '2026-12-25',
+        ]);
+
+        $this->assertSame([
+            '@type' => 'OpeningHoursSpecification',
+            'opens' => '00:00:00',
+            'closes' => '00:00:00',
+            'validFrom' => '2026-12-25',
+            'validThrough' => '2026-12-25',
+        ], $exception->toStructuredData());
     }
 }

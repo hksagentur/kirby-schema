@@ -74,20 +74,20 @@ readonly class Organization implements Arrayable, Htmlable, Stringable, Schemabl
         ];
     }
 
-    public function toSchema(): array
+    public function toStructuredData(): array
     {
         return array_filter([
             '@type' => 'Organization',
             'name' => $this->name,
-            'address' => $this->address?->toSchema(),
+            'address' => $this->address?->toStructuredData(),
             'email' => $this->email?->value,
             'telephone' => $this->telephone?->value,
             'faxNumber' => $this->fax?->value,
             'website' => $this->website?->value,
             'location' => array_filter([
                 '@type' => 'Place',
-                'address' => $this->address?->toSchema(),
-                'geo' => $this->coordinates?->toSchema(),
+                'address' => $this->address?->toStructuredData(),
+                'geo' => $this->coordinates?->toStructuredData(),
             ]),
         ]);
     }

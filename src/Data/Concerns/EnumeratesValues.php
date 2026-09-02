@@ -21,7 +21,7 @@ trait EnumeratesValues
     public static function wrap(array|Enumerable $value): static
     {
         return $value instanceof Enumerable
-            ? new static($value->toArray())
+            ? new static($value->all())
             : new static($value);
     }
 
@@ -35,7 +35,7 @@ trait EnumeratesValues
     public static function unwrap(array|Enumerable $value): array
     {
         return $value instanceof Enumerable
-            ? $value->toArray()
+            ? $value->all()
             : $value;
     }
 
@@ -51,31 +51,47 @@ trait EnumeratesValues
 
     public function count(): int
     {
-        return count($this->getEnumerableValues());
+        return count($this->all());
     }
 
     /** @return ?TValue */
     public function first(): mixed
     {
-        return A::first($this->getEnumerableValues());
+        return A::first($this->all());
     }
 
     /** @return ?TValue */
     public function last(): mixed
     {
-        return A::last($this->getEnumerableValues());
+        return A::last($this->all());
     }
 
     /** @return array<int, TKey> */
     public function keys(): array
     {
-        return array_keys($this->getEnumerableValues());
+        return array_keys($this->all());
     }
 
     /** @return array<int, TValue> */
     public function values(): array
     {
-        return array_values($this->getEnumerableValues());
+        return array_values($this->all());
+    }
+
+    /**
+     * @template TMapValue
+     * @param callable(TValue, TKey): TMapValue $callback
+     * @return array<TKey, TMapValue>
+     */
+    public function map(callable $callback): array
+    {
+        $result = [];
+
+        foreach ($this->all() as $key => $value) {
+            $result[$key] = $callback($value, $key);
+        }
+
+        return $result;
     }
 
     /** @return Generator<int, array{TValue, TValue}> */
@@ -83,7 +99,7 @@ trait EnumeratesValues
     {
         $previous = null;
 
-        foreach ($this->getEnumerableValues() as $value) {
+        foreach ($this->all() as $value) {
             if ($previous !== null) {
                 yield [$previous, $value];
             }
@@ -93,13 +109,13 @@ trait EnumeratesValues
     }
 
     /** @return array<TKey, TValue> */
-    public function all(): array
-    {
-        return $this->getEnumerableValues();
-    }
+    abstract public function all(): array;
 
     /** @return array<TKey, TValue> */
-    abstract public function toArray(): array;
+    public function toArray(): array
+    {
+        return $this->all();
+    }
 
     public function toJson(int $options = 0): string|false
     {
@@ -109,18 +125,12 @@ trait EnumeratesValues
     /** @return array<TKey, TValue> */
     public function jsonSerialize(): array
     {
-        return $this->getEnumerableValues();
+        return $this->all();
     }
 
     /** @return Generator<TKey, TValue> */
     public function getIterator(): Generator
     {
-        yield from $this->getEnumerableValues();
-    }
-
-    /** @return array<TKey, TValue> */
-    protected function getEnumerableValues(): array
-    {
-        return $this->toArray();
+        yield from $this->all();
     }
 }

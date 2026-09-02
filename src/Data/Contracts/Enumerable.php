@@ -55,11 +55,20 @@ interface Enumerable extends Arrayable, Countable, IteratorAggregate, Jsonable, 
     public function values(): array;
 
     /**
-     * Get all items of the collection.
+     * Get all items of the collection, unconverted.
      *
      * @return array<TKey, TValue>
      */
     public function all(): array;
+
+    /**
+     * Map the collection's items through a callback.
+     *
+     * @template TMapValue
+     * @param callable(TValue, TKey): TMapValue $callback
+     * @return array<TKey, TMapValue>
+     */
+    public function map(callable $callback): array;
 
     /**
      * Get the items of the collection in pairs.

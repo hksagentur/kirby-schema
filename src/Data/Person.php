@@ -67,7 +67,7 @@ readonly class Person implements Arrayable, Htmlable, Stringable, Schemable
         ];
     }
 
-    public function toSchema(): array
+    public function toStructuredData(): array
     {
         return array_filter([
             '@type' => 'Person',

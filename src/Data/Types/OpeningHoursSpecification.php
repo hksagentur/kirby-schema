@@ -8,6 +8,7 @@ use Hks\Schema\Data\Contracts\Arrayable;
 use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Contracts\Localizable;
 use Hks\Schema\Data\Exceptions\ValidationException;
+use Kirby\Toolkit\A;
 use Kirby\Toolkit\Html;
 use Throwable;
 
@@ -73,15 +74,23 @@ readonly class OpeningHoursSpecification extends DataType implements Arrayable, 
         return $this->timeRanges;
     }
 
-    /** @return array<string, mixed> */
-    public function data(): array
+    public function data(?string $key = null): mixed
     {
-        return $this->data;
+        return A::get($this->data, $key);
+    }
+
+    public function contains(WeekDay $weekDay): bool
+    {
+        return $this->weekDays->contains($weekDay);
     }
 
     public function simplify(): static
     {
-        throw new \Exception('Not implemented');
+        return new static(
+            weekDays: $this->weekDays,
+            timeRanges: $this->timeRanges->simplify(),
+            data: $this->data,
+        );
     }
 
     public function format(?string $dayFormat = null, string $daySeparator = ' – ', int|string|null $timeFormat = null, string $timeSeparator = ' – ', ?string $locale = null): string
@@ -91,21 +100,6 @@ readonly class OpeningHoursSpecification extends DataType implements Arrayable, 
             $this->weekDays->format($dayFormat, $daySeparator, locale: $locale),
             $this->timeRanges->format($timeFormat, $timeSeparator, locale: $locale),
         );
-    }
-
-    public function toArray(): array
-    {
-        return [
-            'weekDays' => array_map(
-                fn (WeekDay $weekDay) => $weekDay->name(),
-                $this->weekDays->toArray(),
-            ),
-            'timeRanges' => array_map(
-                fn (TimeRange $timeRange) => $timeRange->toArray(),
-                $this->timeRanges->toArray(),
-            ),
-            'data' => $this->data,
-        ];
     }
 
     public function toString(): string
@@ -129,6 +123,26 @@ readonly class OpeningHoursSpecification extends DataType implements Arrayable, 
         ], [
             'datetime' => $this->toString(),
             ...$attributes
+        ]);
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'weekDays' => $this->weekDays->map(fn (WeekDay $weekDay) => $weekDay->name()),
+            'timeRanges' => $this->timeRanges->toArray(),
+            'data' => $this->data,
+        ];
+    }
+
+    /** @return array[] */
+    public function toStructuredData(): array
+    {
+        return $this->timeRanges->map(fn (TimeRange $timeRange) => [
+            '@type' => 'OpeningHoursSpecification',
+            'dayOfWeek' => $this->weekDays->map(fn (WeekDay $weekDay) => $weekDay->toIriString()),
+            'opens' => $timeRange->start()->toString(),
+            'closes' => $timeRange->end()->toString(),
         ]);
     }
 }

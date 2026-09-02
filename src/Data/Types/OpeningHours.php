@@ -4,8 +4,6 @@ namespace Hks\Schema\Data\Types;
 
 use DateTime;
 use DateTimeInterface;
-use Hks\Schema\Data\Collections\TimeRanges;
-use Hks\Schema\Data\Collections\WeekDays;
 use Hks\Schema\Data\Contracts\Arrayable;
 use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Contracts\Localizable;
@@ -42,8 +40,7 @@ readonly class OpeningHours extends DataType implements Arrayable, Htmlable, Loc
 
     public static function fromArray(array $value): static
     {
-        $weekDaysByTimeRanges = [];
-        $timeRangesByKey = [];
+        $specifications = [];
 
         foreach (WeekDay::cases() as $weekDay) {
             $items = $value[$weekDay->key()] ?? [];
@@ -52,43 +49,40 @@ readonly class OpeningHours extends DataType implements Arrayable, Htmlable, Loc
                 continue;
             }
 
-            $timeRanges = new TimeRanges(array_map(
-                static fn (array $item) => TimeRange::from($item['timespan']),
-                $items,
-            ));
-
-            $key = $timeRanges->toString();
-
-            $weekDaysByTimeRanges[$key][] = $weekDay;
-            $timeRangesByKey[$key] ??= $timeRanges;
+            $specifications[] = OpeningHoursSpecification::fromArray([
+                'weekDays' => [$weekDay->name()],
+                'timeRanges' => array_column($items, 'timespan'),
+            ]);
         }
 
-        $specifications = [];
-
-        foreach ($weekDaysByTimeRanges as $key => $weekDays) {
-            $specifications[] = new OpeningHoursSpecification(
-                weekDays: new WeekDays($weekDays),
-                timeRanges: $timeRangesByKey[$key],
-            );
-        }
-
-        return new static(
-            specifications: $specifications,
-            exceptions: array_map(
-                OpeningHoursException::from(...),
-                $value['exceptions'] ?? [],
-            ),
+        $exceptions = array_map(
+            OpeningHoursException::from(...),
+            $value['exceptions'] ?? [],
         );
+
+        return (new static($specifications, $exceptions))->simplify();
     }
 
     public function isOpen(): bool
     {
-        throw new \Exception('Not implemented');
+        return $this->isOpenAt(new DateTime());
     }
 
     public function isOpenAt(DateTimeInterface $dateTime): bool
     {
-        throw new \Exception('Not implemented');
+        $exception = $this->exceptionFor($dateTime);
+
+        if ($exception !== null) {
+            return $exception->timeRange()->contains($dateTime);
+        }
+
+        $specification = $this->for($dateTime);
+
+        if ($specification !== null) {
+            return $specification->timeRanges()->contains($dateTime);
+        }
+
+        return false;
     }
 
     public function isClosed(): bool
@@ -101,19 +95,14 @@ readonly class OpeningHours extends DataType implements Arrayable, Htmlable, Loc
         return ! $this->isOpenAt($dateTime);
     }
 
-    public function for(WeekDay|DateTimeInterface $weekDay): ?OpeningHoursSpecification
+    public function hasException(): bool
     {
-        throw new \Exception('Not implemented');
+        return $this->hasExceptionAt(new DateTime());
     }
 
-    public function forToday(): ?OpeningHoursSpecification
+    public function hasExceptionAt(DateTimeInterface $dateTime): bool
     {
-        return $this->for(new DateTime('today'));
-    }
-
-    public function forTomorrow(): ?OpeningHoursSpecification
-    {
-        return $this->for(new DateTime('tomorrow'));
+        return $this->exceptionFor($dateTime) !== null;
     }
 
     /** @return OpeningHoursSpecification[] */
@@ -128,29 +117,81 @@ readonly class OpeningHours extends DataType implements Arrayable, Htmlable, Loc
         return $this->exceptions;
     }
 
+    public function for(WeekDay|DateTimeInterface $weekDay): ?OpeningHoursSpecification
+    {
+        $weekDay = $weekDay instanceof DateTimeInterface ? WeekDay::of($weekDay) : $weekDay;
+
+        foreach ($this->specifications as $specification) {
+            if ($specification->contains($weekDay)) {
+                return $specification;
+            }
+        }
+
+        return null;
+    }
+
+    public function forToday(): ?OpeningHoursSpecification
+    {
+        return $this->for(new DateTime('today'));
+    }
+
+    public function forTomorrow(): ?OpeningHoursSpecification
+    {
+        return $this->for(new DateTime('tomorrow'));
+    }
+
+    public function exceptionFor(DateTimeInterface $dateTime): ?OpeningHoursException
+    {
+        foreach ($this->exceptions as $exception) {
+            if ($exception->contains($dateTime)) {
+                return $exception;
+            }
+        }
+
+        return null;
+    }
+
     public function simplify(): static
     {
-        throw new \Exception('Not implemented');
-    }
+        $groups = [];
 
-    public function toArray(): array
-    {
-        throw new \Exception('Not implemented');
-    }
+        foreach ($this->specifications as $specification) {
+            $timeRanges = $specification->timeRanges()->simplify();
+            $key = $timeRanges->toString();
 
-    public function toSchema(): array
-    {
-        throw new \Exception('Not implemented');
+            $groups[$key] ??= [
+                'weekDays' => [],
+                'timeRanges' => $timeRanges->toArray(),
+            ];
+
+            foreach ($specification->weekDays() as $weekDay) {
+                $groups[$key]['weekDays'][] = $weekDay->name();
+            }
+        }
+
+        return new static(
+            specifications: array_values(array_map(
+                OpeningHoursSpecification::fromArray(...),
+                $groups,
+            )),
+            exceptions: $this->exceptions,
+        );
     }
 
     public function toString(): string
     {
-        throw new \Exception('Not implemented');
+        return implode('; ', array_map(
+            fn (OpeningHoursSpecification $specification) => $specification->toString(),
+            $this->specifications,
+        ));
     }
 
     public function toLocaleString(?string $locale = null, array $options = []): string
     {
-        throw new \Exception('Not implemented');
+        return implode('; ', array_map(
+            fn (OpeningHoursSpecification $specification) => $specification->toLocaleString($locale, $options),
+            $this->specifications,
+        ));
     }
 
     public function toHtml(array $attributes = []): string
@@ -159,5 +200,34 @@ readonly class OpeningHours extends DataType implements Arrayable, Htmlable, Loc
             'item' => $this,
             'attrs' => $attributes,
         ]);
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'specifications' => array_map(
+                fn (OpeningHoursSpecification $specification) => $specification->toArray(),
+                $this->specifications,
+            ),
+            'exceptions' => array_map(
+                fn (OpeningHoursException $exception) => $exception->toArray(),
+                $this->exceptions,
+            ),
+        ];
+    }
+
+    public function toStructuredData(): array
+    {
+        $graph = [];
+
+        foreach ($this->specifications as $specification) {
+            array_push($graph, ...$specification->toStructuredData());
+        }
+
+        foreach ($this->exceptions as $exception) {
+            $graph[] = $exception->toStructuredData();
+        }
+
+        return $graph;
     }
 }

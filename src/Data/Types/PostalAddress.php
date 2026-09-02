@@ -185,25 +185,6 @@ readonly class PostalAddress extends DataType implements Arrayable, Localizable
         return I18n::translate("hksagentur.schema.country.{$countryCode}", $this->country(), $locale);
     }
 
-    public function toArray(): array
-    {
-        return [
-            'streetAddress' => $this->streetAddress,
-            'postalCode' => $this->postalCode,
-            'addressLocality' => $this->locality,
-            'addressRegion' => $this->region,
-            'addressCountry' => $this->country,
-        ];
-    }
-
-    public function toSchema(): array
-    {
-        return [
-            '@type' => 'PostalAddress',
-            ...$this->toArray(),
-        ];
-    }
-
     public function toString(): string
     {
         return $this->toLocaleString();
@@ -223,15 +204,23 @@ readonly class PostalAddress extends DataType implements Arrayable, Localizable
         ]);
     }
 
-    protected function getTemplateData(?string $locale = null): array
+    public function toArray(): array
     {
-        $addressData = $this->toArray();
+        return [
+            'streetAddress' => $this->streetAddress,
+            'postalCode' => $this->postalCode,
+            'addressLocality' => $this->locality,
+            'addressRegion' => $this->region,
+            'addressCountry' => $this->country,
+        ];
+    }
 
-        if ($countryName = $this->countryName($locale)) {
-            $addressData['addressCountry'] = $countryName;
-        }
-
-        return array_filter($addressData);
+    public function toStructuredData(): array
+    {
+        return [
+            '@type' => 'PostalAddress',
+            ...$this->toArray(),
+        ];
     }
 
     protected function render(string $mode, ?string $locale = null): string
@@ -267,6 +256,17 @@ readonly class PostalAddress extends DataType implements Arrayable, Localizable
             'html' => implode("<br>\n", $addressLines),
             default => implode("\n", $addressLines),
         };
+    }
+
+    protected function getTemplateData(?string $locale = null): array
+    {
+        $addressData = $this->toArray();
+
+        if ($countryName = $this->countryName($locale)) {
+            $addressData['addressCountry'] = $countryName;
+        }
+
+        return array_filter($addressData);
     }
 
     protected function prepareTemplateData(string $mode, array $templateData): array
