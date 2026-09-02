@@ -2,18 +2,14 @@
 
 namespace Hks\Schema\Data;
 
-use Hks\Schema\Data\Contracts\Arrayable;
-use Hks\Schema\Data\Contracts\Htmlable;
-use Hks\Schema\Data\Contracts\Schemable;
 use Hks\Schema\Data\Types\EmailAddress;
 use Hks\Schema\Data\Types\GeoCoordinate;
 use Hks\Schema\Data\Types\PhoneNumber;
 use Hks\Schema\Data\Types\PostalAddress;
 use Hks\Schema\Data\Types\Url;
 use Kirby\Cms\App;
-use Stringable;
 
-readonly class Organization implements Arrayable, Htmlable, Stringable, Schemable
+readonly class Organization extends DataObject
 {
     public function __construct(
         public string $name,
@@ -24,6 +20,19 @@ readonly class Organization implements Arrayable, Htmlable, Stringable, Schemabl
         public ?PhoneNumber $fax = null,
         public ?Url $website = null,
     ) {
+    }
+
+    public static function fromArray(array $value): static
+    {
+        return new static(
+            name: $value['name'] ?? '',
+            address: isset($value['address']) ? PostalAddress::tryFrom($value['address']) : null,
+            coordinates: isset($value['coordinates']) ? GeoCoordinate::tryFrom($value['coordinates']) : null,
+            email: isset($value['email']) ? EmailAddress::tryFrom($value['email']) : null,
+            telephone: isset($value['telephone']) ? PhoneNumber::tryFrom($value['telephone']) : null,
+            fax: isset($value['fax']) ? PhoneNumber::tryFrom($value['fax']) : null,
+            website: isset($value['website']) ? Url::tryFrom($value['website']) : null,
+        );
     }
 
     public function name(): string
@@ -61,6 +70,14 @@ readonly class Organization implements Arrayable, Htmlable, Stringable, Schemabl
         return $this->website;
     }
 
+    public function toHtml(array $attributes = []): string
+    {
+        return App::instance()->snippet('schema/organization', [
+            'item' => $this,
+            'attrs' => $attributes,
+        ]);
+    }
+
     public function toArray(): array
     {
         return [
@@ -74,10 +91,10 @@ readonly class Organization implements Arrayable, Htmlable, Stringable, Schemabl
         ];
     }
 
-    public function toStructuredData(): array
+    public function toStructuredData(string $type = 'Organization'): array
     {
         return array_filter([
-            '@type' => 'Organization',
+            '@type' => $type,
             'name' => $this->name,
             'address' => $this->address?->toStructuredData(),
             'email' => $this->email?->value,
@@ -90,23 +107,5 @@ readonly class Organization implements Arrayable, Htmlable, Stringable, Schemabl
                 'geo' => $this->coordinates?->toStructuredData(),
             ]),
         ]);
-    }
-
-    public function toHtml(array $attributes = []): string
-    {
-        return App::instance()->snippet('schema/organization', [
-            'item' => $this,
-            'attrs' => $attributes,
-        ]);
-    }
-
-    public function toString(): string
-    {
-        return $this->toHtml();
-    }
-
-    public function __toString(): string
-    {
-        return $this->toString();
     }
 }

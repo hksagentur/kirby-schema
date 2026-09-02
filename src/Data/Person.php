@@ -2,18 +2,14 @@
 
 namespace Hks\Schema\Data;
 
-use Hks\Schema\Data\Contracts\Arrayable;
-use Hks\Schema\Data\Contracts\Htmlable;
-use Hks\Schema\Data\Contracts\Schemable;
 use Hks\Schema\Data\Types\EmailAddress;
 use Hks\Schema\Data\Types\ImageUrl;
 use Hks\Schema\Data\Types\Markdown;
 use Hks\Schema\Data\Types\PersonName;
 use Hks\Schema\Data\Types\PhoneNumber;
 use Kirby\Cms\App;
-use Stringable;
 
-readonly class Person implements Arrayable, Htmlable, Stringable, Schemable
+readonly class Person extends DataObject
 {
     public function __construct(
         public PersonName $name,
@@ -23,6 +19,18 @@ readonly class Person implements Arrayable, Htmlable, Stringable, Schemable
         public ?PhoneNumber $telephone = null,
         public ?PhoneNumber $fax = null,
     ) {
+    }
+
+    public static function fromArray(array $value): static
+    {
+        return new static(
+            name: PersonName::tryFrom($value['name'] ?? ''),
+            image: isset($value['image']) ? ImageUrl::tryFrom($value['image']) : null,
+            description: isset($value['description']) ? Markdown::tryFrom($value['description']) : null,
+            email: isset($value['email']) ? EmailAddress::tryFrom($value['email']) : null,
+            telephone: isset($value['telephone']) ? PhoneNumber::tryFrom($value['telephone']) : null,
+            fax: isset($value['fax']) ? PhoneNumber::tryFrom($value['fax']) : null,
+        );
     }
 
     public function name(): PersonName
@@ -55,6 +63,14 @@ readonly class Person implements Arrayable, Htmlable, Stringable, Schemable
         return $this->fax;
     }
 
+    public function toHtml(array $attributes = []): string
+    {
+        return App::instance()->snippet('schema/person', [
+            'item' => $this,
+            'attrs' => $attributes,
+        ]);
+    }
+
     public function toArray(): array
     {
         return [
@@ -67,10 +83,10 @@ readonly class Person implements Arrayable, Htmlable, Stringable, Schemable
         ];
     }
 
-    public function toStructuredData(): array
+    public function toStructuredData(string $type = 'Person'): array
     {
         return array_filter([
-            '@type' => 'Person',
+            '@type' => $type,
             'name' => $this->name->displayName,
             'givenName' => $this->name->givenName,
             'additionalName' => $this->name->additionalName,
@@ -80,23 +96,5 @@ readonly class Person implements Arrayable, Htmlable, Stringable, Schemable
             'telephone' => $this->telephone?->value,
             'faxNumber' => $this->fax?->value,
         ]);
-    }
-
-    public function toHtml(array $attributes = []): string
-    {
-        return App::instance()->snippet('schema/person', [
-            'item' => $this,
-            'attrs' => $attributes,
-        ]);
-    }
-
-    public function toString(): string
-    {
-        return $this->toHtml();
-    }
-
-    public function __toString(): string
-    {
-        return $this->toString();
     }
 }
