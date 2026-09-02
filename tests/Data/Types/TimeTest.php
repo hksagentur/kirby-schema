@@ -60,4 +60,22 @@ class TimeTest extends TestCase
         $this->assertTrue(Time::from('09:00')->isAfter(Time::from('08:00')));
         $this->assertTrue(Time::from('09:00')->isEqualTo(Time::from('09:00')));
     }
+
+    public function testMinReturnsTheEarlierOfBothTimes(): void
+    {
+        $earlier = Time::from('08:00');
+        $later = Time::from('09:00');
+
+        $this->assertSame($earlier, $earlier->min($later));
+        $this->assertSame($earlier, $later->min($earlier));
+    }
+
+    public function testMaxReturnsTheLaterOfBothTimes(): void
+    {
+        $earlier = Time::from('08:00');
+        $later = Time::from('09:00');
+
+        $this->assertSame($later, $earlier->max($later));
+        $this->assertSame($later, $later->max($earlier));
+    }
 }

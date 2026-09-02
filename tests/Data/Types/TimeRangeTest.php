@@ -63,4 +63,11 @@ class TimeRangeTest extends TestCase
 
         $this->assertTrue($earlier->compare($later) < 0);
     }
+
+    public function testMergeSpansTheEarliestStartAndLatestEndOfBothRanges(): void
+    {
+        $merged = TimeRange::from(['09:00', '12:00'])->merge(TimeRange::from(['11:00', '14:00']));
+
+        $this->assertSame('09:00:00/14:00:00', $merged->toString());
+    }
 }

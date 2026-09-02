@@ -31,5 +31,15 @@ trait ComparesMoments
         return $this->isAfterOrEqualTo($start) && $this->isBeforeOrEqualTo($end);
     }
 
+    public function min(int|string|self $other): self
+    {
+        return $this->isBeforeOrEqualTo($other) ? $this : static::from($other);
+    }
+
+    public function max(int|string|self $other): self
+    {
+        return $this->isAfterOrEqualTo($other) ? $this : static::from($other);
+    }
+
     abstract public function compare(self $other): int;
 }

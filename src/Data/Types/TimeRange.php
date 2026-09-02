@@ -2,6 +2,7 @@
 
 namespace Hks\Schema\Data\Types;
 
+use DateTimeInterface;
 use Hks\Schema\Data\Contracts\Arrayable;
 use Hks\Schema\Data\Contracts\Comparable;
 use Hks\Schema\Data\Contracts\Htmlable;
@@ -75,7 +76,17 @@ readonly class TimeRange extends DataType implements Arrayable, Comparable, Html
         return $this->start->isAfter($this->end);
     }
 
-    public function contains(string|Time $time): bool
+    public function start(): Time
+    {
+        return $this->start;
+    }
+
+    public function end(): Time
+    {
+        return $this->end;
+    }
+
+    public function contains(string|Time|DateTimeInterface $time): bool
     {
         return Time::from($time)->isBetween($this->start, $this->end);
     }
@@ -90,6 +101,14 @@ readonly class TimeRange extends DataType implements Arrayable, Comparable, Html
         return $this->contains($other->start) || $this->contains($other->end);
     }
 
+    public function merge(self $other): self
+    {
+        return new self(
+            start: $this->start->min($other->start),
+            end: $this->end->max($other->end),
+        );
+    }
+
     public function compare(mixed $other): int
     {
         if (! ($other instanceof self)) {
@@ -97,16 +116,6 @@ readonly class TimeRange extends DataType implements Arrayable, Comparable, Html
         }
 
         return $this->start->compare($other->start);
-    }
-
-    public function start(): Time
-    {
-        return $this->start;
-    }
-
-    public function end(): Time
-    {
-        return $this->end;
     }
 
     public function format(int|string|null $timeFormat = null, string $timeSeparator = ' – ', ?string $locale = null): string
