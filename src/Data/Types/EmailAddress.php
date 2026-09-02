@@ -79,15 +79,6 @@ readonly class EmailAddress extends StringType implements Arrayable
         return new static(Idn::decodeEmail($this->value));
     }
 
-    public function toArray(): array
-    {
-        return [
-            'value' => $this->value,
-            'localPart' => $this->localPart,
-            'domain' => $this->domain,
-        ];
-    }
-
     public function toHtml(array $attributes = []): string
     {
         return $this->toLink($attributes);
@@ -96,5 +87,14 @@ readonly class EmailAddress extends StringType implements Arrayable
     public function toLink(array $attributes = []): string
     {
         return Html::email($this->value, attr: $attributes);
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'value' => $this->value,
+            'localPart' => $this->localPart,
+            'domain' => $this->domain,
+        ];
     }
 }

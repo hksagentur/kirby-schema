@@ -59,37 +59,22 @@ readonly class Length extends DataType implements Arrayable, Htmlable, Localizab
 
     public function isGreaterThan(int|float|self $other): bool
     {
-        return $this->toMeters()->value() > static::of($other)->toMeters()->value();
+        return $this->toMeters()->value() > static::from($other)->toMeters()->value();
     }
 
     public function isGreaterThanOrEqualTo(int|float|self $other): bool
     {
-        return $this->toMeters()->value() >= static::of($other)->toMeters()->value();
+        return $this->toMeters()->value() >= static::from($other)->toMeters()->value();
     }
 
     public function isSmallerThan(int|float|self $other): bool
     {
-        return $this->toMeters()->value() < static::of($other)->toMeters()->value();
+        return $this->toMeters()->value() < static::from($other)->toMeters()->value();
     }
 
     public function isSmallerThanOrEqualTo(int|float|self $other): bool
     {
-        return $this->toMeters()->value() <= static::of($other)->toMeters()->value();
-    }
-
-    public function equals(DataType $other): bool
-    {
-        if (! ($other instanceof self)) {
-            return false;
-        }
-
-        $delta = abs($this->toMeters()->value() - $other->toMeters()->value());
-
-        if ($delta >= PHP_FLOAT_EPSILON) {
-            return false;
-        }
-
-        return true;
+        return $this->toMeters()->value() <= static::from($other)->toMeters()->value();
     }
 
     public function value(): float
@@ -113,6 +98,21 @@ readonly class Length extends DataType implements Arrayable, Htmlable, Localizab
             $this->toMeters()->value(),
             $this->unit()->system(),
         ));
+    }
+
+    public function equals(DataType $other): bool
+    {
+        if (! ($other instanceof self)) {
+            return false;
+        }
+
+        $delta = abs($this->toMeters()->value() - $other->toMeters()->value());
+
+        if ($delta >= PHP_FLOAT_EPSILON) {
+            return false;
+        }
+
+        return true;
     }
 
     public function add(int|float|self $other): static
@@ -156,23 +156,6 @@ readonly class Length extends DataType implements Arrayable, Htmlable, Localizab
         return $this->convertTo(LengthUnit::Kilometer);
     }
 
-    public function toArray(): array
-    {
-        return [
-            'value' => $this->value(),
-            'unit' => $this->unit()->symbol(),
-        ];
-    }
-
-    public function toHtml(array $attributes = []): string
-    {
-        return Html::tag('data', $this->toLocaleString(), [
-            'value' => $this->toMeters()->value(),
-            'data-unit' => $this->unit()->symbol(),
-            ...$attributes,
-        ]);
-    }
-
     public function toString(): string
     {
         return sprintf(
@@ -189,6 +172,23 @@ readonly class Length extends DataType implements Arrayable, Htmlable, Localizab
             I18n::formatNumber($this->value(), $locale),
             $this->unit()->symbol(),
         );
+    }
+
+    public function toHtml(array $attributes = []): string
+    {
+        return Html::tag('data', $this->toLocaleString(), [
+            'value' => $this->toMeters()->value(),
+            'data-unit' => $this->unit()->symbol(),
+            ...$attributes,
+        ]);
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'value' => $this->value(),
+            'unit' => $this->unit()->symbol(),
+        ];
     }
 
     public function jsonSerialize(): float

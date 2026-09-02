@@ -83,6 +83,36 @@ readonly class Fraction extends DataType implements Arrayable
         }
     }
 
+    public function isWhole(): bool
+    {
+        return $this->simplify()->denominator() === 1;
+    }
+
+    public function isCanonical(): bool
+    {
+        return $this->greatestCommonDivisor() === 1;
+    }
+
+    public function isLessThan(int|string|self $other): bool
+    {
+        return $this->compareTo($other) < 0;
+    }
+
+    public function isLessThanOrEqualTo(int|string|self $other): bool
+    {
+        return $this->compareTo($other) <= 0;
+    }
+
+    public function isGreaterThan(int|string|self $other): bool
+    {
+        return $this->compareTo($other) > 0;
+    }
+
+    public function isGreaterThanOrEqualTo(int|string|self $other): bool
+    {
+        return $this->compareTo($other) >= 0;
+    }
+
     public function numerator(): int
     {
         return $this->numerator;
@@ -174,47 +204,9 @@ readonly class Fraction extends DataType implements Arrayable
         );
     }
 
-    public function isWhole(): bool
-    {
-        return $this->simplify()->denominator() === 1;
-    }
-
-    public function isCanonical(): bool
-    {
-        return $this->greatestCommonDivisor() === 1;
-    }
-
-    public function isLessThan(int|string|self $other): bool
-    {
-        return $this->compareTo($other) < 0;
-    }
-
-    public function isLessThanOrEqualTo(int|string|self $other): bool
-    {
-        return $this->compareTo($other) <= 0;
-    }
-
-    public function isGreaterThan(int|string|self $other): bool
-    {
-        return $this->compareTo($other) > 0;
-    }
-
-    public function isGreaterThanOrEqualTo(int|string|self $other): bool
-    {
-        return $this->compareTo($other) >= 0;
-    }
-
     public function compareTo(int|string|self $other): int
     {
         return $this->subtract($other)->numerator() <=> 0;
-    }
-
-    public function toArray(): array
-    {
-        return [
-            'numerator' => $this->numerator,
-            'denominator' => $this->denominator,
-        ];
     }
 
     public function toFloat(): float
@@ -248,6 +240,14 @@ readonly class Fraction extends DataType implements Arrayable
                 Html::tag('mn', (string) $this->denominator),
             ]),
         ], $attributes);
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'numerator' => $this->numerator,
+            'denominator' => $this->denominator,
+        ];
     }
 
     protected function greatestCommonDivisor(): int

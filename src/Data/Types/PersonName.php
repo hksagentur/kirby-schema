@@ -107,6 +107,11 @@ readonly class PersonName extends DataType implements Arrayable
         return Str::slug($this->familyName ?? $this->displayName);
     }
 
+    public function toString(): string
+    {
+        return $this->displayName();
+    }
+
     public function toArray(): array
     {
         return [
@@ -116,10 +121,5 @@ readonly class PersonName extends DataType implements Arrayable
             'familyName' => $this->familyName,
             'honorificPrefix' => $this->honorificPrefix,
         ];
-    }
-
-    public function toString(): string
-    {
-        return $this->displayName();
     }
 }

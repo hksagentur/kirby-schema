@@ -139,6 +139,16 @@ readonly class PhoneNumber extends StringType implements Arrayable
         ]);
     }
 
+    public function toHtml(array $attributes = []): string
+    {
+        return $this->toLink($attributes);
+    }
+
+    public function toLink(array $attributes = []): string
+    {
+        return Html::tel($this->value(), attr: $attributes);
+    }
+
     public function toArray(): array
     {
         return [
@@ -148,15 +158,5 @@ readonly class PhoneNumber extends StringType implements Arrayable
             'nationalSignificantNumber' => $this->nationalSignificantNumber,
             'subscriberNumber' => $this->subscriberNumber,
         ];
-    }
-
-    public function toHtml(array $attributes = []): string
-    {
-        return $this->toLink($attributes);
-    }
-
-    public function toLink(array $attributes = []): string
-    {
-        return Html::tel($this->value(), attr: $attributes);
     }
 }

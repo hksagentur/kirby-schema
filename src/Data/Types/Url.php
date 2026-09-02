@@ -178,6 +178,16 @@ readonly class Url extends StringType implements Arrayable
         return $this->with(['host' => Idn::decode($this->host)]);
     }
 
+    public function toHtml(array $attributes = []): string
+    {
+        return $this->toLink($attributes);
+    }
+
+    public function toLink(array $attributes = []): string
+    {
+        return Html::link($this->value(), attr: $attributes);
+    }
+
     public function toArray(): array
     {
         return [
@@ -191,16 +201,6 @@ readonly class Url extends StringType implements Arrayable
             'user' => $this->user,
             'pass' => $this->password,
         ];
-    }
-
-    public function toHtml(array $attributes = []): string
-    {
-        return $this->toLink($attributes);
-    }
-
-    public function toLink(array $attributes = []): string
-    {
-        return Html::link($this->value(), attr: $attributes);
     }
 
     protected function buildUrl(array $parts): string

@@ -201,15 +201,6 @@ readonly class Time extends DataType implements Arrayable, Comparable, Htmlable,
         return $formatter->format($this->toDateTime());
     }
 
-    public function toSecondOfDay(): int
-    {
-        return (
-            $this->hour * self::SECONDS_PER_HOUR +
-            $this->minute * self::SECONDS_PER_MINUTE +
-            $this->second
-        );
-    }
-
     public function toDateTime(?DateTimeInterface $date = null): DateTimeInterface
     {
         return DateTime::createFromInterface(
@@ -217,13 +208,13 @@ readonly class Time extends DataType implements Arrayable, Comparable, Htmlable,
         )->setTime($this->hour, $this->minute, $this->second);
     }
 
-    public function toArray(): array
+    public function toSecondOfDay(): int
     {
-        return [
-            'hour' => $this->hour,
-            'minute' => $this->minute,
-            'second' => $this->second,
-        ];
+        return (
+            $this->hour * self::SECONDS_PER_HOUR +
+            $this->minute * self::SECONDS_PER_MINUTE +
+            $this->second
+        );
     }
 
     public function toString(): string
@@ -251,6 +242,15 @@ readonly class Time extends DataType implements Arrayable, Comparable, Htmlable,
     public function toHtml(array $attributes = []): string
     {
         return Html::tag('time', $this->toString(), $attributes);
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'hour' => $this->hour,
+            'minute' => $this->minute,
+            'second' => $this->second,
+        ];
     }
 
     public function jsonSerialize(): string
