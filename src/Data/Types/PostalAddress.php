@@ -2,6 +2,7 @@
 
 namespace Hks\Schema\Data\Types;
 
+use Hks\Schema\Data\Attributes\ArrayInput;
 use Hks\Schema\Data\Contracts\Arrayable;
 use Hks\Schema\Data\Contracts\Localizable;
 use InvalidArgumentException;
@@ -13,6 +14,7 @@ use Kirby\Toolkit\Str;
 use RuntimeException;
 use Throwable;
 
+#[ArrayInput]
 readonly class PostalAddress extends DataType implements Arrayable, Localizable
 {
     public const string ISO_COUNTRY_CODE = '/^[A-Z]{2,3}$/';

@@ -5,6 +5,7 @@ namespace Hks\Schema\Data;
 use Hks\Schema\Data\Types\EmailAddress;
 use Hks\Schema\Data\Types\PersonName;
 use Hks\Schema\TestCase;
+use InvalidArgumentException;
 
 class DataObjectTest extends TestCase
 {
@@ -45,6 +46,22 @@ class DataObjectTest extends TestCase
         ]);
 
         $this->assertTrue($person->name->isEqualTo(new PersonName('Jane Doe')));
+    }
+
+    public function testFromArrayThrowsWhenARequiredConstructorParameterCannotBeResolved(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        Person::fromArray(['email' => 'jane@example.com']);
+    }
+
+    public function testFromArrayDoesNotRequireANameWhenTheConstructorParameterIsAPlainString(): void
+    {
+        // Unlike `Person::$name` (a `PersonName` `DataType`), `Organization::$name` is a
+        // plain, unvalidated `string` — a missing name has nothing to fail to resolve.
+        $organization = Organization::fromArray([]);
+
+        $this->assertSame('', $organization->name);
     }
 
     public function testToStructuredDataDefaultsToTheClassesOwnSchemaOrgType(): void

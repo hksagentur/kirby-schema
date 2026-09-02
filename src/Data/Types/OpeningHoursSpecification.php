@@ -2,6 +2,7 @@
 
 namespace Hks\Schema\Data\Types;
 
+use Hks\Schema\Data\Attributes\ArrayInput;
 use Hks\Schema\Data\Collections\TimeRanges;
 use Hks\Schema\Data\Collections\WeekDays;
 use Hks\Schema\Data\Contracts\Arrayable;
@@ -12,6 +13,7 @@ use Kirby\Toolkit\A;
 use Kirby\Toolkit\Html;
 use Throwable;
 
+#[ArrayInput]
 readonly class OpeningHoursSpecification extends DataType implements Arrayable, Htmlable, Localizable
 {
     public function __construct(

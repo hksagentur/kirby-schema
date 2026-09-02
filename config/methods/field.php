@@ -1,5 +1,7 @@
 <?php
 
+use Hks\Schema\Data\DataObject;
+use Hks\Schema\Data\Registry;
 use Hks\Schema\Data\Types\DataType;
 use Hks\Schema\Toolkit\I18n;
 use Hks\Schema\Toolkit\Str;
@@ -45,14 +47,32 @@ return [
      * Converts a field value to a data type.
      */
     'toDataType' => function (Field $field, string $name): ?DataType {
+        $class = Registry::dataType($name);
 
+        if (! $class || $field->isEmpty()) {
+            return null;
+        }
+
+        $value = Registry::acceptsArrayInput($class) ? $field->yaml() : $field->toString();
+
+        return $class::tryFrom($value);
     },
 
     /**
      * Converts a field value to a data object.
      */
     'toDataObject' => function (Field $field, string $name): ?DataObject {
+        $class = Registry::dataObject($name);
 
+        if (! $class || $field->isEmpty()) {
+            return null;
+        }
+
+        try {
+            return $class::fromArray($field->yaml());
+        } catch (Throwable) {
+            return null;
+        }
     },
 
 ];

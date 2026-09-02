@@ -1,5 +1,8 @@
 <?php
 
+use Hks\Schema\Data;
+use Hks\Schema\Data\Types;
+
 Kirby::plugin('hksagentur/schema', [
     'options' => [
         'defaultCountry' => 'DE',
@@ -37,6 +40,31 @@ Kirby::plugin('hksagentur/schema', [
             'US' => 'localityRegionPostalCode',
         ],
         'blueprintAliases' => [],
+        'dataTypes' => [
+            'distance' => Types\Distance::class,
+            'email' => Types\EmailAddress::class,
+            'file-url' => Types\FileUrl::class,
+            'fraction' => Types\Fraction::class,
+            'geo-coordinate' => Types\GeoCoordinate::class,
+            'image-url' => Types\ImageUrl::class,
+            'length' => Types\Length::class,
+            'markdown' => Types\Markdown::class,
+            'markup' => Types\Markup::class,
+            'opening-hours' => Types\OpeningHours::class,
+            'opening-hours-exception' => Types\OpeningHoursException::class,
+            'opening-hours-specification' => Types\OpeningHoursSpecification::class,
+            'person-name' => Types\PersonName::class,
+            'phone-number' => Types\PhoneNumber::class,
+            'postal-address' => Types\PostalAddress::class,
+            'text' => Types\Text::class,
+            'time' => Types\Time::class,
+            'time-range' => Types\TimeRange::class,
+            'url' => Types\Url::class,
+        ],
+        'dataObjects' => [
+            'organization' => Data\Organization::class,
+            'person' => Data\Person::class,
+        ],
     ],
     'blueprints' => require __DIR__ . '/config/blueprints.php',
     'snippets' => require __DIR__ . '/config/snippets.php',

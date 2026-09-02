@@ -4,6 +4,7 @@ namespace Hks\Schema\Data\Types;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use Hks\Schema\Data\Attributes\ArrayInput;
 use Hks\Schema\Data\Contracts\Arrayable;
 use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Contracts\Schemable;
@@ -11,6 +12,7 @@ use Hks\Schema\Data\Exceptions\ValidationException;
 use Kirby\Toolkit\A;
 use Throwable;
 
+#[ArrayInput]
 readonly class OpeningHoursException extends DataType implements Arrayable, Htmlable, Schemable
 {
     public function __construct(
