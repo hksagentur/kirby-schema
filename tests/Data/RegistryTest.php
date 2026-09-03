@@ -3,9 +3,9 @@
 namespace Hks\Schema\Data;
 
 use Hks\Schema\Data\Types\EmailAddress;
-use Hks\Schema\Data\Types\PostalAddress;
-use Hks\Schema\Data\Types\Time;
+use Hks\Schema\Data\Types\Fraction;
 use Hks\Schema\TestCase;
+use stdClass;
 
 class RegistryTest extends TestCase
 {
@@ -19,6 +19,16 @@ class RegistryTest extends TestCase
         $this->assertNull(Registry::dataType('does-not-exist'));
     }
 
+    public function testDataTypeAcceptsAClassStringInsteadOfARegisteredAlias(): void
+    {
+        $this->assertSame(Fraction::class, Registry::dataType(Fraction::class));
+    }
+
+    public function testDataTypeReturnsNullForAClassStringThatIsNotADataType(): void
+    {
+        $this->assertNull(Registry::dataType(stdClass::class));
+    }
+
     public function testDataObjectResolvesARegisteredNameToItsClass(): void
     {
         $this->assertSame(Person::class, Registry::dataObject('person'));
@@ -29,14 +39,13 @@ class RegistryTest extends TestCase
         $this->assertNull(Registry::dataObject('does-not-exist'));
     }
 
-    public function testAcceptsArrayInputIsTrueForATypeMarkedWithTheAttribute(): void
+    public function testDataObjectAcceptsAClassStringInsteadOfARegisteredAlias(): void
     {
-        $this->assertTrue(Registry::acceptsArrayInput(PostalAddress::class));
+        $this->assertSame(Person::class, Registry::dataObject(Person::class));
     }
 
-    public function testAcceptsArrayInputIsFalseForATypeWithoutTheAttribute(): void
+    public function testDataObjectReturnsNullForAClassStringThatIsNotADataObject(): void
     {
-        $this->assertFalse(Registry::acceptsArrayInput(EmailAddress::class));
-        $this->assertFalse(Registry::acceptsArrayInput(Time::class));
+        $this->assertNull(Registry::dataObject(stdClass::class));
     }
 }

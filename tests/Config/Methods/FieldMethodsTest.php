@@ -4,6 +4,7 @@ namespace Hks\Schema\Config\Methods;
 
 use Hks\Schema\Data\Person;
 use Hks\Schema\Data\Types\EmailAddress;
+use Hks\Schema\Data\Types\Fraction;
 use Hks\Schema\Data\Types\PersonName;
 use Hks\Schema\Data\Types\PostalAddress;
 use Hks\Schema\Data\Types\Time;
@@ -37,6 +38,15 @@ class FieldMethodsTest extends TestCase
         $this->assertInstanceOf(PostalAddress::class, $address);
         $this->assertSame('Main St 1', $address->streetAddress());
         $this->assertSame('Springfield', $address->locality());
+    }
+
+    public function testToDataTypeAcceptsAClassStringInsteadOfARegisteredAlias(): void
+    {
+        $field = new Field(null, 'ratio', '16/9');
+
+        $this->assertTrue(
+            $field->toDataType(Fraction::class)->isEqualTo(new Fraction(16, 9))
+        );
     }
 
     public function testToDataTypeReturnsNullForAnUnregisteredName(): void

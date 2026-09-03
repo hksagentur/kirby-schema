@@ -44,7 +44,9 @@ return [
     // Converters
 
     /**
-     * Converts a field value to a data type.
+     * Converts a field value to a data type. `$name` accepts either a
+     * registered alias (`'fraction'`) or a `DataType` class-string
+     * (`Fraction::class`).
      */
     'toDataType' => function (Field $field, string $name): ?DataType {
         $class = Registry::dataType($name);
@@ -53,13 +55,15 @@ return [
             return null;
         }
 
-        $value = Registry::acceptsArrayInput($class) ? $field->yaml() : $field->toString();
+        $value = $class::acceptsArrayInput() ? $field->yaml() : $field->toString();
 
         return $class::tryFrom($value);
     },
 
     /**
-     * Converts a field value to a data object.
+     * Converts a field value to a data object. `$name` accepts either a
+     * registered alias (`'person'`) or a `DataObject` class-string
+     * (`Person::class`).
      */
     'toDataObject' => function (Field $field, string $name): ?DataObject {
         $class = Registry::dataObject($name);

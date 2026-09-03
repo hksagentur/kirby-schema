@@ -2,12 +2,19 @@
 
 namespace Hks\Schema\Data\Types;
 
+use Hks\Schema\Data\Attributes\ArrayInput;
 use Hks\Schema\Data\Contracts\Jsonable;
 use JsonSerializable;
+use ReflectionClass;
 use Stringable;
 
 abstract readonly class DataType implements Jsonable, Stringable, JsonSerializable
 {
+    public static function acceptsArrayInput(): bool
+    {
+        return (new ReflectionClass(static::class))->getAttributes(ArrayInput::class) !== [];
+    }
+
     public function isEqualTo(self $other): bool
     {
         return $this->equals($other);
