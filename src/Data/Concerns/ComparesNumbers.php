@@ -11,7 +11,7 @@ trait ComparesNumbers
         $smallest = $value;
 
         foreach ($others as $other) {
-            if ($other->isSmallerThan($smallest)) {
+            if ($other->isLessThan($smallest)) {
                 $smallest = $other;
             }
         }
@@ -32,25 +32,25 @@ trait ComparesNumbers
         return $greatest;
     }
 
-    public function isGreaterThan(int|float|self $other): bool
+    public function isGreaterThan(mixed $other): bool
     {
-        return $this->compare(static::from($other)) > 0;
+        return $this->compare($other) > 0;
     }
 
-    public function isGreaterThanOrEqualTo(int|float|self $other): bool
+    public function isGreaterThanOrEqualTo(mixed $other): bool
     {
-        return $this->compare(static::from($other)) >= 0;
+        return $this->compare($other) >= 0;
     }
 
-    public function isSmallerThan(int|float|self $other): bool
+    public function isLessThan(mixed $other): bool
     {
-        return $this->compare(static::from($other)) < 0;
+        return $this->compare($other) < 0;
     }
 
-    public function isSmallerThanOrEqualTo(int|float|self $other): bool
+    public function isLessThanOrEqualTo(mixed $other): bool
     {
-        return $this->compare(static::from($other)) <= 0;
+        return $this->compare($other) <= 0;
     }
 
-    abstract public function compare(self $other): int;
+    abstract public function compare(mixed $other): int;
 }

@@ -129,15 +129,6 @@ readonly class TimeRange extends DataType implements Arrayable, Comparable, Html
     }
 
     /** @return string[] */
-    public function valueOf(): array
-    {
-        return [
-            $this->start->toString(),
-            $this->end->toString(),
-        ];
-    }
-
-    /** @return string[] */
     public function toArray(): array
     {
         return [

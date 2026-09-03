@@ -17,4 +17,9 @@ trait ComparesValues
     }
 
     abstract public function equals(DataType $other): bool;
+
+    public function notEquals(DataType $other): bool
+    {
+        return ! $this->equals($other);
+    }
 }

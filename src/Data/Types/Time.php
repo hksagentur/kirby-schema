@@ -142,12 +142,12 @@ readonly class Time extends DataType implements Arrayable, Comparable, Htmlable,
 
     public function isNoon(): bool
     {
-        return $this->valueOf() === 12 * self::SECONDS_PER_HOUR;
+        return $this->value() === 12 * self::SECONDS_PER_HOUR;
     }
 
     public function isMidnight(): bool
     {
-        return $this->valueOf() === 0;
+        return $this->value() === 0;
     }
 
     public function compare(mixed $other): int
@@ -174,7 +174,7 @@ readonly class Time extends DataType implements Arrayable, Comparable, Htmlable,
         return $this->second;
     }
 
-    public function valueOf(): int
+    public function value(): int
     {
         return $this->toSecondOfDay();
     }

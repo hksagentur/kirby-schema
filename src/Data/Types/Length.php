@@ -2,94 +2,48 @@
 
 namespace Hks\Schema\Data\Types;
 
+use Hks\Schema\Data\Concerns\ComparesNumbers;
 use Hks\Schema\Data\Contracts\Arrayable;
+use Hks\Schema\Data\Contracts\Comparable;
 use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Contracts\Localizable;
+use Hks\Schema\Data\Exceptions\TypeMismatchException;
 use Kirby\Toolkit\Html;
 use Kirby\Toolkit\I18n;
-use Throwable;
 
-readonly class Length extends DataType implements Arrayable, Htmlable, Localizable
+readonly class Length extends NumberType implements Arrayable, Comparable, Htmlable, Localizable
 {
+    use ComparesNumbers;
+
     public function __construct(
         public float $value,
         public LengthUnit $unit = LengthUnit::Meter,
     ) {
     }
 
-    public static function from(int|float|self $value): static
-    {
-        return ($value instanceof self) ? $value : new static((float) $value);
-    }
-
-    public static function tryFrom(int|float|self $value): ?static
-    {
-        try {
-            return static::from($value);
-        } catch (Throwable) {
-            return null;
-        }
-    }
-
-    public static function min(self $value, self ...$others): static
-    {
-        $smallest = $value;
-
-        foreach ($others as $other) {
-            if ($other->isSmallerThan($smallest)) {
-                $smallest = $other;
-            }
-        }
-
-        return $smallest;
-    }
-
-    public static function max(self $value, self ...$others): static
-    {
-        $greatest = $value;
-
-        foreach ($others as $other) {
-            if ($other->isGreaterThan($greatest)) {
-                $greatest = $other;
-            }
-        }
-
-        return $greatest;
-    }
-
-    public function isGreaterThan(int|float|self $other): bool
-    {
-        return $this->toMeters()->value() > static::from($other)->toMeters()->value();
-    }
-
-    public function isGreaterThanOrEqualTo(int|float|self $other): bool
-    {
-        return $this->toMeters()->value() >= static::from($other)->toMeters()->value();
-    }
-
     public function isSmallerThan(int|float|self $other): bool
     {
-        return $this->toMeters()->value() < static::from($other)->toMeters()->value();
+        return $this->isLessThan($other);
     }
 
     public function isSmallerThanOrEqualTo(int|float|self $other): bool
     {
-        return $this->toMeters()->value() <= static::from($other)->toMeters()->value();
+        return $this->isLessThanOrEqualTo($other);
     }
 
-    public function value(): float
+    public function isLargerThan(int|float|self $other): bool
     {
-        return $this->value;
+        return $this->isGreaterThan($other);
+    }
+
+    public function isLargerThanOrEqualTo(int|float|self $other): bool
+    {
+        return $this->isGreaterThanOrEqualTo($other);
     }
 
     public function unit(): LengthUnit
     {
         return $this->unit;
-    }
-
-    public function format(?string $locale = null): string
-    {
-        return $this->toLocaleString($locale);
     }
 
     public function normalize(): static
@@ -98,6 +52,37 @@ readonly class Length extends DataType implements Arrayable, Htmlable, Localizab
             $this->toMeters()->value(),
             $this->unit()->system(),
         ));
+    }
+
+    public function add(int|float|self $other): static
+    {
+        $length = new static(
+            $this->toMeters()->value() + static::from($other)->toMeters()->value()
+        );
+
+        return $length->convertTo($this->unit());
+    }
+
+    public function subtract(int|float|self $other): static
+    {
+        $length = new static(
+            $this->toMeters()->value() - static::from($other)->toMeters()->value()
+        );
+
+        return $length->convertTo($this->unit());
+    }
+
+    public function convertTo(LengthUnit $unit): static
+    {
+        return new static(
+            value: $this->value() * $this->unit()->toMeters() / $unit->toMeters(),
+            unit: $unit,
+        );
+    }
+
+    public function format(?string $locale = null): string
+    {
+        return $this->toLocaleString($locale);
     }
 
     public function equals(DataType $other): bool
@@ -115,30 +100,15 @@ readonly class Length extends DataType implements Arrayable, Htmlable, Localizab
         return true;
     }
 
-    public function add(int|float|self $other): static
+    public function compare(mixed $other): int
     {
-        $length = new static(
-            $this->toMeters()->value() + static::of($other)->toMeters()->value()
-        );
+        $length = static::tryFrom($other);
 
-        return $length->convertTo($this->unit());
-    }
+        if (! $length) {
+            throw TypeMismatchException::between($this, $other);
+        }
 
-    public function sub(int|float|self $other): static
-    {
-        $length = new static(
-            $this->toMeters()->value() - static::of($other)->toMeters()->value()
-        );
-
-        return $length->convertTo($this->unit());
-    }
-
-    public function convertTo(LengthUnit $unit): static
-    {
-        return new static(
-            value: $this->value() * $this->unit()->toMeters() / $unit->toMeters(),
-            unit: $unit,
-        );
+        return $this->toMeters()->value() <=> $length->toMeters()->value();
     }
 
     public function toMiles(): static
@@ -159,7 +129,7 @@ readonly class Length extends DataType implements Arrayable, Htmlable, Localizab
     public function toString(): string
     {
         return sprintf(
-            '%f %s',
+            '%f %s',
             $this->value(),
             $this->unit()->symbol(),
         );
@@ -168,7 +138,7 @@ readonly class Length extends DataType implements Arrayable, Htmlable, Localizab
     public function toLocaleString(?string $locale = null): string
     {
         return sprintf(
-            '%s %s',
+            '%s %s',
             I18n::formatNumber($this->value(), $locale),
             $this->unit()->symbol(),
         );

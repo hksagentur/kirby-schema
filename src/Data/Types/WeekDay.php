@@ -28,8 +28,12 @@ enum WeekDay: int implements Comparable, Localizable
         return array_column(static::cases(), column_key: null, index_key: 'name');
     }
 
-    public static function of(DateTimeInterface $date): static
+    public static function of(self|DateTimeInterface $date): static
     {
+        if ($date instanceof self) {
+            return $date;
+        }
+
         return static::from((int) $date->format('N'));
     }
 

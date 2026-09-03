@@ -2,6 +2,7 @@
 
 namespace Hks\Schema\Data\Types;
 
+use Hks\Schema\Data\Concerns\ComparesNumbers;
 use Hks\Schema\Data\Contracts\Arrayable;
 use Hks\Schema\Data\Contracts\Comparable;
 use Hks\Schema\Data\Exceptions\TypeMismatchException;
@@ -15,6 +16,8 @@ use Throwable;
 
 readonly class Fraction extends DataType implements Arrayable, Comparable
 {
+    use ComparesNumbers;
+
     public int $numerator;
     public int $denominator;
 
@@ -95,26 +98,6 @@ readonly class Fraction extends DataType implements Arrayable, Comparable
         return $this->greatestCommonDivisor() === 1;
     }
 
-    public function isLessThan(int|string|self $other): bool
-    {
-        return $this->compare($other) < 0;
-    }
-
-    public function isLessThanOrEqualTo(int|string|self $other): bool
-    {
-        return $this->compare($other) <= 0;
-    }
-
-    public function isGreaterThan(int|string|self $other): bool
-    {
-        return $this->compare($other) > 0;
-    }
-
-    public function isGreaterThanOrEqualTo(int|string|self $other): bool
-    {
-        return $this->compare($other) >= 0;
-    }
-
     public function numerator(): int
     {
         return $this->numerator;
@@ -128,6 +111,11 @@ readonly class Fraction extends DataType implements Arrayable, Comparable
     public function quotient(): float
     {
         return $this->numerator / $this->denominator;
+    }
+
+    public function value(): float
+    {
+        return $this->toFloat();
     }
 
     public function add(int|string|self $other): static

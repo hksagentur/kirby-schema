@@ -12,6 +12,11 @@ class FractionTest extends TestCase
         $this->assertInstanceOf(Comparable::class, Fraction::from('1/2'));
     }
 
+    public function testValueIsAnAliasForToFloat(): void
+    {
+        $this->assertSame(Fraction::from('1/2')->toFloat(), Fraction::from('1/2')->value());
+    }
+
     public function testCompareAcceptsAFloatWithoutLosingPrecision(): void
     {
         $this->assertTrue(Fraction::from('1/2')->compare(0.6) < 0);

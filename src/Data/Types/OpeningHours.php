@@ -121,7 +121,7 @@ readonly class OpeningHours extends DataType implements Arrayable, Htmlable, Loc
 
     public function for(WeekDay|DateTimeInterface $weekDay): ?OpeningHoursSpecification
     {
-        $weekDay = $weekDay instanceof DateTimeInterface ? WeekDay::of($weekDay) : $weekDay;
+        $weekDay = WeekDay::of($weekDay);
 
         foreach ($this->specifications as $specification) {
             if ($specification->contains($weekDay)) {

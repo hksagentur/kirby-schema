@@ -18,7 +18,7 @@ readonly class Distance extends Length
 
     public function isWithin(int|float|Length $radius): bool
     {
-        return $this->isSmallerThanOrEqualTo(Length::of($radius));
+        return $this->isSmallerThanOrEqualTo(Length::from($radius));
     }
 
     public function isNotWithin(int|float|Length $radius): bool
