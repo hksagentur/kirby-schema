@@ -28,7 +28,7 @@ class Geo
         $deltaLongitude = deg2rad($toLongitude - $fromLongitude);
 
         $haversine = (sin($deltaLatitude / 2) ** 2) + cos(deg2rad($fromLatitude)) * cos(deg2rad($toLatitude)) * (sin($deltaLongitude / 2) ** 2);
-        $distance = $radius * atan2(sqrt($haversine), sqrt(1 - $haversine));
+        $distance = $radius * 2 * atan2(sqrt($haversine), sqrt(1 - $haversine));
 
         return $distance;
     }
