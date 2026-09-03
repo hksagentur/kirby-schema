@@ -3,6 +3,8 @@
 namespace Hks\Schema\Data\Types;
 
 use Hks\Schema\Data\Contracts\Arrayable;
+use Hks\Schema\Data\Contracts\Comparable;
+use Hks\Schema\Data\Exceptions\TypeMismatchException;
 use Hks\Schema\Toolkit\Math;
 use InvalidArgumentException;
 use Kirby\Toolkit\Html;
@@ -11,7 +13,7 @@ use RuntimeException;
 use Stringable;
 use Throwable;
 
-readonly class Fraction extends DataType implements Arrayable
+readonly class Fraction extends DataType implements Arrayable, Comparable
 {
     public int $numerator;
     public int $denominator;
@@ -95,22 +97,22 @@ readonly class Fraction extends DataType implements Arrayable
 
     public function isLessThan(int|string|self $other): bool
     {
-        return $this->compareTo($other) < 0;
+        return $this->compare($other) < 0;
     }
 
     public function isLessThanOrEqualTo(int|string|self $other): bool
     {
-        return $this->compareTo($other) <= 0;
+        return $this->compare($other) <= 0;
     }
 
     public function isGreaterThan(int|string|self $other): bool
     {
-        return $this->compareTo($other) > 0;
+        return $this->compare($other) > 0;
     }
 
     public function isGreaterThanOrEqualTo(int|string|self $other): bool
     {
-        return $this->compareTo($other) >= 0;
+        return $this->compare($other) >= 0;
     }
 
     public function numerator(): int
@@ -204,9 +206,15 @@ readonly class Fraction extends DataType implements Arrayable
         );
     }
 
-    public function compareTo(int|string|self $other): int
+    public function compare(mixed $other): int
     {
-        return $this->subtract($other)->numerator() <=> 0;
+        $fraction = static::tryFrom($other);
+
+        if (! $fraction) {
+            throw TypeMismatchException::between($this, $other);
+        }
+
+        return $this->subtract($fraction)->numerator() <=> 0;
     }
 
     public function toFloat(): float

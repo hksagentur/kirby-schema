@@ -5,6 +5,7 @@ namespace Hks\Schema\Data\Types;
 use Hks\Schema\Data\Attributes\ArrayInput;
 use Hks\Schema\Data\Contracts\Arrayable;
 use Hks\Schema\Data\Contracts\Localizable;
+use Hks\Schema\Data\Contracts\Schemable;
 use InvalidArgumentException;
 use Kirby\Cms\App;
 use Kirby\Toolkit\A;
@@ -15,7 +16,7 @@ use RuntimeException;
 use Throwable;
 
 #[ArrayInput]
-readonly class PostalAddress extends DataType implements Arrayable, Localizable
+readonly class PostalAddress extends DataType implements Arrayable, Localizable, Schemable
 {
     public const string ISO_COUNTRY_CODE = '/^[A-Z]{2,3}$/';
 
@@ -185,6 +186,21 @@ readonly class PostalAddress extends DataType implements Arrayable, Localizable
         }
 
         return I18n::translate("hksagentur.schema.country.{$countryCode}", $this->country(), $locale);
+    }
+
+    public function equals(DataType $other): bool
+    {
+        if (! ($other instanceof self)) {
+            return false;
+        }
+
+        return (
+            $this->streetAddress === $other->streetAddress &&
+            $this->postalCode === $other->postalCode &&
+            $this->locality === $other->locality &&
+            $this->country === $other->country &&
+            $this->region === $other->region
+        );
     }
 
     public function toString(): string
