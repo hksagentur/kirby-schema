@@ -6,6 +6,7 @@ use Hks\Schema\Data\Types;
 Kirby::plugin('hksagentur/schema', [
     'options' => [
         'defaultCountry' => 'DE',
+        'defaultCurrency' => 'EUR',
         'addressSchemes' => [
             'postalCodeLocality' => [
                 '{{ streetAddress }}',
@@ -50,6 +51,7 @@ Kirby::plugin('hksagentur/schema', [
             'length' => Types\Length::class,
             'markdown' => Types\Markdown::class,
             'markup' => Types\Markup::class,
+            'money' => Types\Money::class,
             'opening-hours' => Types\OpeningHours::class,
             'opening-hours-exception' => Types\OpeningHoursException::class,
             'opening-hours-specification' => Types\OpeningHoursSpecification::class,
@@ -64,6 +66,7 @@ Kirby::plugin('hksagentur/schema', [
         'dataObjects' => [
             'organization' => Data\Organization::class,
             'person' => Data\Person::class,
+            'place' => Data\Place::class,
         ],
     ],
     'blueprints' => require __DIR__ . '/config/blueprints.php',

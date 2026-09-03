@@ -20,6 +20,15 @@ enum LengthUnit: string implements Localizable
     case Foot = 'ft';
     case Mile = 'mi';
 
+    public static function of(string|self $value): ?static
+    {
+        if ($value instanceof self) {
+            return $value;
+        }
+
+        return static::tryFrom($value);
+    }
+
     public static function forValue(float $meters, UnitSystem $system = UnitSystem::Metric): static
     {
         return match ($system) {

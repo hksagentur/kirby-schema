@@ -17,6 +17,6 @@ options:
   - value: CNY
     text:
       *: hksagentur.schema.field.currency.cny
-  - value: chf
+  - value: CHF
     text:
       *: hksagentur.schema.field.currency.chf
