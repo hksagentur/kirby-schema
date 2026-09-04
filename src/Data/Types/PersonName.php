@@ -35,17 +35,19 @@ readonly class PersonName extends DataType implements Arrayable
         }
 
         if (is_array($value)) {
+            $value = array_change_key_case($value);
+
             return new static(
-                displayName: $value['displayName'] ?? implode(' ', array_filter([
-                    $value['honorificPrefix'] ?? null,
-                    $value['givenName'] ?? null,
-                    $value['additionalName'] ?? null,
-                    $value['familyName'] ?? null,
+                displayName: $value['displayname'] ?? implode(' ', array_filter([
+                    $value['honorificprefix'] ?? null,
+                    $value['givenname'] ?? null,
+                    $value['additionalname'] ?? null,
+                    $value['familyname'] ?? null,
                 ])),
-                givenName: $value['givenName'] ?? null,
-                additionalName: $value['additionalName'] ?? null,
-                familyName: $value['familyName'] ?? null,
-                honorificPrefix: $value['honorificPrefix'] ?? null,
+                givenName: $value['givenname'] ?? null,
+                additionalName: $value['additionalname'] ?? null,
+                familyName: $value['familyname'] ?? null,
+                honorificPrefix: $value['honorificprefix'] ?? null,
             );
         }
 

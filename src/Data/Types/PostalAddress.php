@@ -45,12 +45,18 @@ readonly class PostalAddress extends DataType implements Arrayable, Localizable,
 
     public static function from(array|self $value): static
     {
-        return ($value instanceof self) ? $value : new static(
-            $value['streetAddress'] ?? null,
-            $value['postalCode'] ?? null,
-            $value['addressLocality'] ?? null,
-            $value['addressCountry'] ?? null,
-            $value['addressRegion'] ?? null,
+        if ($value instanceof self) {
+            return $value;
+        }
+
+        $value = array_change_key_case($value);
+
+        return new static(
+            $value['streetaddress'] ?? null,
+            $value['postalcode'] ?? null,
+            $value['addresslocality'] ?? null,
+            $value['addresscountry'] ?? null,
+            $value['addressregion'] ?? null,
         );
     }
 
