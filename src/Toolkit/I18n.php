@@ -2,40 +2,11 @@
 
 namespace Hks\Schema\Toolkit;
 
-use IntlDateFormatter;
 use Kirby\Toolkit\A;
-use Kirby\Toolkit\Date;
+use Kirby\Toolkit\Str;
 
 class I18n extends \Kirby\Toolkit\I18n
 {
-    /** @var array<string, IntlDateFormatter> */
-    protected static array $dateFormatters = [];
-
-    public static function getDayNames(?string $locale = null, string $format = 'full'): array
-    {
-        $pattern = match ($format) {
-            'short' => 'EEE',
-            'tiny' => 'EEEEE',
-            'initial' => 'EEEEEE',
-            default => 'EEEE',
-        };
-
-        $formatter = static::dateFormatter(
-            locale: $locale ?? static::locale(),
-            pattern: $pattern,
-        );
-
-        $dayOfWeek = new Date('next Monday');
-        $dayNames = [];
-
-        for ($i = 1; $i <= 7; $i++) {
-            $dayNames[] = $formatter->format($dayOfWeek);
-            $dayOfWeek->modify('+1 day');
-        }
-
-        return $dayNames;
-    }
-
     public static function oxfordList(array $values, ?int $limit = null, ?string $locale = null): string
     {
         $total = count($values);
@@ -74,20 +45,4 @@ class I18n extends \Kirby\Toolkit\I18n
 
         return $message;
     }
-
-    protected static function dateFormatter(string $locale, string $pattern): ?IntlDateFormatter
-    {
-        if (! extension_loaded('intl') || ! class_exists(IntlDateFormatter::class)) {
-            return null;
-        }
-
-        $formatter = static::$dateFormatters[$locale][$pattern] ?? null;
-
-        if ($formatter) {
-            return $formatter;
-        }
-
-        return static::$dateFormatters[$locale][$pattern] = new IntlDateFormatter($locale, pattern: $pattern);
-    }
-
 }
