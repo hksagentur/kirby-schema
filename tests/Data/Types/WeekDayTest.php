@@ -24,8 +24,8 @@ class WeekDayTest extends TestCase
 
     public function testToLocaleStringTranslatesTheLabelPerLocale(): void
     {
-        $this->assertSame('Monday', WeekDay::Monday->toLocaleString('en', ['style' => 'full']));
-        $this->assertSame('Montag', WeekDay::Monday->toLocaleString('de', ['style' => 'full']));
+        $this->assertSame('Monday', WeekDay::Monday->toLocaleString('en', ['style' => 'long']));
+        $this->assertSame('Montag', WeekDay::Monday->toLocaleString('de', ['style' => 'long']));
     }
 
     public function testCompareOrdersByIsoDayOfWeek(): void

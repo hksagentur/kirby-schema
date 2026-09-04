@@ -176,7 +176,7 @@ enum WeekDay: int implements Comparable, Localizable
     public function toLocaleString(?string $locale = null, array $options = []): string
     {
         $style = match ($options['style'] ?? null) {
-            'full', 'short', => $options['style'],
+            'long', 'short', => $options['style'],
             default => 'short',
         };
 

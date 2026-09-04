@@ -59,4 +59,9 @@ abstract readonly class DataType implements Jsonable, Stringable, JsonSerializab
     {
         return $this->toString();
     }
+
+    protected static function isBlank(mixed $value): bool
+    {
+        return $value === null || $value === '';
+    }
 }

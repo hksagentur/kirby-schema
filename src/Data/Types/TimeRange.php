@@ -90,7 +90,13 @@ readonly class TimeRange extends DataType implements Arrayable, Comparable, Html
 
     public function contains(string|Time|DateTimeInterface $time): bool
     {
-        return Time::from($time)->isBetween($this->start, $this->end);
+        $time = Time::from($time);
+
+        if ($this->isOverNight()) {
+            return $time->isAfterOrEqualTo($this->start) || $time->isBeforeOrEqualTo($this->end);
+        }
+
+        return $time->isBetween($this->start, $this->end);
     }
 
     public function touches(self $other): bool

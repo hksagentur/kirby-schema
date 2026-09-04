@@ -3,9 +3,30 @@
 namespace Hks\Schema\Data\Types;
 
 use Hks\Schema\TestCase;
+use Kirby\Cms\Blueprint;
 
 class OpeningHoursTest extends TestCase
 {
+    public function testResolvedBlueprintFieldsProduceTheFlatShapeFromArrayExpects(): void
+    {
+        // Every sub-field involved (`opening-hours-specification`'s `timeRange`,
+        // `opening-hours-exception`'s date/start/end/note) is a `type: group` or
+        // otherwise flattened by Kirby's blueprint loader before content is ever
+        // saved — resolve the real blueprint rather than trusting the YAML source,
+        // per AGENTS.md's "Composite blueprints" section.
+        $fields = Blueprint::fieldsProps([
+            'openingHours' => ['extends' => '@hksagentur/schema/fields/opening-hours'],
+        ]);
+
+        $monday = $fields['openingHours']['fields']['monday'];
+        $this->assertSame('structure', $monday['type']);
+        $this->assertSame(['start', 'end'], array_keys($monday['fields']));
+
+        $exceptions = $fields['openingHours']['fields']['exceptions'];
+        $this->assertSame('structure', $exceptions['type']);
+        $this->assertSame(['date', 'start', 'end', 'note'], array_keys($exceptions['fields']));
+    }
+
     public function testFromArrayGroupsWeekDaysWithIdenticalTimeRanges(): void
     {
         $openingHours = OpeningHours::fromArray([
@@ -32,7 +53,7 @@ class OpeningHoursTest extends TestCase
                 [
                     'timeRange' => ['start' => '00:00', 'end' => '00:00'],
                     'date' => '2026-12-25',
-                    'data' => ['note' => 'Closed on Christmas'],
+                    'note' => 'Closed on Christmas',
                 ],
             ],
         ]);
@@ -67,6 +88,72 @@ class OpeningHoursTest extends TestCase
         $this->assertSame([], $openingHours->exceptions());
     }
 
+    public function testFromArrayNeverLetsOneMalformedExceptionDiscardTheWholeObject(): void
+    {
+        $openingHours = OpeningHours::fromArray([
+            'monday' => [
+                ['start' => '09:00', 'end' => '17:00'],
+            ],
+            'exceptions' => [
+                // Missing its date — invalid on its own.
+                ['start' => '00:00', 'end' => '00:00'],
+                ['date' => '2026-12-25', 'start' => '00:00', 'end' => '00:00'],
+            ],
+        ]);
+
+        $this->assertCount(1, $openingHours->specifications());
+        $this->assertCount(1, $openingHours->exceptions());
+        $this->assertSame('2026-12-25', $openingHours->exceptions()[0]->date()->format('Y-m-d'));
+    }
+
+    public function testFromArrayResolvesAClosedAllDayExceptionFromTheFlatBlueprintShape(): void
+    {
+        $openingHours = OpeningHours::fromArray([
+            'monday' => [
+                ['start' => '09:00', 'end' => '17:00'],
+            ],
+            'exceptions' => [
+                ['date' => '2026-12-25', 'start' => '', 'end' => '', 'note' => 'Public holiday'],
+            ],
+        ]);
+
+        // Friday, would normally be open at this time.
+        $this->assertFalse($openingHours->isOpenAt(new \DateTime('2026-12-25 10:00:00')));
+    }
+
+    public function testIsClosedAllDayAtIsTrueForAClosedAllDayException(): void
+    {
+        $openingHours = OpeningHours::fromArray([
+            'monday' => [
+                ['start' => '09:00', 'end' => '17:00'],
+            ],
+            'exceptions' => [
+                ['date' => '2026-12-25', 'start' => '', 'end' => ''],
+                ['date' => '2026-12-24', 'start' => '10:00', 'end' => '14:00'],
+            ],
+        ]);
+
+        $this->assertTrue($openingHours->isClosedAllDayAt(new \DateTime('2026-12-25')));
+        // Has an exception, but one with its own time range — a modified
+        // schedule, not a full-day closure.
+        $this->assertFalse($openingHours->isClosedAllDayAt(new \DateTime('2026-12-24')));
+        // Monday itself has hours — being asked about right now vs. "all day"
+        // are different questions; isClosedAllDayAt() only answers the latter.
+        $this->assertFalse($openingHours->isClosedAllDayAt(new \DateTime('2026-12-21 22:00:00')));
+    }
+
+    public function testIsClosedAllDayAtIsTrueForAWeekDayWithoutAnySpecification(): void
+    {
+        $openingHours = OpeningHours::fromArray([
+            'monday' => [
+                ['start' => '09:00', 'end' => '17:00'],
+            ],
+        ]);
+
+        // Sunday has no specification and no exception — closed the entire day.
+        $this->assertTrue($openingHours->isClosedAllDayAt(new \DateTime('2026-12-20')));
+    }
+
     private function weeklyOpeningHours(): OpeningHours
     {
         $weekdayHours = [
@@ -85,7 +172,7 @@ class OpeningHoursTest extends TestCase
                 [
                     'timeRange' => ['start' => '00:00', 'end' => '00:00'],
                     'date' => '2026-12-25',
-                    'data' => ['note' => 'Closed on Christmas'],
+                    'note' => 'Closed on Christmas',
                 ],
             ],
         ]);
@@ -138,6 +225,14 @@ class OpeningHoursTest extends TestCase
         $openingHours = $this->weeklyOpeningHours();
 
         $this->assertNull($openingHours->for(WeekDay::Sunday));
+    }
+
+    public function testHasSpecificationAtMatchesOnlyWeekDaysWithASpecification(): void
+    {
+        $openingHours = $this->weeklyOpeningHours();
+
+        $this->assertTrue($openingHours->hasSpecificationAt(WeekDay::Monday));
+        $this->assertFalse($openingHours->hasSpecificationAt(WeekDay::Sunday));
     }
 
     public function testHasExceptionAtMatchesOnlyDatesWithAnException(): void
@@ -210,4 +305,5 @@ class OpeningHoursTest extends TestCase
         $this->assertSame([WeekDay::Monday, WeekDay::Tuesday], $specifications[0]->weekDays()->all());
         $this->assertSame('09:00:00/17:00:00', $specifications[0]->timeRanges()->toString());
     }
+
 }

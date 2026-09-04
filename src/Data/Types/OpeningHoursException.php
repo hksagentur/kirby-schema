@@ -9,7 +9,8 @@ use Hks\Schema\Data\Contracts\Arrayable;
 use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Contracts\Schemable;
 use Hks\Schema\Data\Exceptions\ValidationException;
-use Kirby\Toolkit\A;
+use Kirby\Toolkit\Html;
+use Kirby\Toolkit\I18n;
 use Throwable;
 
 #[ArrayInput]
@@ -17,8 +18,8 @@ readonly class OpeningHoursException extends DataType implements Arrayable, Html
 {
     public function __construct(
         public DateTimeImmutable $date,
-        public TimeRange $timeRange,
-        public array $data = [],
+        public ?TimeRange $timeRange = null,
+        public ?string $note = null,
     ) {
     }
 
@@ -41,17 +42,31 @@ readonly class OpeningHoursException extends DataType implements Arrayable, Html
 
     public static function fromArray(array $value): static
     {
-        if (! isset($value['date'], $value['timeRange'])) {
+        if (static::isBlank($value['date'] ?? null)) {
             throw new ValidationException(
-                'The given array does not represent a valid opening hours exception: a date and time range must be specified.'
+                'The given array does not represent a valid opening hours exception: a date must be specified.'
             );
         }
 
+        $timeRange = isset($value['timeRange'])
+            ? TimeRange::from($value['timeRange'])
+            : TimeRange::tryFrom($value);
+
         return new static(
             date: new DateTimeImmutable($value['date']),
-            timeRange: TimeRange::from($value['timeRange']),
-            data: $value['data'] ?? [],
+            timeRange: $timeRange,
+            note: $value['note'] ?? null,
         );
+    }
+
+    public function hasNote(): bool
+    {
+        return $this->note !== null;
+    }
+
+    public function hasTimeRange(): bool
+    {
+        return $this->timeRange !== null;
     }
 
     public function date(): DateTimeImmutable
@@ -59,14 +74,14 @@ readonly class OpeningHoursException extends DataType implements Arrayable, Html
         return $this->date;
     }
 
-    public function timeRange(): TimeRange
+    public function timeRange(): ?TimeRange
     {
         return $this->timeRange;
     }
 
-    public function data(?string $key = null): mixed
+    public function note(): ?string
     {
-        return A::get($this->data, $key);
+        return $this->note;
     }
 
     public function contains(DateTimeInterface $date): bool
@@ -76,31 +91,42 @@ readonly class OpeningHoursException extends DataType implements Arrayable, Html
 
     public function toString(): string
     {
-        return $this->timeRange->toString();
+        return $this->timeRange?->toString() ?? 'closed';
     }
 
     public function toHtml(array $attributes = []): string
     {
-        return $this->timeRange->toHtml($attributes);
+        $timeRange = $this->hasTimeRange()
+            ? $this->timeRange->toHtml($attributes)
+            : Html::tag('data', I18n::translate('hksagentur.schema.openingHours.closed'), [
+                'value' => '',
+                ...$attributes,
+            ]);
+
+        if ($this->note === null) {
+            return $timeRange;
+        }
+
+        return $timeRange . ' ' . Html::tag('small', $this->note);
     }
 
     public function toArray(): array
     {
         return [
-            'timeRange' => $this->timeRange->toArray(),
+            'timeRange' => $this->timeRange?->toArray(),
             'date' => $this->date->format('Y-m-d'),
-            'data' => $this->data,
+            'note' => $this->note,
         ];
     }
 
     public function toStructuredData(): array
     {
-        return [
+        return array_filter([
             '@type' => 'OpeningHoursSpecification',
-            'opens' => $this->timeRange->start()->toString(),
-            'closes' => $this->timeRange->end()->toString(),
+            'opens' => $this->timeRange?->start()->toString(),
+            'closes' => $this->timeRange?->end()->toString(),
             'validFrom' => $this->date->format('Y-m-d'),
             'validThrough' => $this->date->format('Y-m-d'),
-        ];
+        ]);
     }
 }

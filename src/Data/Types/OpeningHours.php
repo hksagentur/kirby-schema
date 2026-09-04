@@ -57,12 +57,32 @@ readonly class OpeningHours extends DataType implements Arrayable, Htmlable, Loc
             ]);
         }
 
-        $exceptions = array_map(
-            OpeningHoursException::from(...),
+        $exceptions = array_values(array_filter(array_map(
+            OpeningHoursException::tryFrom(...),
             $value['exceptions'] ?? [],
-        );
+        )));
 
         return (new static($specifications, $exceptions))->simplify();
+    }
+
+    public function hasSpecification(): bool
+    {
+        return $this->hasSpecificationAt(new DateTime());
+    }
+
+    public function hasSpecificationAt(WeekDay|DateTimeInterface $weekDay): bool
+    {
+        return $this->for($weekDay) !== null;
+    }
+
+    public function hasException(): bool
+    {
+        return $this->hasExceptionAt(new DateTime());
+    }
+
+    public function hasExceptionAt(DateTimeInterface $dateTime): bool
+    {
+        return $this->exceptionFor($dateTime) !== null;
     }
 
     public function isOpen(): bool
@@ -72,6 +92,10 @@ readonly class OpeningHours extends DataType implements Arrayable, Htmlable, Loc
 
     public function isOpenAt(DateTimeInterface $dateTime): bool
     {
+        if ($this->isClosedAllDayAt($dateTime)) {
+            return false;
+        }
+
         $exception = $this->exceptionFor($dateTime);
 
         if ($exception !== null) {
@@ -97,14 +121,20 @@ readonly class OpeningHours extends DataType implements Arrayable, Htmlable, Loc
         return ! $this->isOpenAt($dateTime);
     }
 
-    public function hasException(): bool
+    public function isClosedAllDay(): bool
     {
-        return $this->hasExceptionAt(new DateTime());
+        return $this->isClosedAllDayAt(new DateTime());
     }
 
-    public function hasExceptionAt(DateTimeInterface $dateTime): bool
+    public function isClosedAllDayAt(DateTimeInterface $dateTime): bool
     {
-        return $this->exceptionFor($dateTime) !== null;
+        $exception = $this->exceptionFor($dateTime);
+
+        if ($exception !== null) {
+            return ! $exception->hasTimeRange();
+        }
+
+        return ! $this->hasSpecificationAt($dateTime);
     }
 
     /** @return OpeningHoursSpecification[] */

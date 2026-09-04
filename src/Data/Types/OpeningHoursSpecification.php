@@ -9,7 +9,6 @@ use Hks\Schema\Data\Contracts\Arrayable;
 use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Contracts\Localizable;
 use Hks\Schema\Data\Exceptions\ValidationException;
-use Kirby\Toolkit\A;
 use Kirby\Toolkit\Html;
 use Throwable;
 
@@ -19,7 +18,6 @@ readonly class OpeningHoursSpecification extends DataType implements Arrayable, 
     public function __construct(
         public WeekDays $weekDays,
         public TimeRanges $timeRanges,
-        public array $data = []
     ) {
         if ($weekDays->isEmpty()) {
             throw new ValidationException(
@@ -62,7 +60,6 @@ readonly class OpeningHoursSpecification extends DataType implements Arrayable, 
                 TimeRange::from(...),
                 $value['timeRanges'] ?? [],
             )),
-            data: $value['data'] ?? [],
         );
     }
 
@@ -76,11 +73,6 @@ readonly class OpeningHoursSpecification extends DataType implements Arrayable, 
         return $this->timeRanges;
     }
 
-    public function data(?string $key = null): mixed
-    {
-        return A::get($this->data, $key);
-    }
-
     public function contains(WeekDay $weekDay): bool
     {
         return $this->weekDays->contains($weekDay);
@@ -91,7 +83,6 @@ readonly class OpeningHoursSpecification extends DataType implements Arrayable, 
         return new static(
             weekDays: $this->weekDays,
             timeRanges: $this->timeRanges->simplify(),
-            data: $this->data,
         );
     }
 
@@ -133,7 +124,6 @@ readonly class OpeningHoursSpecification extends DataType implements Arrayable, 
         return [
             'weekDays' => $this->weekDays->map(fn (WeekDay $weekDay) => $weekDay->name()),
             'timeRanges' => $this->timeRanges->toArray(),
-            'data' => $this->data,
         ];
     }
 
