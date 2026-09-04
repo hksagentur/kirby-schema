@@ -19,8 +19,8 @@ readonly class Place extends DataObject
     {
         return new static(
             name: $value['name'] ?? '',
-            address: isset($value['address']) ? PostalAddress::tryFrom($value['address']) : null,
-            coordinates: isset($value['coordinates']) ? GeoCoordinate::tryFrom($value['coordinates']) : null,
+            address: PostalAddress::tryFrom($value['address'] ?? $value),
+            coordinates: GeoCoordinate::tryFrom($value['coordinates'] ?? $value),
         );
     }
 

@@ -8,9 +8,7 @@ return [
     // Converters
 
     /**
-     * Converts the content of the current structure object to the given data
-     * transfer object. `$name` accepts either a registered alias
-     * (`'person'`) or a `DataObject` class-string (`Person::class`).
+     * Converts the structure object's content to a data object.
      */
     'toDataObject' => function (string $name): ?DataObject {
         $class = Registry::dataObject($name);

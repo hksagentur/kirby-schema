@@ -10,22 +10,22 @@ class OpeningHoursTest extends TestCase
     {
         $openingHours = OpeningHours::fromArray([
             'monday' => [
-                ['timespan' => ['start' => '09:00', 'end' => '19:00'], 'note' => ''],
+                ['start' => '09:00', 'end' => '19:00', 'note' => ''],
             ],
             'tuesday' => [
-                ['timespan' => ['start' => '09:00', 'end' => '19:00'], 'note' => ''],
+                ['start' => '09:00', 'end' => '19:00', 'note' => ''],
             ],
             'wednesday' => [
-                ['timespan' => ['start' => '09:00', 'end' => '19:00'], 'note' => ''],
+                ['start' => '09:00', 'end' => '19:00', 'note' => ''],
             ],
             'thursday' => [
-                ['timespan' => ['start' => '09:00', 'end' => '19:00'], 'note' => ''],
+                ['start' => '09:00', 'end' => '19:00', 'note' => ''],
             ],
             'friday' => [
-                ['timespan' => ['start' => '09:00', 'end' => '19:00'], 'note' => ''],
+                ['start' => '09:00', 'end' => '19:00', 'note' => ''],
             ],
             'saturday' => [
-                ['timespan' => ['start' => '08:00', 'end' => '14:00'], 'note' => ''],
+                ['start' => '08:00', 'end' => '14:00', 'note' => ''],
             ],
             'sunday' => [],
             'exceptions' => [
@@ -59,7 +59,7 @@ class OpeningHoursTest extends TestCase
     {
         $openingHours = OpeningHours::fromArray([
             'monday' => [
-                ['timespan' => ['start' => '09:00', 'end' => '17:00']],
+                ['start' => '09:00', 'end' => '17:00'],
             ],
         ]);
 
@@ -70,7 +70,7 @@ class OpeningHoursTest extends TestCase
     private function weeklyOpeningHours(): OpeningHours
     {
         $weekdayHours = [
-            ['timespan' => ['start' => '09:00', 'end' => '17:00']],
+            ['start' => '09:00', 'end' => '17:00'],
         ];
 
         return OpeningHours::fromArray([

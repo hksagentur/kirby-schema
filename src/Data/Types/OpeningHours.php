@@ -53,7 +53,7 @@ readonly class OpeningHours extends DataType implements Arrayable, Htmlable, Loc
 
             $specifications[] = OpeningHoursSpecification::fromArray([
                 'weekDays' => [$weekDay->name()],
-                'timeRanges' => array_column($items, 'timespan'),
+                'timeRanges' => $items,
             ]);
         }
 

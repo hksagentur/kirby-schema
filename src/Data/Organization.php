@@ -26,8 +26,8 @@ readonly class Organization extends DataObject
     {
         return new static(
             name: $value['name'] ?? '',
-            address: isset($value['address']) ? PostalAddress::tryFrom($value['address']) : null,
-            coordinates: isset($value['coordinates']) ? GeoCoordinate::tryFrom($value['coordinates']) : null,
+            address: PostalAddress::tryFrom($value['address'] ?? $value),
+            coordinates: GeoCoordinate::tryFrom($value['coordinates'] ?? $value),
             email: isset($value['email']) ? EmailAddress::tryFrom($value['email']) : null,
             telephone: isset($value['telephone']) ? PhoneNumber::tryFrom($value['telephone']) : null,
             fax: isset($value['fax']) ? PhoneNumber::tryFrom($value['fax']) : null,

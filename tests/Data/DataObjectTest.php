@@ -20,6 +20,21 @@ class DataObjectTest extends TestCase
         $this->assertTrue($person->email->isEqualTo(new EmailAddress('jane@example.com')));
     }
 
+    public function testFromArrayBuildsTheNameFromFlatGivenAndFamilyNameKeys(): void
+    {
+        // `person.yml`'s `name` fields flatten directly onto the person (a `group`, not an
+        // `object`), so the panel never produces a nested `name` key — only sibling
+        // `givenName`/`familyName` keys alongside `email`, `telephone`, etc.
+        $person = Person::fromArray([
+            'givenName' => 'Jane',
+            'familyName' => 'Doe',
+            'email' => 'jane@example.com',
+        ]);
+
+        $this->assertTrue($person->name->isEqualTo(new PersonName(displayName: 'Jane Doe', givenName: 'Jane', familyName: 'Doe')));
+        $this->assertTrue($person->email->isEqualTo(new EmailAddress('jane@example.com')));
+    }
+
     public function testFromArrayLeavesOmittedOptionalParametersAtTheirConstructorDefault(): void
     {
         $person = Person::fromArray([

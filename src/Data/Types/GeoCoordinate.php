@@ -2,6 +2,7 @@
 
 namespace Hks\Schema\Data\Types;
 
+use Hks\Schema\Data\Attributes\ArrayInput;
 use Hks\Schema\Data\Contracts\Arrayable;
 use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Contracts\Localizable;
@@ -13,6 +14,7 @@ use Kirby\Toolkit\Str;
 use Stringable;
 use Throwable;
 
+#[ArrayInput]
 readonly class GeoCoordinate extends DataType implements Arrayable, Htmlable, Localizable, Schemable
 {
     public function __construct(
@@ -35,10 +37,16 @@ readonly class GeoCoordinate extends DataType implements Arrayable, Htmlable, Lo
         }
 
         if (is_array($value)) {
-            return new static(
-                (float) $value['latitude'] ?? $value['lat'] ?? $value[0],
-                (float) $value['longitude'] ?? $value['lng'] ?? $value[1],
-            );
+            $latitude = $value['latitude'] ?? $value['lat'] ?? $value[0] ?? null;
+            $longitude = $value['longitude'] ?? $value['lng'] ?? $value[1] ?? null;
+
+            if ($latitude === null || $longitude === null) {
+                throw new InvalidArgumentException(
+                    'The given array does not represent a valid geographic coordinate.'
+                );
+            }
+
+            return new static((float) $latitude, (float) $longitude);
         }
 
         $value = (string) $value;

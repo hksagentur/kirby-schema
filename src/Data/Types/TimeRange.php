@@ -3,6 +3,7 @@
 namespace Hks\Schema\Data\Types;
 
 use DateTimeInterface;
+use Hks\Schema\Data\Attributes\ArrayInput;
 use Hks\Schema\Data\Contracts\Arrayable;
 use Hks\Schema\Data\Contracts\Comparable;
 use Hks\Schema\Data\Contracts\Htmlable;
@@ -13,6 +14,7 @@ use Kirby\Toolkit\Html;
 use Kirby\Toolkit\Str;
 use Throwable;
 
+#[ArrayInput]
 readonly class TimeRange extends DataType implements Arrayable, Comparable, Htmlable, Localizable
 {
     public const string SEPARATOR = '/';

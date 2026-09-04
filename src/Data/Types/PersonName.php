@@ -2,6 +2,7 @@
 
 namespace Hks\Schema\Data\Types;
 
+use Hks\Schema\Data\Attributes\ArrayInput;
 use Hks\Schema\Data\Contracts\Arrayable;
 use InvalidArgumentException;
 use Kirby\Toolkit\Str;
@@ -9,6 +10,7 @@ use Kirby\Toolkit\V;
 use Stringable;
 use Throwable;
 
+#[ArrayInput]
 readonly class PersonName extends DataType implements Arrayable
 {
     public function __construct(

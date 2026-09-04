@@ -44,9 +44,7 @@ return [
     // Converters
 
     /**
-     * Converts a field value to a data type. `$name` accepts either a
-     * registered alias (`'fraction'`) or a `DataType` class-string
-     * (`Fraction::class`).
+     * Converts a field value to a data type.
      */
     'toDataType' => function (Field $field, string $name): ?DataType {
         $class = Registry::dataType($name);
@@ -61,9 +59,7 @@ return [
     },
 
     /**
-     * Converts a field value to a data object. `$name` accepts either a
-     * registered alias (`'person'`) or a `DataObject` class-string
-     * (`Person::class`).
+     * Converts a field value to a data object.
      */
     'toDataObject' => function (Field $field, string $name): ?DataObject {
         $class = Registry::dataObject($name);

@@ -7,7 +7,6 @@ use Hks\Schema\Data\Types\ImageUrl;
 use Hks\Schema\Data\Types\Markdown;
 use Hks\Schema\Data\Types\PersonName;
 use Hks\Schema\Data\Types\PhoneNumber;
-use InvalidArgumentException;
 use Kirby\Cms\App;
 
 readonly class Person extends DataObject
@@ -24,12 +23,8 @@ readonly class Person extends DataObject
 
     public static function fromArray(array $value): static
     {
-        if (! isset($value['name'])) {
-            throw new InvalidArgumentException('A person must have a name.');
-        }
-
         return new static(
-            name: PersonName::from($value['name']),
+            name: PersonName::from($value['name'] ?? $value),
             image: isset($value['image']) ? ImageUrl::tryFrom($value['image']) : null,
             description: isset($value['description']) ? Markdown::tryFrom($value['description']) : null,
             email: isset($value['email']) ? EmailAddress::tryFrom($value['email']) : null,
