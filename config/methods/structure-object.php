@@ -10,8 +10,7 @@ return [
     // Converters
 
     /**
-     * Converts the structure object's content to a data object. Throws
-     * for an unregistered name or content that fails to resolve.
+     * Converts the structure object's content to a data object.
      */
     'toDataObject' => function (string $name): DataObject {
         $class = Registry::dataObject($name);

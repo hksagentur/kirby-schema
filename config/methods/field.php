@@ -46,9 +46,7 @@ return [
     // Converters
 
     /**
-     * Converts a field value to a data type. Throws for an unregistered
-     * name or content that fails to resolve; an empty field is not an
-     * error and resolves to `null`.
+     * Converts a field value to a data type.
      */
     'toDataType' => function (Field $field, string $name): ?DataType {
         $class = Registry::dataType($name);
@@ -77,9 +75,7 @@ return [
     },
 
     /**
-     * Converts a field value to a data object. Throws for an unregistered
-     * name or content that fails to resolve; an empty field is not an
-     * error and resolves to `null`.
+     * Converts a field value to a data object.
      */
     'toDataObject' => function (Field $field, string $name): ?DataObject {
         $class = Registry::dataObject($name);
