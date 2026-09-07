@@ -44,10 +44,8 @@ Kirby::plugin('hksagentur/schema', [
         'dataTypes' => [
             'distance' => Types\Distance::class,
             'email' => Types\EmailAddress::class,
-            'file-url' => Types\FileUrl::class,
             'fraction' => Types\Fraction::class,
             'geo-coordinate' => Types\GeoCoordinate::class,
-            'image-url' => Types\ImageUrl::class,
             'length' => Types\Length::class,
             'markdown' => Types\Markdown::class,
             'markup' => Types\Markup::class,
@@ -58,7 +56,6 @@ Kirby::plugin('hksagentur/schema', [
             'person-name' => Types\PersonName::class,
             'phone-number' => Types\PhoneNumber::class,
             'postal-address' => Types\PostalAddress::class,
-            'text' => Types\Text::class,
             'time' => Types\Time::class,
             'time-range' => Types\TimeRange::class,
             'url' => Types\Url::class,

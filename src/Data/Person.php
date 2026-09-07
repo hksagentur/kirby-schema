@@ -2,19 +2,20 @@
 
 namespace Hks\Schema\Data;
 
+use Hks\Schema\Cms\Find;
 use Hks\Schema\Data\Types\EmailAddress;
-use Hks\Schema\Data\Types\ImageUrl;
-use Hks\Schema\Data\Types\Markdown;
+use Hks\Schema\Data\Types\Markup;
 use Hks\Schema\Data\Types\PersonName;
 use Hks\Schema\Data\Types\PhoneNumber;
 use Kirby\Cms\App;
+use Kirby\Cms\File;
 
 readonly class Person extends DataObject
 {
     public function __construct(
         public PersonName $name,
-        public ?ImageUrl $image = null,
-        public ?Markdown $description = null,
+        public ?File $image = null,
+        public ?Markup $description = null,
         public ?EmailAddress $email = null,
         public ?PhoneNumber $telephone = null,
         public ?PhoneNumber $fax = null,
@@ -25,8 +26,8 @@ readonly class Person extends DataObject
     {
         return new static(
             name: PersonName::from($value['name'] ?? $value),
-            image: isset($value['image']) ? ImageUrl::tryFrom($value['image']) : null,
-            description: isset($value['description']) ? Markdown::tryFrom($value['description']) : null,
+            image: isset($value['image']) ? Find::file($value['image']) : null,
+            description: isset($value['description']) ? Markup::tryFrom($value['description']) : null,
             email: isset($value['email']) ? EmailAddress::tryFrom($value['email']) : null,
             telephone: isset($value['telephone']) ? PhoneNumber::tryFrom($value['telephone']) : null,
             fax: isset($value['fax']) ? PhoneNumber::tryFrom($value['fax']) : null,
@@ -38,12 +39,12 @@ readonly class Person extends DataObject
         return $this->name;
     }
 
-    public function image(): ?ImageUrl
+    public function image(): ?File
     {
         return $this->image;
     }
 
-    public function description(): ?Markdown
+    public function description(): ?Markup
     {
         return $this->description;
     }
@@ -76,7 +77,7 @@ readonly class Person extends DataObject
         return [
             'name' => $this->name->toArray(),
             'description' => $this->description?->toString(),
-            'image' => $this->image?->toString(),
+            'image' => $this->image?->uuid()?->toString(),
             'email' => $this->email?->toString(),
             'telephone' => $this->telephone?->toString(),
             'fax' => $this->fax?->toString(),
@@ -92,6 +93,7 @@ readonly class Person extends DataObject
             'additionalName' => $this->name->additionalName,
             'familyName' => $this->name->familyName,
             'honorificPrefix' => $this->name->honorificPrefix,
+            'image' => $this->image?->url(),
             'email' => $this->email?->value,
             'telephone' => $this->telephone?->value,
             'faxNumber' => $this->fax?->value,
