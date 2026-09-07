@@ -3,6 +3,7 @@
 namespace Hks\Schema\Data\Types;
 
 use Hks\Schema\Data\Contracts\Comparable;
+use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\TestCase;
 
 class FractionTest extends TestCase
@@ -10,6 +11,11 @@ class FractionTest extends TestCase
     public function testImplementsComparable(): void
     {
         $this->assertInstanceOf(Comparable::class, Fraction::from('1/2'));
+    }
+
+    public function testImplementsHtmlable(): void
+    {
+        $this->assertInstanceOf(Htmlable::class, Fraction::from('1/2'));
     }
 
     public function testValueIsAnAliasForToFloat(): void

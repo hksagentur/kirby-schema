@@ -2,6 +2,7 @@
 
 namespace Hks\Schema\Data\Types;
 
+use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Contracts\Schemable;
 use Hks\Schema\TestCase;
 
@@ -10,6 +11,11 @@ class PostalAddressTest extends TestCase
     public function testImplementsSchemable(): void
     {
         $this->assertInstanceOf(Schemable::class, PostalAddress::from(['streetAddress' => 'Musterstraße 1']));
+    }
+
+    public function testImplementsHtmlable(): void
+    {
+        $this->assertInstanceOf(Htmlable::class, PostalAddress::from(['streetAddress' => 'Musterstraße 1']));
     }
 
     public function testEqualsIsTrueWhenAllStructuredFieldsMatch(): void

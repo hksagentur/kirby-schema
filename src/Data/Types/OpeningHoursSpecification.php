@@ -8,12 +8,13 @@ use Hks\Schema\Data\Collections\WeekDays;
 use Hks\Schema\Data\Contracts\Arrayable;
 use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Contracts\Localizable;
+use Hks\Schema\Data\Contracts\Schemable;
 use Hks\Schema\Data\Exceptions\ValidationException;
 use Kirby\Toolkit\Html;
 use Throwable;
 
 #[ArrayInput]
-readonly class OpeningHoursSpecification extends DataType implements Arrayable, Htmlable, Localizable
+readonly class OpeningHoursSpecification extends DataType implements Arrayable, Htmlable, Localizable, Schemable
 {
     public function __construct(
         public WeekDays $weekDays,

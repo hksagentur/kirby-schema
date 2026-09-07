@@ -2,11 +2,22 @@
 
 namespace Hks\Schema\Data\Types;
 
+use Hks\Schema\Data\Contracts\Schemable;
 use Hks\Schema\Data\Exceptions\ValidationException;
 use Hks\Schema\TestCase;
 
 class OpeningHoursSpecificationTest extends TestCase
 {
+    public function testImplementsSchemable(): void
+    {
+        $specification = OpeningHoursSpecification::from([
+            'weekDays' => ['Monday'],
+            'timeRanges' => [['09:00', '17:00']],
+        ]);
+
+        $this->assertInstanceOf(Schemable::class, $specification);
+    }
+
     public function testFromCreatesANewInstanceFromRawArrayDefinitions(): void
     {
         $specification = OpeningHoursSpecification::from([

@@ -5,6 +5,7 @@ namespace Hks\Schema\Data\Types;
 use Hks\Schema\Data\Concerns\ComparesNumbers;
 use Hks\Schema\Data\Contracts\Arrayable;
 use Hks\Schema\Data\Contracts\Comparable;
+use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Exceptions\TypeMismatchException;
 use Hks\Schema\Toolkit\Math;
 use InvalidArgumentException;
@@ -14,7 +15,7 @@ use RuntimeException;
 use Stringable;
 use Throwable;
 
-readonly class Fraction extends DataType implements Arrayable, Comparable
+readonly class Fraction extends DataType implements Arrayable, Comparable, Htmlable
 {
     use ComparesNumbers;
 

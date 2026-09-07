@@ -4,6 +4,7 @@ namespace Hks\Schema\Data\Types;
 
 use Hks\Schema\Data\Attributes\ArrayInput;
 use Hks\Schema\Data\Contracts\Arrayable;
+use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Contracts\Localizable;
 use Hks\Schema\Data\Contracts\Schemable;
 use InvalidArgumentException;
@@ -16,7 +17,7 @@ use RuntimeException;
 use Throwable;
 
 #[ArrayInput]
-readonly class PostalAddress extends DataType implements Arrayable, Localizable, Schemable
+readonly class PostalAddress extends DataType implements Arrayable, Htmlable, Localizable, Schemable
 {
     public const string ISO_COUNTRY_CODE = '/^[A-Z]{2,3}$/';
 

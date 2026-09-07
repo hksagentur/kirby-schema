@@ -7,11 +7,12 @@ use Hks\Schema\Data\Concerns\InteractsWithValues;
 use Hks\Schema\Data\Types\Time;
 use Hks\Schema\Data\Types\TimeRange;
 use Hks\Schema\Toolkit\Assert;
+use Stringable;
 
 /**
  * @extends DataCollection<int, TimeRange>
  */
-readonly class TimeRanges extends DataCollection
+readonly class TimeRanges extends DataCollection implements Stringable
 {
     use InteractsWithValues;
 
@@ -81,5 +82,10 @@ readonly class TimeRanges extends DataCollection
     public function toArray(): array
     {
         return array_map(fn (TimeRange $timeRange) => $timeRange->toArray(), $this->timeRanges);
+    }
+
+    public function __toString(): string
+    {
+        return $this->toString();
     }
 }

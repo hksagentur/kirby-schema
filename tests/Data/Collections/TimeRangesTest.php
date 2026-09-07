@@ -4,9 +4,18 @@ namespace Hks\Schema\Data\Collections;
 
 use Hks\Schema\Data\Types\TimeRange;
 use Hks\Schema\TestCase;
+use Stringable;
 
 class TimeRangesTest extends TestCase
 {
+    public function testImplementsStringable(): void
+    {
+        $timeRanges = new TimeRanges([TimeRange::from(['09:00', '17:00'])]);
+
+        $this->assertInstanceOf(Stringable::class, $timeRanges);
+        $this->assertSame($timeRanges->toString(), (string) $timeRanges);
+    }
+
     public function testContainsIsTrueWhenAnyTimeRangeContainsTheGivenMoment(): void
     {
         $timeRanges = new TimeRanges([
