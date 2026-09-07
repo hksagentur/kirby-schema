@@ -8,4 +8,9 @@ use Hks\Schema\Data\Contracts\Htmlable;
 readonly class Markup extends StringType implements Htmlable
 {
     use TransformsStrings;
+
+    public function toHtml(array $attributes = []): string
+    {
+        return $this->value;
+    }
 }

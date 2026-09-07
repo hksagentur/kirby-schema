@@ -100,7 +100,7 @@ readonly class Organization extends DataObject
             'email' => $this->email?->value,
             'telephone' => $this->telephone?->value,
             'faxNumber' => $this->fax?->value,
-            'website' => $this->website?->value,
+            'url' => $this->website?->value,
             'location' => array_filter([
                 '@type' => 'Place',
                 'address' => $this->address?->toStructuredData(),

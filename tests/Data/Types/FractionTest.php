@@ -37,4 +37,43 @@ class FractionTest extends TestCase
             array_map(fn (Fraction $fraction) => "{$fraction->numerator()}/{$fraction->denominator()}", $fractions),
         );
     }
+
+    public function testToStringReturnsAPlainFormWithoutHtmlEntities(): void
+    {
+        $fraction = new Fraction(16, 9);
+
+        $this->assertSame('16/9', $fraction->toString());
+        $this->assertStringNotContainsString('&frasl;', $fraction->toString());
+    }
+
+    public function testToHtmlStillRendersTheFractionSlashEntity(): void
+    {
+        $fraction = new Fraction(16, 9);
+
+        $this->assertStringContainsString('&frasl;', $fraction->toHtml());
+    }
+
+    public function testEqualsAndJsonSerializeUseThePlainStringForm(): void
+    {
+        $fraction = new Fraction(16, 9);
+
+        $this->assertTrue($fraction->isEqualTo(Fraction::from('16/9')));
+        $this->assertSame('16/9', $fraction->jsonSerialize());
+    }
+
+    public function testHasNumeratorAndHasDenominatorCheckTheStoredValuesAsGiven(): void
+    {
+        $fraction = new Fraction(4, 2);
+
+        $this->assertTrue($fraction->hasNumerator(4));
+        $this->assertTrue($fraction->hasDenominator(2));
+        $this->assertFalse($fraction->hasDenominator(1));
+    }
+
+    public function testToStringRendersAnUnsimplifiedFractionAsGiven(): void
+    {
+        $fraction = new Fraction(4, 2);
+
+        $this->assertSame('4/2', $fraction->toString());
+    }
 }

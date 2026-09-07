@@ -103,7 +103,7 @@ readonly class Url extends StringType implements Arrayable
         return $this->port;
     }
 
-    public function path(): string
+    public function path(): ?string
     {
         return $this->path;
     }
@@ -130,7 +130,7 @@ readonly class Url extends StringType implements Arrayable
 
     public function with(array $parts): static
     {
-        return new static($this->buildUrl([$this->toArray(), ...$parts]));
+        return new static($this->buildUrl([...$this->toArray(), ...$parts]));
     }
 
     public function withPath(string $path): static

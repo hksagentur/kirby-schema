@@ -88,9 +88,19 @@ readonly class Fraction extends DataType implements Arrayable, Comparable
         }
     }
 
+    public function hasNumerator(int $value): bool
+    {
+        return $this->numerator === $value;
+    }
+
+    public function hasDenominator(int $value): bool
+    {
+        return $this->denominator === $value;
+    }
+
     public function isWhole(): bool
     {
-        return $this->simplify()->denominator() === 1;
+        return $this->simplify()->hasDenominator(1);
     }
 
     public function isCanonical(): bool
@@ -225,17 +235,20 @@ readonly class Fraction extends DataType implements Arrayable, Comparable
 
     public function toString(): string
     {
-        return ($this->denominator === 1) ? "{$this->numerator}" : "{$this->numerator}&frasl;{$this->denominator}";
+        if ($this->hasDenominator(1)) {
+            return "{$this->numerator}";
+        }
+
+        return "{$this->numerator}/{$this->denominator}";
     }
 
     public function toHtml(array $attributes = []): string
     {
-        return Html::tag('math', [
-            Html::tag('mfrac', [
-                Html::tag('mn', (string) $this->numerator),
-                Html::tag('mn', (string) $this->denominator),
-            ]),
-        ], $attributes);
+        if ($this->hasDenominator(1)) {
+            return Html::tag('span', (string) $this->numerator, $attributes);
+        }
+
+        return Html::tag('span', ["{$this->numerator}&frasl;{$this->denominator}"], $attributes);
     }
 
     public function toArray(): array

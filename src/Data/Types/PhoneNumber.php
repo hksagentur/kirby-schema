@@ -11,7 +11,7 @@ readonly class PhoneNumber extends StringType implements Arrayable
 {
     public const string INTERNATIONAL_PREFIX_SYMBOL = '+';
 
-    public const string ITU_E123 = '/^(?<internationalPrefixSymbol>\+)?(?<countryCode>\d{1,3})?\s*(?<nationalSignificantNumber>(?<nationalTrunkCode>\(\d+\)|0\d+)?[\/\s-]*\s*(?<subscriberNumber>[\d\s-]*\d))$/u';
+    public const string ITU_E123 = '/^(?:(?<internationalPrefixSymbol>\+)(?<countryCode>\d{1,3}))?\s*(?<nationalSignificantNumber>(?<nationalTrunkCode>\(\d+\)|0\d+)?[\/\s-]*\s*(?<subscriberNumber>[\d\s-]*\d))$/u';
     public const string ITU_E164 = '/^(?<internationalPrefixSymbol>\+)?(?<countryCode>\d{1,3})(?<nationalSignificantNumber>\d{1,12})$/u';
 
     public string $nationalSignificantNumber;
@@ -28,6 +28,13 @@ readonly class PhoneNumber extends StringType implements Arrayable
                 $value,
             ));
         }
+
+        // preg_match() reports an unmatched *optional* named group as an empty
+        // string rather than an absent key whenever a later group in the pattern
+        // did match — drop those so isset()/?? below can tell "did not match"
+        // from "matched an empty capture" (none of our groups can legitimately
+        // match an empty string when they do participate).
+        $matches = array_filter($matches, static fn (string $match): bool => $match !== '');
 
         $this->nationalSignificantNumber = $matches['nationalSignificantNumber'];
 
