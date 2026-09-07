@@ -111,7 +111,7 @@ readonly class TimeRange extends DataType implements Arrayable, Comparable, Html
 
     public function merge(self $other): self
     {
-        return new self(
+        return new static(
             start: $this->start->min($other->start),
             end: $this->end->max($other->end),
         );

@@ -8,7 +8,7 @@ class TypeMismatchException extends UnexpectedValueException
 {
     public static function for(string $message, mixed ...$values): self
     {
-        return new self(sprintf($message, ...$values));
+        return new static(sprintf($message, ...$values));
     }
 
     /** @param class-string $expected */
