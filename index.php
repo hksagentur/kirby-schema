@@ -51,8 +51,6 @@ Kirby::plugin('hksagentur/schema', [
             'markup' => Types\Markup::class,
             'money' => Types\Money::class,
             'opening-hours' => Types\OpeningHours::class,
-            'opening-hours-exception' => Types\OpeningHoursException::class,
-            'opening-hours-specification' => Types\OpeningHoursSpecification::class,
             'person-name' => Types\PersonName::class,
             'phone-number' => Types\PhoneNumber::class,
             'postal-address' => Types\PostalAddress::class,
