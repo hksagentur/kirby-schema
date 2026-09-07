@@ -37,4 +37,30 @@ class GeoCoordinateTest extends TestCase
     {
         $this->assertNull(GeoCoordinate::tryFrom(['name' => 'Acme Inc.']));
     }
+
+    public function testIsWithinChecksTheDistanceToAnotherCoordinateAgainstARadius(): void
+    {
+        $berlin = new GeoCoordinate(52.520008, 13.404954);
+        $hamburg = new GeoCoordinate(53.551086, 9.993682);
+
+        $this->assertTrue($berlin->isWithin($hamburg, 300_000));
+        $this->assertFalse($berlin->isWithin($hamburg, 100_000));
+    }
+
+    public function testIsNotWithinIsTheInverseOfIsWithin(): void
+    {
+        $berlin = new GeoCoordinate(52.520008, 13.404954);
+        $hamburg = new GeoCoordinate(53.551086, 9.993682);
+
+        $this->assertTrue($berlin->isNotWithin($hamburg, 100_000));
+        $this->assertFalse($berlin->isNotWithin($hamburg, 300_000));
+    }
+
+    public function testTravelTimeEstimatesMinutesToAnotherCoordinateAtTheGivenSpeed(): void
+    {
+        $berlin = new GeoCoordinate(52.520008, 13.404954);
+        $hamburg = new GeoCoordinate(53.551086, 9.993682);
+
+        $this->assertEqualsWithDelta(255, $berlin->travelTime($hamburg, 60.0), 6);
+    }
 }

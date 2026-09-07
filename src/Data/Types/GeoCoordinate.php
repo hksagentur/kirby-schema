@@ -75,6 +75,16 @@ readonly class GeoCoordinate extends DataType implements Arrayable, Htmlable, Lo
         }
     }
 
+    public function isWithin(self $origin, int|float|Length $radius): bool
+    {
+        return $this->distanceTo($origin)->isWithin($radius);
+    }
+
+    public function isNotWithin(self $origin, int|float|Length $radius): bool
+    {
+        return ! $this->isWithin($origin, $radius);
+    }
+
     public function latitude(): float
     {
         return $this->latitude;
@@ -88,6 +98,11 @@ readonly class GeoCoordinate extends DataType implements Arrayable, Htmlable, Lo
     public function distanceTo(self $other): Distance
     {
         return Distance::between($this, $other);
+    }
+
+    public function travelTime(self $origin, int|float $speed = 5.0): int
+    {
+        return $this->distanceTo($origin)->travelTime($speed);
     }
 
     public function toArray(): array
