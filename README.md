@@ -4,7 +4,7 @@ Frequently used data structures for [Kirby CMS](https://getkirby.com).
 
 ## Requirements
 
-Kirby CMS (`>=4.0`)  
+Kirby CMS (`^5.1`)  
 PHP (`>= 8.3`)
 
 ## Installation
@@ -86,6 +86,127 @@ return [
     'files/video' => 'files/gallery-video',
   ],
 ];
+```
+
+## Converting Content to Value Objects
+
+Referencing a blueprint is only half the story. The content stored in a field, structure object, or
+page can convert itself into an immutable value object that knows how to render its own HTML and
+structured data (JSON-LD) — instead of every project writing its own snippet to format an address,
+a person, or a set of opening hours.
+
+Composite blueprints like [`fields/person`](config/blueprints/fields/person.yml),
+[`fields/organization`](config/blueprints/fields/organization.yml), and
+[`fields/place`](config/blueprints/fields/place.yml) are Kirby `group` fields: referencing one
+flattens its fields directly into whatever contains it (a page, a site, a structure row) rather than
+nesting them under a field of that name — that's what lets the same fragment be reused inline on a
+page or as a column of a `structure`. That means a `person`/`organization`/`place` value object isn't
+reached through a single field's `toDataType()`; it's built from the *whole* page's or row's content
+via `toDataObject()`. A field that stays a single, addressable field in its own right — like
+[`fields/opening-hours`](config/blueprints/fields/opening-hours.yml), which is a `type: object` —
+converts directly with `toDataType()`:
+
+```yaml
+# site/blueprints/site.yml
+tabs:
+  content:
+    label: Content
+    fields:
+      openingHours: @hksagentur/schema/fields/opening-hours
+```
+
+```php
+<?php // site/templates/home.php ?>
+
+<?php $hours = $site->openingHours()->toDataType('opening-hours') ?>
+<?= $hours?->isOpen() ? 'Open now' : 'Closed' ?>
+```
+
+The shipped [`pages/employee`](config/blueprints/pages/employee.yml) blueprint already flattens
+`fields/person` onto the page, so its content converts straight to a `Person` with no extra wiring:
+
+```php
+<?php // site/templates/employee.php ?>
+
+<?php $person = $page->toDataObject('person') ?>
+<?= $person?->toHtml() ?>
+```
+
+`organization`/`place` follow the same pattern — reference the field on a page or site to flatten it
+in, then call `toDataObject()` on that page/site (or, for a `place` embedded as a `structure` row, on
+the row itself):
+
+```php
+<?php // site/templates/locations.php ?>
+
+<?php foreach ($page->locations()->toStructure() as $row): ?>
+  <?php $place = $row->toDataObject('place') ?>
+  <?= $place?->toHtml() ?>
+<?php endforeach ?>
+```
+
+Four plugin methods resolve a name to a value object:
+
+| Method                                    | Available on     | Resolves to                    |
+| ------------------------------------------ | ----------------- | ------------------------------- |
+| `$field->toDataType('name')`               | `Field`           | `Hks\Schema\Data\Types\DataType` |
+| `$field->toDataObject('name')`             | `Field`           | `Hks\Schema\Data\DataObject`     |
+| `$structureObject->toDataObject('name')`   | `StructureObject` | `Hks\Schema\Data\DataObject`     |
+| `$page->toDataObject('name')`              | `Page`            | `Hks\Schema\Data\DataObject`     |
+
+`name` accepts either a registered alias (`'postal-address'`, `'person'`, …) or a fully qualified
+class name (`PostalAddress::class`). All four methods return `null` when the field/page/row content is
+empty, the name isn't registered, or the raw content doesn't match the type's expected shape — always
+guard the result with `?->` or a null check.
+
+The built-in aliases (see `dataTypes`/`dataObjects` in `index.php`) are:
+
+- **Data types** — `distance`, `email`, `file-url`, `fraction`, `geo-coordinate`, `image-url`,
+  `length`, `markdown`, `markup`, `money`, `opening-hours`, `opening-hours-exception`,
+  `opening-hours-specification`, `person-name`, `phone-number`, `postal-address`, `text`, `time`,
+  `time-range`, `url`.
+- **Data objects** — `organization`, `person`, `place`.
+
+Register a project's own type or object alongside the built-in ones:
+
+```php
+<?php
+
+// site/config/config.php
+return [
+  'hksagentur.schema.dataTypes' => [
+    'weight' => \App\Data\Weight::class,
+  ],
+];
+```
+
+### Rendering HTML and structured data
+
+Depending on its shape, a value object implements a mix of these contracts:
+
+- `Htmlable::toHtml(array $attributes = []): string` — renders through a Kirby snippet named
+  `schema/{kebab-case-name}` (e.g. `schema/person`), passing itself as `$item` and `$attributes` as
+  `$attrs`. Because it's a snippet rather than inline PHP, a project can override the markup by
+  placing its own file at the same path (`site/snippets/schema/person.php`) — the project's file
+  wins. Nested value objects compose the same way *inside* the snippet (e.g. `schema/organization`
+  calls `$item->address()?->toHtml(['itemprop' => 'address'])`), so overriding one snippet changes its
+  rendering everywhere it's nested, too.
+- `Schemable::toStructuredData(): array` — a schema.org-shaped array, ready for `json_encode()` into
+  a `<script type="application/ld+json">` tag.
+- `Arrayable::toArray()` — a plain array representation.
+
+```php
+<?php // site/templates/employee.php ?>
+
+<?php $person = $page->toDataObject('person') ?>
+<?= $person?->toHtml() ?>
+
+<script type="application/ld+json">
+<?= json_encode(array_filter([
+  '@context' => 'https://schema.org',
+  ...$person?->toStructuredData() ?? [],
+])) ?>
+</script>
 ```
 
 ## Available Blueprints
