@@ -15,6 +15,7 @@ use Kirby\Content\Field;
  * @method Field controls()
  * @method Field preloading()
  * @method Field priority()
+ * @method Field ratio()
  */
 class VideoBlock extends Block
 {
@@ -33,11 +34,6 @@ class VideoBlock extends Block
     public function caption(): Field
     {
         return $this->content()->caption()->or($this->video()?->caption());
-    }
-
-    public function ratio(): Field
-    {
-        return $this->content()->ratio()->or('auto');
     }
 
     public function preload(): Field

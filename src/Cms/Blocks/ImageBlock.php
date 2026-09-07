@@ -12,6 +12,7 @@ use Kirby\Content\Field;
  * @method Field crop()
  * @method Field loading()
  * @method Field priority()
+ * @method Field ratio()
  */
 class ImageBlock extends Block
 {
@@ -35,10 +36,5 @@ class ImageBlock extends Block
     public function caption(): Field
     {
         return $this->content()->caption()->or($this->image()?->caption());
-    }
-
-    public function ratio(): Field
-    {
-        return $this->content()->ratio()->or('auto');
     }
 }
