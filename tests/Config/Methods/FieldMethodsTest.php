@@ -2,6 +2,7 @@
 
 namespace Hks\Schema\Config\Methods;
 
+use Hks\Schema\Data\Exceptions\NotFoundException;
 use Hks\Schema\Data\Person;
 use Hks\Schema\Data\Types\EmailAddress;
 use Hks\Schema\Data\Types\Fraction;
@@ -9,6 +10,7 @@ use Hks\Schema\Data\Types\PersonName;
 use Hks\Schema\Data\Types\PostalAddress;
 use Hks\Schema\Data\Types\Time;
 use Hks\Schema\TestCase;
+use InvalidArgumentException;
 use Kirby\Content\Field;
 
 class FieldMethodsTest extends TestCase
@@ -49,23 +51,47 @@ class FieldMethodsTest extends TestCase
         );
     }
 
-    public function testToDataTypeReturnsNullForAnUnregisteredName(): void
+    public function testToDataTypeThrowsForAnUnregisteredName(): void
     {
         $field = new Field(null, 'email', 'jane@example.com');
 
-        $this->assertNull($field->toDataType('does-not-exist'));
+        $this->expectException(NotFoundException::class);
+
+        $field->toDataType('does-not-exist');
     }
 
     public function testToDataTypeHandlesAFieldTheContentFileDoesNotSetAtAll(): void
     {
-        // A missing content key gives the Field a `null` raw value, which
-        // neither a scalar-only nor an array-only `tryFrom()` accepts as-is —
-        // both must fall through to a graceful `null` rather than crash.
+        // A missing content key gives the Field a `null` raw value — an
+        // empty field is not an error, so this must resolve to `null`
+        // rather than throwing, regardless of the type's input shape.
         $scalar = new Field(null, 'email', null);
         $array = new Field(null, 'address', null);
 
         $this->assertNull($scalar->toDataType('email'));
         $this->assertNull($array->toDataType('postal-address'));
+    }
+
+    public function testToDataTypeThrowsWhenTheFieldValueFailsValidation(): void
+    {
+        $field = new Field(null, 'email', 'not-an-email');
+
+        $this->expectException(InvalidArgumentException::class);
+
+        $field->toDataType('email');
+    }
+
+    public function testToDataTypePreservesTheOriginalValidationErrorAsThePreviousException(): void
+    {
+        $field = new Field(null, 'email', 'not-an-email');
+
+        try {
+            $field->toDataType('email');
+            $this->fail('Expected an exception to be thrown.');
+        } catch (InvalidArgumentException $exception) {
+            $this->assertNotNull($exception->getPrevious());
+            $this->assertStringContainsString('not-an-email', $exception->getPrevious()->getMessage());
+        }
     }
 
     public function testToDataObjectDecodesAnObjectShapedFieldValueByConstructorParameterName(): void
@@ -79,18 +105,43 @@ class FieldMethodsTest extends TestCase
         $this->assertTrue($person->email->isEqualTo(new EmailAddress('jane@example.com')));
     }
 
-    public function testToDataObjectReturnsNullForAnUnregisteredName(): void
+    public function testToDataObjectThrowsForAnUnregisteredName(): void
+    {
+        $field = new Field(null, 'person', "name: Jane Doe\n");
+
+        $this->expectException(NotFoundException::class);
+
+        $field->toDataObject('does-not-exist');
+    }
+
+    public function testToDataObjectReturnsNullForAnEmptyField(): void
     {
         $field = new Field(null, 'person', '');
 
-        $this->assertNull($field->toDataObject('does-not-exist'));
+        $this->assertNull($field->toDataObject('person'));
     }
 
-    public function testToDataObjectReturnsNullInsteadOfCrashingWhenARequiredConstructorParameterIsMissing(): void
+    public function testToDataObjectThrowsWhenTheContentFailsValidation(): void
     {
         // Non-empty, but has no "name" — `Person::fromArray()` throws for that.
         $field = new Field(null, 'person', "email: jane@example.com\n");
 
-        $this->assertNull($field->toDataObject('person'));
+        $this->expectException(InvalidArgumentException::class);
+
+        $field->toDataObject('person');
+    }
+
+    public function testToDataObjectPreservesTheOriginalValidationErrorAsThePreviousException(): void
+    {
+        // Non-empty, but has no "name" — `Person::fromArray()` throws for that.
+        $field = new Field(null, 'person', "email: jane@example.com\n");
+
+        try {
+            $field->toDataObject('person');
+            $this->fail('Expected an exception to be thrown.');
+        } catch (InvalidArgumentException $exception) {
+            $this->assertNotNull($exception->getPrevious());
+            $this->assertStringContainsString('person name', $exception->getPrevious()->getMessage());
+        }
     }
 }

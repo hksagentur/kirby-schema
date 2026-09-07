@@ -1,6 +1,8 @@
 <?php
 
 use Hks\Schema\Data\DataObject;
+use Hks\Schema\Data\Exceptions\NotFoundException;
+use Hks\Schema\Data\Exceptions\ValidationException;
 use Hks\Schema\Data\Registry;
 use Hks\Schema\Data\Types\DataType;
 use Hks\Schema\Toolkit\I18n;
@@ -44,34 +46,62 @@ return [
     // Converters
 
     /**
-     * Converts a field value to a data type.
+     * Converts a field value to a data type. Throws for an unregistered
+     * name or content that fails to resolve; an empty field is not an
+     * error and resolves to `null`.
      */
     'toDataType' => function (Field $field, string $name): ?DataType {
         $class = Registry::dataType($name);
 
-        if (! $class || $field->isEmpty()) {
+        if (! $class) {
+            throw NotFoundException::for('No data type is registered for "%s".', $name);
+        }
+
+        if ($field->isEmpty()) {
             return null;
         }
 
         $value = $class::acceptsArrayInput() ? $field->yaml() : $field->toString();
 
-        return $class::tryFrom($value);
+        try {
+            return $class::from($value);
+        } catch (Throwable $exception) {
+            $message = sprintf('Invalid %s data for "%s" field', $name, $field->key());
+
+            if ($parent = $field->parent()) {
+                $message .= sprintf(' on parent "%s"', $parent->id());
+            }
+
+            throw new ValidationException($message, previous: $exception);
+        }
     },
 
     /**
-     * Converts a field value to a data object.
+     * Converts a field value to a data object. Throws for an unregistered
+     * name or content that fails to resolve; an empty field is not an
+     * error and resolves to `null`.
      */
     'toDataObject' => function (Field $field, string $name): ?DataObject {
         $class = Registry::dataObject($name);
 
-        if (! $class || $field->isEmpty()) {
+        if (! $class) {
+            throw NotFoundException::for('No data object is registered for "%s".', $name);
+        }
+
+        if ($field->isEmpty()) {
             return null;
         }
 
         try {
             return $class::fromArray($field->yaml());
-        } catch (Throwable) {
-            return null;
+        } catch (Throwable $exception) {
+            $message = sprintf('Invalid %s data for "%s" field', $name, $field->key());
+
+            if ($parent = $field->parent()) {
+                $message .= sprintf(' on parent "%s"', $parent->id());
+            }
+
+            throw new ValidationException($message, previous: $exception);
         }
     },
 
