@@ -34,4 +34,15 @@ class PostalAddressTest extends TestCase
         $this->assertSame($address->toLocaleString(), $other->toLocaleString());
         $this->assertFalse($address->equals($other));
     }
+
+    public function testJsonSerializeMatchesToArray(): void
+    {
+        $address = new PostalAddress('Musterstraße 1', '12345', 'Berlin', 'DE', 'Berlin');
+
+        $this->assertSame($address->toArray(), $address->jsonSerialize());
+        $this->assertSame(
+            $address->toArray(),
+            json_decode(json_encode($address), true),
+        );
+    }
 }

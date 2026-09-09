@@ -151,8 +151,8 @@ readonly class Length extends NumberType implements Arrayable, Comparable, Htmla
         ];
     }
 
-    public function jsonSerialize(): float
+    public function jsonSerialize(): array
     {
-        return $this->toMeters()->value();
+        return $this->toArray();
     }
 }

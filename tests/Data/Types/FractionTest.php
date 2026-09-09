@@ -62,12 +62,22 @@ class FractionTest extends TestCase
         $this->assertSameHtml('<span role="math">16 ⁄9</span>', $fraction->toHtml());
     }
 
-    public function testEqualsAndJsonSerializeUseThePlainStringForm(): void
+    public function testEqualsUsesThePlainStringForm(): void
     {
         $fraction = new Fraction(16, 9);
 
         $this->assertTrue($fraction->isEqualTo(Fraction::from('16/9')));
-        $this->assertSame('16/9', $fraction->jsonSerialize());
+    }
+
+    public function testJsonSerializeMatchesToArray(): void
+    {
+        $fraction = new Fraction(16, 9);
+
+        $this->assertSame($fraction->toArray(), $fraction->jsonSerialize());
+        $this->assertSame(
+            $fraction->toArray(),
+            json_decode(json_encode($fraction), true),
+        );
     }
 
     public function testHasNumeratorAndHasDenominatorCheckTheStoredValuesAsGiven(): void

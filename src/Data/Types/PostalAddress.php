@@ -286,6 +286,11 @@ readonly class PostalAddress extends DataType implements Arrayable, Htmlable, Lo
         ];
     }
 
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+
     protected function getTemplateData(?string $locale = null): array
     {
         $addressData = $this->toArray();

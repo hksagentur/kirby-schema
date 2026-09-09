@@ -37,6 +37,17 @@ class LengthTest extends TestCase
         $this->assertTrue((new Length(1, LengthUnit::Kilometer))->equals(new Length(1000, LengthUnit::Meter)));
     }
 
+    public function testJsonSerializeMatchesToArrayAndPreservesTheGivenUnit(): void
+    {
+        $length = new Length(5, LengthUnit::Kilometer);
+
+        $this->assertSame($length->toArray(), $length->jsonSerialize());
+        $this->assertEquals(
+            $length->toArray(),
+            json_decode(json_encode($length), true),
+        );
+    }
+
     public function testMinAndMaxCompareAcrossUnits(): void
     {
         $meter = new Length(500, LengthUnit::Meter);

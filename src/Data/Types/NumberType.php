@@ -48,7 +48,7 @@ abstract readonly class NumberType extends DataType
         return $this->value;
     }
 
-    public function jsonSerialize(): float
+    public function jsonSerialize(): mixed
     {
         return $this->value;
     }

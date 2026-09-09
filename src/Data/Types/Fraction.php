@@ -250,6 +250,11 @@ readonly class Fraction extends DataType implements Arrayable, Comparable, Htmla
         ];
     }
 
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+
     protected function greatestCommonDivisor(): int
     {
         return Math::greatestCommonDivisor($this->numerator, $this->denominator);
