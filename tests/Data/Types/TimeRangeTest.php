@@ -2,11 +2,14 @@
 
 namespace Hks\Schema\Data\Types;
 
+use Hks\Schema\Concerns\AssertsHtml;
 use Hks\Schema\Data\Exceptions\ValidationException;
 use Hks\Schema\TestCase;
 
 class TimeRangeTest extends TestCase
 {
+    use AssertsHtml;
+
     public function testFromCreatesANewInstanceFromStartAndEndKeys(): void
     {
         $range = TimeRange::from(['start' => '09:00', 'end' => '17:00']);
@@ -36,8 +39,9 @@ class TimeRangeTest extends TestCase
 
     public function testToHtmlRendersADataTagWrappingBothTimes(): void
     {
-        $this->assertSame(
-            "<data value=\"09:00:00/17:30:00\"><time>09:00:00</time>\u{2009}–\u{2009}<time>17:30:00</time></data>",
+        $this->assertSameHtml(
+            "<data value=\"09:00:00/17:30:00\"><time datetime=\"09:00:00\">09:00:00</time>"
+            . "<span role=\"separator\">\u{2009}–\u{2009}</span><time datetime=\"17:30:00\">17:30:00</time></data>",
             TimeRange::from(['09:00', '17:30'])->toHtml(),
         );
     }

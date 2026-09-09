@@ -10,7 +10,6 @@ use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Contracts\Localizable;
 use Hks\Schema\Data\Contracts\Schemable;
 use Hks\Schema\Data\Exceptions\ValidationException;
-use Kirby\Toolkit\Html;
 use Throwable;
 
 #[ArrayInput]
@@ -108,16 +107,6 @@ readonly class OpeningHoursSpecification extends DataType implements Arrayable, 
     public function toLocaleString(?string $locale = null, array $options = []): string
     {
         return $this->format(locale: $locale);
-    }
-
-    public function toHtml(array $attributes = []): string
-    {
-        return Html::tag('time', [
-            $this->toLocaleString(),
-        ], [
-            'datetime' => $this->toString(),
-            ...$attributes
-        ]);
     }
 
     public function toArray(): array

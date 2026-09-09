@@ -2,12 +2,15 @@
 
 namespace Hks\Schema\Data\Types;
 
+use Hks\Schema\Concerns\AssertsHtml;
 use Hks\Schema\Data\Contracts\Schemable;
 use Hks\Schema\Data\Exceptions\ValidationException;
 use Hks\Schema\TestCase;
 
 class OpeningHoursSpecificationTest extends TestCase
 {
+    use AssertsHtml;
+
     public function testImplementsSchemable(): void
     {
         $specification = OpeningHoursSpecification::from([
@@ -127,7 +130,7 @@ class OpeningHoursSpecificationTest extends TestCase
             'timeRanges' => [['09:00', '17:00']],
         ]);
 
-        $html = $specification->toHtml();
+        $html = $this->minifyHtml($specification->toHtml());
 
         // The tag body goes through locale-aware time formatting (ICU), so only
         // the deterministic parts are asserted here: the tag itself, the ISO

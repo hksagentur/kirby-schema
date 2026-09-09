@@ -4,7 +4,6 @@ namespace Hks\Schema\Data\Types;
 
 use Hks\Schema\Data\Contracts\Arrayable;
 use InvalidArgumentException;
-use Kirby\Toolkit\Html;
 use Kirby\Toolkit\Str;
 
 readonly class PhoneNumber extends StringType implements Arrayable
@@ -29,11 +28,6 @@ readonly class PhoneNumber extends StringType implements Arrayable
             ));
         }
 
-        // preg_match() reports an unmatched *optional* named group as an empty
-        // string rather than an absent key whenever a later group in the pattern
-        // did match — drop those so isset()/?? below can tell "did not match"
-        // from "matched an empty capture" (none of our groups can legitimately
-        // match an empty string when they do participate).
         $matches = array_filter($matches, static fn (string $match): bool => $match !== '');
 
         $this->nationalSignificantNumber = $matches['nationalSignificantNumber'];
@@ -144,16 +138,6 @@ readonly class PhoneNumber extends StringType implements Arrayable
             $this->countryCallingCode(),
             preg_replace('/[^\d]/', '', $this->nationalSignificantNumber),
         ]);
-    }
-
-    public function toHtml(array $attributes = []): string
-    {
-        return $this->toLink($attributes);
-    }
-
-    public function toLink(array $attributes = []): string
-    {
-        return Html::tel($this->value(), attr: $attributes);
     }
 
     public function toArray(): array

@@ -8,7 +8,6 @@ use Hks\Schema\Data\Contracts\Comparable;
 use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Contracts\Localizable;
 use Hks\Schema\Data\Exceptions\TypeMismatchException;
-use Kirby\Toolkit\Html;
 use Kirby\Toolkit\I18n;
 
 readonly class Length extends NumberType implements Arrayable, Comparable, Htmlable, Localizable
@@ -142,15 +141,6 @@ readonly class Length extends NumberType implements Arrayable, Comparable, Htmla
             I18n::formatNumber($this->value(), $locale),
             $this->unit()->symbol(),
         );
-    }
-
-    public function toHtml(array $attributes = []): string
-    {
-        return Html::tag('data', $this->toLocaleString(), [
-            'value' => $this->toMeters()->value(),
-            'data-unit' => $this->unit()->symbol(),
-            ...$attributes,
-        ]);
     }
 
     public function toArray(): array

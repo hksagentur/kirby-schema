@@ -6,5 +6,7 @@
     'translate' => 'no',
     ...$attrs ?? [],
 ]) ?>>
-    <?= $formatted ?>
+    <?= $item->addressLines(
+        fn (string $value, string $field): string => Html::tag('span', $value, ['itemprop' => $field]),
+    )->join("<br>\n") ?>
 </div>

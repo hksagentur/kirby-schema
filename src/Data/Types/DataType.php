@@ -5,6 +5,9 @@ namespace Hks\Schema\Data\Types;
 use Hks\Schema\Data\Attributes\ArrayInput;
 use Hks\Schema\Data\Contracts\Jsonable;
 use JsonSerializable;
+use Kirby\Cms\App;
+use Kirby\Toolkit\A;
+use Kirby\Toolkit\Str;
 use ReflectionClass;
 use Stringable;
 
@@ -13,6 +16,24 @@ abstract readonly class DataType implements Jsonable, Stringable, JsonSerializab
     public static function acceptsArrayInput(): bool
     {
         return (new ReflectionClass(static::class))->getAttributes(ArrayInput::class) !== [];
+    }
+
+    public function type(): string
+    {
+        return Str::kebab(A::last(explode('\\', static::class)));
+    }
+
+    public function snippet(): string
+    {
+        return 'schema/' . $this->type();
+    }
+
+    public function toHtml(array $attributes = []): string
+    {
+        return App::instance()->snippet($this->snippet(), [
+            'item' => $this,
+            'attrs' => $attributes,
+        ]);
     }
 
     public function isEqualTo(self $other): bool

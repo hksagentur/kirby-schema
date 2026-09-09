@@ -2,18 +2,19 @@
 
 namespace Hks\Schema\Data\Types;
 
+use Closure;
 use Hks\Schema\Data\Attributes\ArrayInput;
 use Hks\Schema\Data\Contracts\Arrayable;
 use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Contracts\Localizable;
 use Hks\Schema\Data\Contracts\Schemable;
+use Hks\Schema\Data\Exceptions\NotFoundException;
 use InvalidArgumentException;
 use Kirby\Cms\App;
 use Kirby\Toolkit\A;
-use Kirby\Toolkit\Html;
+use Kirby\Toolkit\Collection;
 use Kirby\Toolkit\I18n;
 use Kirby\Toolkit\Str;
-use RuntimeException;
 use Throwable;
 
 #[ArrayInput]
@@ -195,6 +196,49 @@ readonly class PostalAddress extends DataType implements Arrayable, Htmlable, Lo
         return I18n::translate("hksagentur.schema.country.{$countryCode}", $this->country(), $locale);
     }
 
+    /**
+     * @param Closure(string $value, string $field): string $callback
+     * @return Collection<int, string>
+     */
+    public function addressLines(Closure $callback, ?string $locale = null): Collection
+    {
+        $templateData = $this->templateFields($locale);
+
+        if (! $templateData) {
+            return new Collection();
+        }
+
+        $templateData = array_combine(
+            array_keys($templateData),
+            array_map($callback, $templateData, array_keys($templateData)),
+        );
+
+        $formattedLines = [];
+
+        foreach ($this->addressFormatLines() as $addressFormatLine) {
+            if ($formattedLine = Str::trim(Str::template($addressFormatLine, $templateData, ['fallback' => '']), ', ')) {
+                $formattedLines[] = $formattedLine;
+            }
+        }
+
+        return new Collection($formattedLines);
+    }
+
+    /** @return string[] */
+    public function addressFormatLines(): array
+    {
+        $addressFormat = static::addressFormat($this->countryCode());
+
+        if (! $addressFormat) {
+            throw NotFoundException::for(
+                'Missing a valid address format for country "%s".',
+                $this->countryCode(),
+            );
+        }
+
+        return $addressFormat;
+    }
+
     public function equals(DataType $other): bool
     {
         if (! ($other instanceof self)) {
@@ -217,16 +261,10 @@ readonly class PostalAddress extends DataType implements Arrayable, Htmlable, Lo
 
     public function toLocaleString(?string $locale = null): string
     {
-        return $this->render('text', $locale);
-    }
-
-    public function toHtml(array $attributes = []): string
-    {
-        return App::instance()->snippet('schema/postal-address', [
-            'item' => $this,
-            'formatted' => $this->render('html'),
-            'attrs' => $attributes,
-        ]);
+        return $this->addressLines(
+            fn (string $value): string => Str::esc($value),
+            $locale,
+        )->join("\n");
     }
 
     public function toArray(): array
@@ -248,41 +286,6 @@ readonly class PostalAddress extends DataType implements Arrayable, Htmlable, Lo
         ];
     }
 
-    protected function render(string $mode, ?string $locale = null): string
-    {
-        $addressFormat = static::addressFormat($this->countryCode());
-
-        if (! $addressFormat) {
-            throw new RuntimeException(sprintf(
-                'Missing a valid address format for country "%s".',
-                $this->countryCode(),
-            ));
-        }
-
-        $templateData = $this->getTemplateData($locale);
-
-        if ($this->isDomestic()) {
-            $templateData = A::without($templateData, ['addressCountry']);
-        }
-
-        $templateData = $this->prepareTemplateData($mode, $templateData);
-
-        if (! $templateData) {
-            return '';
-        }
-
-        $addressLines = $this->applyFormat($addressFormat, $templateData);
-
-        if (! $addressLines) {
-            return '';
-        }
-
-        return match ($mode) {
-            'html' => implode("<br>\n", $addressLines),
-            default => implode("\n", $addressLines),
-        };
-    }
-
     protected function getTemplateData(?string $locale = null): array
     {
         $addressData = $this->toArray();
@@ -294,30 +297,14 @@ readonly class PostalAddress extends DataType implements Arrayable, Htmlable, Lo
         return array_filter($addressData);
     }
 
-    protected function prepareTemplateData(string $mode, array $templateData): array
+    protected function templateFields(?string $locale = null): array
     {
-        $formattedTemplateData = [];
+        $templateData = $this->getTemplateData($locale);
 
-        foreach ($templateData as $field => $value) {
-            $formattedTemplateData[$field] = match ($mode) {
-                'html' => Html::tag('span', $value, ['itemprop' => $field]),
-                default => Str::esc($value),
-            };
+        if ($this->isDomestic()) {
+            $templateData = A::without($templateData, ['addressCountry']);
         }
 
-        return $formattedTemplateData;
-    }
-
-    protected function applyFormat(array $addressFormat, array $templateData): array
-    {
-        $formattedLines = [];
-
-        foreach ($addressFormat as $addressFormatLine) {
-            if ($formattedLine = Str::trim(Str::template($addressFormatLine, $templateData, ['fallback' => '']), ', ')) {
-                $formattedLines[] = $formattedLine;
-            }
-        }
-
-        return $formattedLines;
+        return $templateData;
     }
 }

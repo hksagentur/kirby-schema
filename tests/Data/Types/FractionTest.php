@@ -2,12 +2,15 @@
 
 namespace Hks\Schema\Data\Types;
 
+use Hks\Schema\Concerns\AssertsHtml;
 use Hks\Schema\Data\Contracts\Comparable;
 use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\TestCase;
 
 class FractionTest extends TestCase
 {
+    use AssertsHtml;
+
     public function testImplementsComparable(): void
     {
         $this->assertInstanceOf(Comparable::class, Fraction::from('1/2'));
@@ -52,11 +55,11 @@ class FractionTest extends TestCase
         $this->assertStringNotContainsString('&frasl;', $fraction->toString());
     }
 
-    public function testToHtmlStillRendersTheFractionSlashEntity(): void
+    public function testToHtmlStillRendersTheFractionSlashCharacter(): void
     {
         $fraction = new Fraction(16, 9);
 
-        $this->assertStringContainsString('&frasl;', $fraction->toHtml());
+        $this->assertSameHtml('<span role="math">16 ⁄9</span>', $fraction->toHtml());
     }
 
     public function testEqualsAndJsonSerializeUseThePlainStringForm(): void

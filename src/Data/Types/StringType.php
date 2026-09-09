@@ -3,7 +3,6 @@
 namespace Hks\Schema\Data\Types;
 
 use Hks\Schema\Data\Contracts\Htmlable;
-use Kirby\Toolkit\Str;
 use Stringable;
 use Throwable;
 
@@ -39,11 +38,6 @@ abstract readonly class StringType extends DataType implements Htmlable
     public function toString(): string
     {
         return $this->value;
-    }
-
-    public function toHtml(array $attributes = []): string
-    {
-        return Str::esc($this->value, context: 'html');
     }
 
     public function toPlainText(): string

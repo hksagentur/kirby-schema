@@ -9,7 +9,6 @@ use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Exceptions\TypeMismatchException;
 use Hks\Schema\Toolkit\Math;
 use InvalidArgumentException;
-use Kirby\Toolkit\Html;
 use Kirby\Toolkit\Str;
 use RuntimeException;
 use Stringable;
@@ -241,15 +240,6 @@ readonly class Fraction extends DataType implements Arrayable, Comparable, Htmla
         }
 
         return "{$this->numerator}/{$this->denominator}";
-    }
-
-    public function toHtml(array $attributes = []): string
-    {
-        if ($this->hasDenominator(1)) {
-            return Html::tag('span', (string) $this->numerator, $attributes);
-        }
-
-        return Html::tag('span', ["{$this->numerator}&frasl;{$this->denominator}"], $attributes);
     }
 
     public function toArray(): array

@@ -9,8 +9,6 @@ use Hks\Schema\Data\Contracts\Arrayable;
 use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Contracts\Schemable;
 use Hks\Schema\Data\Exceptions\ValidationException;
-use Kirby\Toolkit\Html;
-use Kirby\Toolkit\I18n;
 use Throwable;
 
 #[ArrayInput]
@@ -92,22 +90,6 @@ readonly class OpeningHoursException extends DataType implements Arrayable, Html
     public function toString(): string
     {
         return $this->timeRange?->toString() ?? 'closed';
-    }
-
-    public function toHtml(array $attributes = []): string
-    {
-        $timeRange = $this->hasTimeRange()
-            ? $this->timeRange->toHtml($attributes)
-            : Html::tag('data', I18n::translate('hksagentur.schema.openingHours.closed'), [
-                'value' => '',
-                ...$attributes,
-            ]);
-
-        if ($this->note === null) {
-            return $timeRange;
-        }
-
-        return $timeRange . ' ' . Html::tag('small', $this->note);
     }
 
     public function toArray(): array

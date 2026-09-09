@@ -6,7 +6,6 @@ use Hks\Schema\Data\Contracts\Arrayable;
 use InvalidArgumentException;
 use Kirby\Http\Idn;
 use Kirby\Toolkit\V;
-use Kirby\Toolkit\Html;
 use Kirby\Toolkit\Str;
 
 readonly class EmailAddress extends StringType implements Arrayable
@@ -77,16 +76,6 @@ readonly class EmailAddress extends StringType implements Arrayable
     public function toUnicode(): static
     {
         return new static(Idn::decodeEmail($this->value));
-    }
-
-    public function toHtml(array $attributes = []): string
-    {
-        return $this->toLink($attributes);
-    }
-
-    public function toLink(array $attributes = []): string
-    {
-        return Html::email($this->value, attr: $attributes);
     }
 
     public function toArray(): array

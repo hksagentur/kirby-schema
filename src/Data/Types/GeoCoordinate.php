@@ -9,7 +9,6 @@ use Hks\Schema\Data\Contracts\Localizable;
 use Hks\Schema\Data\Contracts\Schemable;
 use Hks\Schema\Toolkit\Geo;
 use InvalidArgumentException;
-use Kirby\Toolkit\Html;
 use Kirby\Toolkit\Str;
 use Stringable;
 use Throwable;
@@ -146,29 +145,6 @@ readonly class GeoCoordinate extends DataType implements Arrayable, Htmlable, Lo
             Geo::formatLatitude($this->latitude(), $locale),
             Geo::formatLongitude($this->longitude(), $locale),
         );
-    }
-
-    public function toHtml(array $attributes = []): string
-    {
-        return Html::tag('div', [
-            Html::tag('data', Geo::formatLatitude($this->latitude()), [
-                'value' => $this->latitude(),
-                'itemprop' => 'latitude',
-            ]),
-            Html::tag('data', Geo::formatLongitude($this->longitude()), [
-                'value' => $this->longitude(),
-                'itemprop' => 'longitude',
-            ]),
-        ], [
-            'itemscope' => true,
-            'itemtype' => 'https://schema.org/GeoCoordinates',
-            ...$attributes,
-        ]);
-    }
-
-    public function toLink(array $attributes): string
-    {
-        return Html::link($this->toUri(), [$this->toHtml()], $attributes);
     }
 
     public function jsonSerialize(): array

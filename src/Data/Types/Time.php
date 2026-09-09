@@ -13,7 +13,6 @@ use Hks\Schema\Data\Contracts\Localizable;
 use Hks\Schema\Data\Exceptions\TypeMismatchException;
 use Hks\Schema\Data\Exceptions\ValidationException;
 use IntlDateFormatter;
-use Kirby\Toolkit\Html;
 use Kirby\Toolkit\I18n;
 use Kirby\Toolkit\Str;
 use Throwable;
@@ -237,11 +236,6 @@ readonly class Time extends DataType implements Arrayable, Comparable, Htmlable,
     public function toLocaleString(?string $locale = null, array $options = []): string
     {
         return $this->format(locale: $locale);
-    }
-
-    public function toHtml(array $attributes = []): string
-    {
-        return Html::tag('time', $this->toString(), $attributes);
     }
 
     public function toArray(): array

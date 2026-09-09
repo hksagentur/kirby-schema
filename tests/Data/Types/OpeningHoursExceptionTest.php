@@ -2,11 +2,14 @@
 
 namespace Hks\Schema\Data\Types;
 
+use Hks\Schema\Concerns\AssertsHtml;
 use Hks\Schema\Data\Exceptions\ValidationException;
 use Hks\Schema\TestCase;
 
 class OpeningHoursExceptionTest extends TestCase
 {
+    use AssertsHtml;
+
     public function testFromCreatesANewInstanceFromRawArrayDefinitions(): void
     {
         $exception = OpeningHoursException::from([
@@ -85,8 +88,10 @@ class OpeningHoursExceptionTest extends TestCase
             'date' => '2026-12-25',
         ]);
 
-        $this->assertSame(
-            "<data value=\"00:00:00/00:00:00\"><time>00:00:00</time>\u{2009}–\u{2009}<time>00:00:00</time></data>",
+        $this->assertSameHtml(
+            "<span><data value=\"00:00:00/00:00:00\"><time datetime=\"00:00:00\">00:00:00</time>"
+            . "<span role=\"separator\">\u{2009}–\u{2009}</span>"
+            . "<time datetime=\"00:00:00\">00:00:00</time></data></span>",
             $exception->toHtml(),
         );
     }
@@ -182,7 +187,7 @@ class OpeningHoursExceptionTest extends TestCase
             'end' => '',
         ]);
 
-        $this->assertStringContainsString('Closed', $exception->toHtml());
+        $this->assertSameHtml('<span>Closed</span>', $exception->toHtml());
     }
 
     public function testToArrayRepresentsAClosedExceptionWithANullTimeRange(): void

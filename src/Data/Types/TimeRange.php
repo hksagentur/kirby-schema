@@ -10,7 +10,6 @@ use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Contracts\Localizable;
 use Hks\Schema\Data\Exceptions\TypeMismatchException;
 use Hks\Schema\Data\Exceptions\ValidationException;
-use Kirby\Toolkit\Html;
 use Kirby\Toolkit\Str;
 use Throwable;
 
@@ -163,18 +162,6 @@ readonly class TimeRange extends DataType implements Arrayable, Comparable, Html
     public function toLocaleString(?string $locale = null, array $options = []): string
     {
         return $this->format(locale: $locale);
-    }
-
-    public function toHtml(array $attributes = []): string
-    {
-        return Html::tag('data', [
-            $this->start->toHtml($attributes),
-            ' – ',
-            $this->end->toHtml($attributes),
-        ], [
-            'value' => $this->toString(),
-            ...$attributes
-        ]);
     }
 
     public function jsonSerialize(): string

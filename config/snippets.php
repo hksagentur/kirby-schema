@@ -1,10 +1,23 @@
 <?php
 
 return [
+    'schema/distance' => dirname(__DIR__) . '/views/snippets/distance.php',
+    'schema/email-address' => dirname(__DIR__) . '/views/snippets/email-address.php',
+    'schema/fraction' => dirname(__DIR__) . '/views/snippets/fraction.php',
+    'schema/geo-coordinate' => dirname(__DIR__) . '/views/snippets/geo-coordinate.php',
+    'schema/length' => dirname(__DIR__) . '/views/snippets/length.php',
+    'schema/markdown' => dirname(__DIR__) . '/views/snippets/markdown.php',
+    'schema/markup' => dirname(__DIR__) . '/views/snippets/markup.php',
     'schema/money' => dirname(__DIR__) . '/views/snippets/money.php',
     'schema/opening-hours' => dirname(__DIR__) . '/views/snippets/opening-hours.php',
+    'schema/opening-hours-exception' => dirname(__DIR__) . '/views/snippets/opening-hours-exception.php',
+    'schema/opening-hours-specification' => dirname(__DIR__) . '/views/snippets/opening-hours-specification.php',
     'schema/organization' => dirname(__DIR__) . '/views/snippets/organization.php',
     'schema/person' => dirname(__DIR__) . '/views/snippets/person.php',
+    'schema/phone-number' => dirname(__DIR__) . '/views/snippets/phone-number.php',
     'schema/place' => dirname(__DIR__) . '/views/snippets/place.php',
     'schema/postal-address' => dirname(__DIR__) . '/views/snippets/postal-address.php',
+    'schema/time' => dirname(__DIR__) . '/views/snippets/time.php',
+    'schema/time-range' => dirname(__DIR__) . '/views/snippets/time-range.php',
+    'schema/url' => dirname(__DIR__) . '/views/snippets/url.php',
 ];

@@ -2,11 +2,14 @@
 
 namespace Hks\Schema\Data\Types;
 
+use Hks\Schema\Concerns\AssertsHtml;
 use Hks\Schema\Data\Exceptions\ValidationException;
 use Hks\Schema\TestCase;
 
 class TimeTest extends TestCase
 {
+    use AssertsHtml;
+
     public function testFromCreatesANewInstanceFromAnIsoTimeString(): void
     {
         $time = Time::from('09:05:30');
@@ -49,9 +52,12 @@ class TimeTest extends TestCase
         $this->assertSame('09:05:30', Time::from('09:05:30')->toString());
     }
 
-    public function testToHtmlRendersATimeTag(): void
+    public function testToHtmlRendersATimeTagWithAnIsoDatetimeAttribute(): void
     {
-        $this->assertSame('<time>09:05:30</time>', Time::from('09:05:30')->toHtml());
+        $this->assertSameHtml(
+            '<time datetime="09:05:30">09:05:30</time>',
+            Time::from('09:05:30')->toHtml(),
+        );
     }
 
     public function testCompareOrdersByTimeOfDay(): void

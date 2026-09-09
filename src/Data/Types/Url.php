@@ -6,7 +6,6 @@ use Hks\Schema\Data\Contracts\Arrayable;
 use InvalidArgumentException;
 use Kirby\Http\Idn;
 use Kirby\Toolkit\A;
-use Kirby\Toolkit\Html;
 use Kirby\Toolkit\Str;
 use Kirby\Toolkit\V;
 
@@ -176,16 +175,6 @@ readonly class Url extends StringType implements Arrayable
     public function toUnicode(): static
     {
         return $this->with(['host' => Idn::decode($this->host)]);
-    }
-
-    public function toHtml(array $attributes = []): string
-    {
-        return $this->toLink($attributes);
-    }
-
-    public function toLink(array $attributes = []): string
-    {
-        return Html::link($this->value(), attr: $attributes);
     }
 
     public function toArray(): array
