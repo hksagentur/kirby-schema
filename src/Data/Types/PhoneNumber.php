@@ -146,4 +146,9 @@ readonly class PhoneNumber extends StringType implements Arrayable
             'subscriberNumber' => $this->subscriberNumber,
         ];
     }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
 }

@@ -183,6 +183,11 @@ readonly class Url extends StringType implements Arrayable
         ];
     }
 
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+
     protected function buildUrl(array $parts): string
     {
         return implode('', array_filter([

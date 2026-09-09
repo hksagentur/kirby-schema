@@ -263,4 +263,9 @@ readonly class OpeningHours extends DataType implements Arrayable, Htmlable, Loc
 
         return $graph;
     }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
 }

@@ -87,4 +87,9 @@ readonly class EmailAddress extends StringType implements Arrayable
             'domain' => $this->domain,
         ];
     }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
 }

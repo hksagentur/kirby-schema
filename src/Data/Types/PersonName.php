@@ -126,4 +126,9 @@ readonly class PersonName extends DataType implements Arrayable
             'honorificPrefix' => $this->honorificPrefix,
         ];
     }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
 }

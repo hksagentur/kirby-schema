@@ -127,4 +127,9 @@ readonly class OpeningHoursSpecification extends DataType implements Arrayable, 
             'closes' => $timeRange->end()->toString(),
         ]);
     }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
 }

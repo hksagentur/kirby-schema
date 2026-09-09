@@ -113,4 +113,9 @@ readonly class OpeningHoursException extends DataType implements Arrayable, Html
             'validThrough' => $this->date->format(self::ISO_DATE_FORMAT),
         ]);
     }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
 }

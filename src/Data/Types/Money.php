@@ -199,4 +199,9 @@ readonly class Money extends DataType implements Arrayable, Comparable, Htmlable
             'value' => $this->toMajorUnits(),
         ];
     }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
 }
