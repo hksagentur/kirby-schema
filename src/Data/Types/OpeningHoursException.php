@@ -14,6 +14,8 @@ use Throwable;
 #[ArrayInput]
 readonly class OpeningHoursException extends DataType implements Arrayable, Htmlable, Schemable
 {
+    public const string ISO_DATE_FORMAT = 'Y-m-d';
+
     public function __construct(
         public DateTimeImmutable $date,
         public ?TimeRange $timeRange = null,
@@ -84,7 +86,7 @@ readonly class OpeningHoursException extends DataType implements Arrayable, Html
 
     public function contains(DateTimeInterface $date): bool
     {
-        return $this->date->format('Y-m-d') === $date->format('Y-m-d');
+        return $this->date->format(self::ISO_DATE_FORMAT) === $date->format(self::ISO_DATE_FORMAT);
     }
 
     public function toString(): string
@@ -96,7 +98,7 @@ readonly class OpeningHoursException extends DataType implements Arrayable, Html
     {
         return [
             'timeRange' => $this->timeRange?->toArray(),
-            'date' => $this->date->format('Y-m-d'),
+            'date' => $this->date->format(self::ISO_DATE_FORMAT),
             'note' => $this->note,
         ];
     }
@@ -107,8 +109,8 @@ readonly class OpeningHoursException extends DataType implements Arrayable, Html
             '@type' => 'OpeningHoursSpecification',
             'opens' => $this->timeRange?->start()->toString(),
             'closes' => $this->timeRange?->end()->toString(),
-            'validFrom' => $this->date->format('Y-m-d'),
-            'validThrough' => $this->date->format('Y-m-d'),
+            'validFrom' => $this->date->format(self::ISO_DATE_FORMAT),
+            'validThrough' => $this->date->format(self::ISO_DATE_FORMAT),
         ]);
     }
 }

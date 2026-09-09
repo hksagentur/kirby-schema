@@ -2,12 +2,15 @@
 
 namespace Hks\Schema\Data\Types;
 
+use Hks\Schema\Concerns\AssertsHtml;
 use Hks\Schema\Data\Contracts\Schemable;
 use Hks\Schema\TestCase;
 use Kirby\Cms\Blueprint;
 
 class OpeningHoursTest extends TestCase
 {
+    use AssertsHtml;
+
     public function testImplementsSchemable(): void
     {
         $this->assertInstanceOf(Schemable::class, new OpeningHours(specifications: []));
@@ -336,5 +339,37 @@ class OpeningHoursTest extends TestCase
                 'validThrough' => '2026-12-25',
             ],
         ], $openingHours->toStructuredData());
+    }
+
+    public function testToHtmlGivesEachSpecificationItsOwnMicrodataScope(): void
+    {
+        $openingHours = OpeningHours::fromArray([
+            'monday' => [['start' => '09:00', 'end' => '17:00']],
+            'saturday' => [['start' => '08:00', 'end' => '12:00']],
+        ]);
+
+        $html = $this->minifyHtml($openingHours->toHtml());
+
+        // One scope per specification, none on the enclosing <dl>.
+        $this->assertSame(
+            2,
+            substr_count($html, 'itemtype="https://schema.org/OpeningHoursSpecification"'),
+        );
+        $this->assertStringStartsWith('<dl >', $html);
+    }
+
+    public function testToHtmlEncodesDayOfWeekAsASchemaOrgEnumerationValue(): void
+    {
+        $openingHours = OpeningHours::fromArray([
+            'monday' => [['start' => '09:00', 'end' => '17:00']],
+            'tuesday' => [['start' => '09:00', 'end' => '17:00']],
+        ]);
+
+        $html = $openingHours->toHtml();
+
+        // Matches the value the JSON-LD path already produces via the same method.
+        $this->assertStringContainsString('content="' . WeekDay::Monday->toIriString() . '"', $html);
+        $this->assertStringContainsString('content="' . WeekDay::Tuesday->toIriString() . '"', $html);
+        $this->assertSame(2, substr_count($html, 'itemprop="dayOfWeek"'));
     }
 }
