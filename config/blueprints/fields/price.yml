@@ -1,6 +1,6 @@
 type: number
 label:
   *: hksagentur.schema.field.price.label
-after: €
+after: "{{ kirby.option('hksagentur.schema.defaultCurrency', 'EUR') }}"
 step: 0.01
 min: 0

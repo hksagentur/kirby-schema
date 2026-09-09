@@ -67,8 +67,12 @@ enum Currency: string implements Localizable
     public function minorUnits(): int
     {
         return match ($this) {
+            self::USD => 2,
+            self::EUR => 2,
             self::JPY => 0,
-            default => 2,
+            self::GBP => 2,
+            self::CNY => 2,
+            self::CHF => 2,
         };
     }
 
