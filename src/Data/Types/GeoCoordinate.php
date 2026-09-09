@@ -138,7 +138,7 @@ readonly class GeoCoordinate extends DataType implements Arrayable, Htmlable, Lo
         );
     }
 
-    public function toLocaleString(?string $locale = null): string
+    public function toLocaleString(?string $locale = null, array $options = []): string
     {
         return sprintf(
             '%s, %s',

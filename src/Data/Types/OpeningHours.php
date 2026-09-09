@@ -248,6 +248,7 @@ readonly class OpeningHours extends DataType implements Arrayable, Htmlable, Loc
         ];
     }
 
+    /** @return list<array<string, mixed>> */
     public function toStructuredData(): array
     {
         $graph = [];

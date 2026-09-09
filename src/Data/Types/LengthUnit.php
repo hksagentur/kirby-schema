@@ -113,7 +113,7 @@ enum LengthUnit: string implements Localizable
         return $this->name();
     }
 
-    public function toLocaleString(?string $locale = null): string
+    public function toLocaleString(?string $locale = null, array $options = []): string
     {
         return I18n::translate("hksagentur.schema.unit.{$this->key()}", $this->name(), $locale);
     }

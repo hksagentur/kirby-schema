@@ -191,8 +191,11 @@ Depending on its shape, a value object implements a mix of these contracts:
   wins. Nested value objects compose the same way *inside* the snippet (e.g. `schema/organization`
   calls `$item->address()?->toHtml(['itemprop' => 'address'])`), so overriding one snippet changes its
   rendering everywhere it's nested, too.
-- `Schemable::toStructuredData(): array` — a schema.org-shaped array, ready for `json_encode()` into
-  a `<script type="application/ld+json">` tag.
+- `Schemable::toStructuredData(): array` — a schema.org-shaped node, ready for `json_encode()` into a
+  `<script type="application/ld+json">` tag. Most types return a single node, but a type that
+  naturally produces several (e.g. `OpeningHours`, one per specification/exception) returns a list of
+  nodes instead — check with `array_is_list()` before merging into a shared `@graph` if you don't
+  know the concrete type up front (see AGENTS.md's "node-vs-list" note).
 - `Arrayable::toArray()` — a plain array representation.
 
 ```php

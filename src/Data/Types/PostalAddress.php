@@ -259,7 +259,7 @@ readonly class PostalAddress extends DataType implements Arrayable, Htmlable, Lo
         return $this->toLocaleString();
     }
 
-    public function toLocaleString(?string $locale = null): string
+    public function toLocaleString(?string $locale = null, array $options = []): string
     {
         return $this->addressLines(
             fn (string $value): string => Str::esc($value),

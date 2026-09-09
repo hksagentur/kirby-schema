@@ -117,7 +117,7 @@ readonly class OpeningHoursSpecification extends DataType implements Arrayable, 
         ];
     }
 
-    /** @return array[] */
+    /** @return list<array<string, mixed>> */
     public function toStructuredData(): array
     {
         return $this->timeRanges->map(fn (TimeRange $timeRange) => [

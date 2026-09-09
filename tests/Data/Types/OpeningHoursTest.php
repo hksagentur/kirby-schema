@@ -2,11 +2,17 @@
 
 namespace Hks\Schema\Data\Types;
 
+use Hks\Schema\Data\Contracts\Schemable;
 use Hks\Schema\TestCase;
 use Kirby\Cms\Blueprint;
 
 class OpeningHoursTest extends TestCase
 {
+    public function testImplementsSchemable(): void
+    {
+        $this->assertInstanceOf(Schemable::class, new OpeningHours(specifications: []));
+    }
+
     public function testResolvedBlueprintFieldsProduceTheFlatShapeFromArrayExpects(): void
     {
         // Every sub-field involved (`opening-hours-specification`'s `timeRange`,
@@ -306,4 +312,29 @@ class OpeningHoursTest extends TestCase
         $this->assertSame('09:00:00/17:00:00', $specifications[0]->timeRanges()->toString());
     }
 
+    public function testToStructuredDataFlattensSpecificationsAndAppendsExceptions(): void
+    {
+        $openingHours = OpeningHours::from([
+            'monday' => [['start' => '09:00', 'end' => '17:00']],
+            'exceptions' => [
+                ['date' => '2026-12-25', 'start' => '00:00', 'end' => '00:00'],
+            ],
+        ]);
+
+        $this->assertSame([
+            [
+                '@type' => 'OpeningHoursSpecification',
+                'dayOfWeek' => ['https://schema.org/Monday'],
+                'opens' => '09:00:00',
+                'closes' => '17:00:00',
+            ],
+            [
+                '@type' => 'OpeningHoursSpecification',
+                'opens' => '00:00:00',
+                'closes' => '00:00:00',
+                'validFrom' => '2026-12-25',
+                'validThrough' => '2026-12-25',
+            ],
+        ], $openingHours->toStructuredData());
+    }
 }

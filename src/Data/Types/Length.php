@@ -134,7 +134,7 @@ readonly class Length extends NumberType implements Arrayable, Comparable, Htmla
         );
     }
 
-    public function toLocaleString(?string $locale = null): string
+    public function toLocaleString(?string $locale = null, array $options = []): string
     {
         return sprintf(
             '%s %s',

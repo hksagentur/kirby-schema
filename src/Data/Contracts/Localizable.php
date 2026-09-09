@@ -7,5 +7,5 @@ interface Localizable
     /**
      * Convert the object to a localized string representation.
      */
-    public function toLocaleString(?string $locale = null): string;
+    public function toLocaleString(?string $locale = null, array $options = []): string;
 }

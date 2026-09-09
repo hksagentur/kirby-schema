@@ -165,7 +165,7 @@ readonly class Money extends DataType implements Arrayable, Comparable, Htmlable
         return sprintf('%.' . $this->currency->minorUnits() . 'f %s', $this->toMajorUnits(), $this->currency->value);
     }
 
-    public function toLocaleString(?string $locale = null): string
+    public function toLocaleString(?string $locale = null, array $options = []): string
     {
         $locale ??= I18n::locale();
 
