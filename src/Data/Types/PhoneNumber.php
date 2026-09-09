@@ -18,9 +18,10 @@ readonly class PhoneNumber extends StringType implements Arrayable
     public ?string $nationalTrunkCode;
     public ?string $countryCode;
 
-    public function __construct(
-        public string $value
-    ) {
+    public function __construct(string $value)
+    {
+        parent::__construct($value);
+
         if (! preg_match(self::ITU_E123, $value, $matches)) {
             throw new InvalidArgumentException(sprintf(
                 'The given value "%s" does not represent a valid phone number.',
@@ -53,11 +54,6 @@ readonly class PhoneNumber extends StringType implements Arrayable
     public function hasCountryCode(): bool
     {
         return $this->countryCode !== null;
-    }
-
-    public function hasNationalSignificantNumber(): bool
-    {
-        return $this->nationalSignificantNumber !== null;
     }
 
     public function hasNationalTrunkCode(): bool

@@ -15,9 +15,10 @@ readonly class EmailAddress extends StringType implements Arrayable
     public string $localPart;
     public string $domain;
 
-    public function __construct(
-        public string $value
-    ) {
+    public function __construct(string $value)
+    {
+        parent::__construct($value);
+
         if (! V::email($value)) {
             throw new InvalidArgumentException(sprintf(
                 'The given value "%s" does not represent a valid email address.',

@@ -14,10 +14,13 @@ readonly class Length extends NumberType implements Arrayable, Comparable, Htmla
 {
     use ComparesNumbers;
 
-    public function __construct(
-        public float $value,
-        public LengthUnit $unit = LengthUnit::Meter,
-    ) {
+    public LengthUnit $unit;
+
+    public function __construct(float $value, LengthUnit $unit = LengthUnit::Meter)
+    {
+        parent::__construct($value);
+
+        $this->unit = $unit;
     }
 
     public function isSmallerThan(int|float|self $other): bool

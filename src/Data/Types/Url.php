@@ -20,9 +20,10 @@ readonly class Url extends StringType implements Arrayable
     public ?string $user;
     public ?string $password;
 
-    public function __construct(
-        public string $value,
-    ) {
+    public function __construct(string $value)
+    {
+        parent::__construct($value);
+
         if (! V::url($value)) {
             throw new InvalidArgumentException(sprintf(
                 'The given value "%s" does not represent a valid URL.',
@@ -40,16 +41,6 @@ readonly class Url extends StringType implements Arrayable
         $this->fragment = $parts['fragment'] ?? null;
         $this->user = $parts['user'] ?? null;
         $this->password = $parts['pass'] ?? null;
-    }
-
-    public function hasScheme(): bool
-    {
-        return $this->scheme !== null;
-    }
-
-    public function hasHost(): bool
-    {
-        return $this->host !== null;
     }
 
     public function hasPort(): bool

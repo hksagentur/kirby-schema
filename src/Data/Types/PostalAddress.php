@@ -144,11 +144,6 @@ readonly class PostalAddress extends DataType implements Arrayable, Htmlable, Lo
         return $this->country !== null;
     }
 
-    public function hasCountryCode(): bool
-    {
-        return $this->countryCode() !== null;
-    }
-
     public function streetAddress(): ?string
     {
         return $this->streetAddress;
