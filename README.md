@@ -129,7 +129,7 @@ The shipped [`pages/employee`](config/blueprints/pages/employee.yml) blueprint a
 <?php // site/templates/employee.php ?>
 
 <?php $person = $page->toDataObject('person') ?>
-<?= $person?->toHtml() ?>
+<?= $person->toHtml() ?>
 ```
 
 `organization`/`place` follow the same pattern — reference the field on a page or site to flatten it
@@ -141,7 +141,7 @@ the row itself):
 
 <?php foreach ($page->locations()->toStructure() as $row): ?>
   <?php $place = $row->toDataObject('place') ?>
-  <?= $place?->toHtml() ?>
+  <?= $place->toHtml() ?>
 <?php endforeach ?>
 ```
 
@@ -155,9 +155,16 @@ Four plugin methods resolve a name to a value object:
 | `$page->toDataObject('name')`              | `Page`            | `Hks\Schema\Data\DataObject`     |
 
 `name` accepts either a registered alias (`'postal-address'`, `'person'`, …) or a fully qualified
-class name (`PostalAddress::class`). All four methods return `null` when the field/page/row content is
-empty, the name isn't registered, or the raw content doesn't match the type's expected shape — always
-guard the result with `?->` or a null check.
+class name (`PostalAddress::class`). All four methods throw
+`Hks\Schema\Data\Exceptions\NotFoundException` when `name` isn't registered, and
+`Hks\Schema\Data\Exceptions\ValidationException` when the raw content doesn't match the type's
+expected shape — but they differ on what an *empty* field/page/row resolves to:
+
+- `$field->toDataType('name')` / `$field->toDataObject('name')` return `null` for an empty field —
+  guard the result with `?->` or a null check.
+- `$structureObject->toDataObject('name')` / `$page->toDataObject('name')` always return a
+  `DataObject`; a page or structure row has no "empty" state to represent as `null`, so there's
+  nothing to guard against — a `?->` here would just be dead code.
 
 The built-in aliases (see `dataTypes`/`dataObjects` in `index.php`) are:
 
@@ -202,12 +209,12 @@ Depending on its shape, a value object implements a mix of these contracts:
 <?php // site/templates/employee.php ?>
 
 <?php $person = $page->toDataObject('person') ?>
-<?= $person?->toHtml() ?>
+<?= $person->toHtml() ?>
 
 <script type="application/ld+json">
 <?= json_encode(array_filter([
   '@context' => 'https://schema.org',
-  ...$person?->toStructuredData() ?? [],
+  ...$person->toStructuredData(),
 ])) ?>
 </script>
 ```
