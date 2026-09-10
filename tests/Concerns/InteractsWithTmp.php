@@ -15,5 +15,11 @@ trait InteractsWithTmp
     protected function tearDownInteractsWithTmp(): void
     {
         Dir::remove(static::TMP);
+
+        $parent = dirname(static::TMP);
+
+        if (Dir::isEmpty($parent)) {
+            Dir::remove($parent);
+        }
     }
 }
