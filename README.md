@@ -168,11 +168,10 @@ expected shape — but they differ on what an *empty* field/page/row resolves to
 
 The built-in aliases (see `dataTypes`/`dataObjects` in `index.php`) are:
 
-- **Data types** — `distance`, `email`, `file-url`, `fraction`, `geo-coordinate`, `image-url`,
-  `length`, `markdown`, `markup`, `money`, `opening-hours`, `opening-hours-exception`,
-  `opening-hours-specification`, `person-name`, `phone-number`, `postal-address`, `text`, `time`,
-  `time-range`, `url`.
-- **Data objects** — `organization`, `person`, `place`.
+- **Data types** — `distance`, `email`, `fraction`, `geo-coordinate`, `length`, `markdown`, `markup`,
+  `money`, `opening-hours`, `person-name`, `phone-number`, `postal-address`, `time`, `time-range`,
+  `url`.
+- **Data objects** — `link`, `organization`, `person`, `place`.
 
 Register a project's own type or object alongside the built-in ones:
 
@@ -258,6 +257,7 @@ Below is an overview of all available blueprints provided by this plugin. Each e
 | [Created](config/blueprints/fields/created.yml)                   | `@hksagentur/schema/fields/created`          | Automatically populated creation date.              |
 | [Currency](config/blueprints/fields/currency.yml)                 | `@hksagentur/schema/fields/currency`         | Select the currency for prices or amounts.          |
 | [Email](config/blueprints/fields/email.yml)                       | `@hksagentur/schema/fields/email`            | Email address of a person or organization.          |
+| [Expertise](config/blueprints/fields/expertise.yml)               | `@hksagentur/schema/fields/expertise`        | Subject-matter areas a person is knowledgeable in.  |
 | [Eyebrow](config/blueprints/fields/eyebrow.yml)                   | `@hksagentur/schema/fields/eyebrow`          | Small text above a headline.                        |
 | [Fax](config/blueprints/fields/fax.yml)                           | `@hksagentur/schema/fields/fax`              | Fax number of a person or organization.             |
 | [Featured](config/blueprints/fields/featured.yml)                 | `@hksagentur/schema/fields/featured`         | Mark content as featured.                           |
@@ -275,7 +275,6 @@ Below is an overview of all available blueprints provided by this plugin. Each e
 | [Markdown](config/blueprints/fields/markdown.yml)                 | `@hksagentur/schema/fields/markdown`         | Markdown editor for formatted text.                 |
 | [Name](config/blueprints/fields/name.yml)                         | `@hksagentur/schema/fields/name`             | Separate fields for the individual parts of a name. |
 | [Navigation](config/blueprints/fields/navigation.yml)             | `@hksagentur/schema/fields/navigation`       | Hierarchical navigation structure.                  |
-| [Occupation](config/blueprints/fields/occupation.yml)             | `@hksagentur/schema/fields/occupation`       | Assign one or more occupations to a person.         |
 | [Offset](config/blueprints/fields/offset.yml)                     | `@hksagentur/schema/fields/offset`           | Display offset for lists or queries.                |
 | [Open](config/blueprints/fields/open.yml)                         | `@hksagentur/schema/fields/open`             | Toggle open/closed state of blocks.                 |
 | [Organization](config/blueprints/fields/organization.yml)         | `@hksagentur/schema/fields/organization`     | Organization details with address and contact info. |
@@ -283,8 +282,8 @@ Below is an overview of all available blueprints provided by this plugin. Each e
 | [Place](config/blueprints/fields/place.yml)                       | `@hksagentur/schema/fields/place`            | Name and address of a physical location.            |
 | [Price](config/blueprints/fields/price.yml)                       | `@hksagentur/schema/fields/price`            | The offer price of a product.                       |
 | [Published](config/blueprints/fields/published.yml)               | `@hksagentur/schema/fields/published`        | Date when the page was first published.             |
+| [Qualifications](config/blueprints/fields/qualifications.yml)     | `@hksagentur/schema/fields/qualifications`   | Academic degrees or professional qualifications.    |
 | [Ratio](config/blueprints/fields/ratio.yml)                       | `@hksagentur/schema/fields/ratio`            | Selection of common aspect ratios.                  |
-| [Responsibilities](config/blueprints/fields/responsibilities.yml) | `@hksagentur/schema/fields/responsibilities` | Assign one or more responsibilities to a person.    |
 | [Reverse](config/blueprints/fields/reverse.yml)                   | `@hksagentur/schema/fields/reverse`          | Reverse the order of a sequence.                    |
 | [Rich Text](config/blueprints/fields/rich-text.yml)               | `@hksagentur/schema/fields/rich-text`        | Editor for formatted, rich content.                 |
 | [Source](config/blueprints/fields/source.yml)                     | `@hksagentur/schema/fields/source`           | Source and license information of a file.           |
