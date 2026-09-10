@@ -17,11 +17,23 @@ fields:
       - email
       - tel
   target:
-    type: toggle
+    type: toggles
     label:
       *: hksagentur.schema.field.link.target.label
-    text:
-      *: hksagentur.schema.field.link.target.text
+    default: _self
+    options:
+      - value: _self
+        text:
+          *: hksagentur.schema.field.link.target.self
+      - value: _blank
+        text:
+          *: hksagentur.schema.field.link.target.blank
+      - value: _parent
+        text:
+          *: hksagentur.schema.field.link.target.parent
+      - value: _top
+        text:
+          *: hksagentur.schema.field.link.target.top
   rel:
     type: select
     label:

@@ -6,6 +6,7 @@ return [
     'schema/fraction' => dirname(__DIR__) . '/views/snippets/fraction.php',
     'schema/geo-coordinate' => dirname(__DIR__) . '/views/snippets/geo-coordinate.php',
     'schema/length' => dirname(__DIR__) . '/views/snippets/length.php',
+    'schema/link' => dirname(__DIR__) . '/views/snippets/link.php',
     'schema/markdown' => dirname(__DIR__) . '/views/snippets/markdown.php',
     'schema/markup' => dirname(__DIR__) . '/views/snippets/markup.php',
     'schema/money' => dirname(__DIR__) . '/views/snippets/money.php',

@@ -2,22 +2,26 @@
 
 namespace Hks\Schema\Cms;
 
+use Hks\Schema\Concerns\InteractsWithTmp;
 use Hks\Schema\TestCase;
 use Kirby\Cms\Files;
 use Kirby\Cms\Page;
 
 class FindTest extends TestCase
 {
-    public function testFileReturnsNullWhenTheValueIsEmpty(): void
+    use InteractsWithTmp;
+
+    public const TMP = __DIR__ . '/tmp/FindTest';
+
+    public function testFileReturnsNullWhenTheIdIsEmpty(): void
     {
         $this->assertNull(Find::file(null));
-        $this->assertNull(Find::file([]));
+        $this->assertNull(Find::file(''));
     }
 
     public function testFileReturnsNullWhenTheUuidCannotBeResolved(): void
     {
         $this->assertNull(Find::file('file://does-not-exist'));
-        $this->assertNull(Find::file(['file://does-not-exist']));
     }
 
     public function testFileAcceptsAnOptionalParentToPreferItsOwnFiles(): void
@@ -34,5 +38,4 @@ class FindTest extends TestCase
         $this->assertInstanceOf(Files::class, $files);
         $this->assertCount(0, $files);
     }
-
 }

@@ -10,11 +10,15 @@ use Kirby\Cms\ModelWithContent;
 class Find
 {
     /**
-     * Resolve a single file from a raw `files`-field value.
+     * Resolve a single file from a raw `files`-field id.
      */
-    public static function file(mixed $value, ?ModelWithContent $parent = null): ?File
+    public static function file(?string $id, ?ModelWithContent $parent = null): ?File
     {
-        return static::files($value, $parent)->first();
+        if ($id === null || $id === '') {
+            return null;
+        }
+
+        return App::instance()->file($id, $parent);
     }
 
     /**
@@ -25,7 +29,7 @@ class Find
         $files = new Files([], $parent);
 
         foreach ((array) $value as $id) {
-            if ($file = App::instance()->file($id, $parent)) {
+            if ($file = static::file($id, $parent)) {
                 $files->add($file);
             }
         }
