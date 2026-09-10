@@ -12,6 +12,10 @@ use Kirby\Cms\File;
 
 readonly class Person extends DataObject
 {
+    /**
+     * @param string[] $qualifications
+     * @param string[] $expertise
+     */
     public function __construct(
         public PersonName $name,
         public ?File $image = null,
@@ -19,11 +23,16 @@ readonly class Person extends DataObject
         public ?EmailAddress $email = null,
         public ?PhoneNumber $telephone = null,
         public ?PhoneNumber $fax = null,
+        public ?string $jobTitle = null,
+        public array $qualifications = [],
+        public array $expertise = [],
     ) {
     }
 
     public static function fromArray(array $value): static
     {
+        $value = array_change_key_case($value);
+
         return new static(
             name: PersonName::from($value['name'] ?? $value),
             image: isset($value['image']) ? Find::file($value['image']) : null,
@@ -31,6 +40,9 @@ readonly class Person extends DataObject
             email: isset($value['email']) ? EmailAddress::tryFrom($value['email']) : null,
             telephone: isset($value['telephone']) ? PhoneNumber::tryFrom($value['telephone']) : null,
             fax: isset($value['fax']) ? PhoneNumber::tryFrom($value['fax']) : null,
+            jobTitle: $value['jobtitle'] ?? null,
+            qualifications: $value['qualifications'] ?? [],
+            expertise: $value['expertise'] ?? [],
         );
     }
 
@@ -64,6 +76,23 @@ readonly class Person extends DataObject
         return $this->fax;
     }
 
+    public function jobTitle(): ?string
+    {
+        return $this->jobTitle;
+    }
+
+    /** @return array<int, string> */
+    public function qualifications(): array
+    {
+        return $this->qualifications;
+    }
+
+    /** @return array<int, string> */
+    public function expertise(): array
+    {
+        return $this->expertise;
+    }
+
     public function toHtml(array $attributes = []): string
     {
         return App::instance()->snippet('schema/person', [
@@ -81,6 +110,9 @@ readonly class Person extends DataObject
             'email' => $this->email?->toString(),
             'telephone' => $this->telephone?->toString(),
             'fax' => $this->fax?->toString(),
+            'jobTitle' => $this->jobTitle,
+            'qualifications' => $this->qualifications,
+            'expertise' => $this->expertise,
         ];
     }
 
@@ -97,6 +129,15 @@ readonly class Person extends DataObject
             'email' => $this->email?->value,
             'telephone' => $this->telephone?->value,
             'faxNumber' => $this->fax?->value,
+            'jobTitle' => $this->jobTitle,
+            'knowsAbout' => $this->expertise,
+            'hasCredential' => array_map(
+                fn (string $qualification) => [
+                    '@type' => 'EducationalOccupationalCredential',
+                    'name' => $qualification,
+                ],
+                $this->qualifications,
+            ),
         ]);
     }
 }

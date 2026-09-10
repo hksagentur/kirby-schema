@@ -22,4 +22,24 @@
     <?= $item->fax()?->toHtml([
         'itemprop' => 'faxNumber',
     ]) ?>
+
+    <?php if ($item->jobTitle() !== null) : ?>
+        <div <?= attr(['itemprop' => 'jobTitle']) ?>>
+            <?= esc($item->jobTitle()) ?>
+        </div>
+    <?php endif ?>
+
+    <?php foreach ($item->qualifications() as $qualification) : ?>
+        <span <?= attr([
+            'itemprop' => 'hasCredential',
+            'itemscope' => true,
+            'itemtype' => 'https://schema.org/EducationalOccupationalCredential',
+        ]) ?>>
+            <span <?= attr(['itemprop' => 'name']) ?>><?= esc($qualification) ?></span>
+        </span>
+    <?php endforeach ?>
+
+    <?php foreach ($item->expertise() as $topic) : ?>
+        <meta itemprop="knowsAbout" content="<?= esc($topic) ?>">
+    <?php endforeach ?>
 </div>

@@ -10,6 +10,10 @@ fields:
   email: @hksagentur/schema/fields/email
   telephone: @hksagentur/schema/fields/telephone
   fax: @hksagentur/schema/fields/fax
-  lineTaxonomies:
-    type: line
-  roles: @hksagentur/schema/fields/organization-roles
+  jobTitle:
+    type: text
+    label:
+      *: hksagentur.schema.field.person.jobTitle
+    counter: false
+  qualifications: @hksagentur/schema/fields/qualifications
+  expertise: @hksagentur/schema/fields/expertise
