@@ -14,17 +14,17 @@ return [
     // Manipulators
 
     /**
-     * Append the given value to the field.
-     */
-    'append' => function (Field $field, mixed ...$values): Field {
-        return $field->value(fn (?string $value) => $value . implode('', $values));
-    },
-
-    /**
      * Prepend the given values to the field.
      */
     'prepend' => function (Field $field, mixed ...$values): Field {
         return $field->value(fn (?string $value) => implode('', $values) . $value);
+    },
+
+    /**
+     * Append the given value to the field.
+     */
+    'append' => function (Field $field, mixed ...$values): Field {
+        return $field->value(fn (?string $value) => $value . implode('', $values));
     },
 
     /**
@@ -35,12 +35,12 @@ return [
     },
 
     /**
-     * Formats an array as a human-readable list using commas and a final "and".
+     * Formats a list read like `toData()` as a human-readable list.
      */
-    'toOxfordList' => function (Field $field, ?int $limit = null, ?string $locale = null): Field {
-        return $field->value(function (?string $value) use ($limit, $locale): string {
-            return I18n::oxfordList(Str::split($value ?? ''), $limit, $locale);
-        });
+    'oxfordList' => function (Field $field, string $method = ',', ?int $limit = null, ?string $locale = null): Field {
+        $values = array_map('strval', $field->toData($method));
+
+        return $field->value(fn () => I18n::oxfordList($values, $limit, $locale));
     },
 
     // Converters

@@ -144,4 +144,41 @@ class FieldMethodsTest extends TestCase
             $this->assertStringContainsString('person name', $exception->getPrevious()->getMessage());
         }
     }
+
+    public function testOxfordListFormatsACommaSeparatedValue(): void
+    {
+        $field = new Field(null, 'tags', 'Apple, Banana, Cherry');
+
+        $this->assertSame('Apple, Banana, and Cherry', $field->oxfordList(locale: 'en')->value());
+    }
+
+    public function testOxfordListTakesTheMethodLimitAndLocalePositionally(): void
+    {
+        $field = new Field(null, 'tags', 'Apple; Banana; Cherry');
+
+        $this->assertSame('Apple, Banana, and 1 other', $field->oxfordList(';', 2, 'en')->value());
+    }
+
+    public function testOxfordListOfAnEmptyFieldIsEmpty(): void
+    {
+        $this->assertSame('', (new Field(null, 'tags', ''))->oxfordList()->value());
+        $this->assertSame('', (new Field(null, 'tags', null))->oxfordList(method: 'yaml')->value());
+    }
+
+    public function testOxfordListSplitsOnTheGivenSeparator(): void
+    {
+        $field = new Field(null, 'tags', 'Apple; Banana');
+
+        $this->assertSame('Apple and Banana', $field->oxfordList(method: ';', locale: 'en')->value());
+    }
+
+    public function testOxfordListFormatsAYamlList(): void
+    {
+        $field = new Field(null, 'qualifications', "- Master of Science\n- Bachelor of Arts, Design\n");
+
+        $this->assertSame(
+            'Master of Science and Bachelor of Arts, Design',
+            $field->oxfordList(method: 'yaml', locale: 'en')->value(),
+        );
+    }
 }
