@@ -244,10 +244,10 @@ readonly class PostalAddress extends DataType implements Arrayable, Htmlable, Lo
 
     public function toStructuredData(): array
     {
-        return [
+        return array_filter([
             '@type' => 'PostalAddress',
             ...$this->toArray(),
-        ];
+        ]);
     }
 
     public function jsonSerialize(): array

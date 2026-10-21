@@ -48,6 +48,16 @@ class PostalAddressTest extends TestCase
         );
     }
 
+    public function testToStructuredDataOmitsEmptyParts(): void
+    {
+        $address = PostalAddress::from(['streetAddress' => 'Main Street 1', 'addressLocality' => 'Achim']);
+
+        $this->assertSame([
+            '@type' => 'PostalAddress',
+            'streetAddress' => 'Main Street 1',
+            'addressLocality' => 'Achim',
+        ], $address->toStructuredData());
+    }
 
     public function testAddressLinesFollowTheFormatOfTheAddressCountry(): void
     {

@@ -101,11 +101,11 @@ readonly class Organization extends DataObject
             'telephone' => $this->telephone?->value,
             'faxNumber' => $this->fax?->value,
             'url' => $this->website?->value,
-            'location' => array_filter([
+            'location' => $this->address || $this->coordinates ? array_filter([
                 '@type' => 'Place',
                 'address' => $this->address?->toStructuredData(),
                 'geo' => $this->coordinates?->toStructuredData(),
-            ]),
+            ]) : null,
         ]);
     }
 }
