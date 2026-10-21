@@ -10,7 +10,6 @@ Kirby::plugin('hksagentur/schema', [
         'addressFormats' => [],
         'phoneNumberFormats' => [],
         'migrations' => [],
-        'blueprintAliases' => [],
         'dataTypes' => [
             'currency' => Types\Currency::class,
             'distance' => Types\Distance::class,

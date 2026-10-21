@@ -11,31 +11,9 @@ use Stringable;
 
 class Blueprint implements Stringable
 {
-    protected static ?array $aliases = null;
-
     public function __construct(
         protected string $root
     ) {
-    }
-
-    public static function aliases(): array
-    {
-        return static::$aliases ??= App::instance()->option('hksagentur.schema.blueprintAliases', []);
-    }
-
-    public static function alias(string $blueprint): ?string
-    {
-        $aliases = static::aliases();
-
-        if (in_array($blueprint, $aliases)) {
-            return $blueprint;
-        }
-
-        if (array_key_exists($blueprint, $aliases)) {
-            return $aliases[$blueprint];
-        }
-
-        return null;
     }
 
     public static function register(string $directory, array $files): array
@@ -47,12 +25,6 @@ class Blueprint implements Stringable
 
             if (! $blueprint->exists()) {
                 throw new NotFoundException(key: 'blueprint.notFound', data: ['name' => $file]);
-            }
-
-            $alias = static::alias($file);
-
-            if ($alias) {
-                $blueprints[$alias] = $blueprint;
             }
 
             $blueprints["@hksagentur/schema/{$file}"] = $blueprint;
