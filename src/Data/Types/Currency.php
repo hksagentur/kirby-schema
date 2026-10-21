@@ -3,86 +3,71 @@
 namespace Hks\Schema\Data\Types;
 
 use Hks\Schema\Data\Contracts\Localizable;
+use Hks\Schema\Data\Exceptions\NotFoundException;
+use InvalidArgumentException;
 use Kirby\Cms\App;
 use Kirby\Toolkit\I18n;
 use Kirby\Toolkit\Str;
+use NumberFormatter;
 
-enum Currency: string implements Localizable
+readonly class Currency extends StringType implements Localizable
 {
-    case USD = 'USD';
-    case EUR = 'EUR';
-    case JPY = 'JPY';
-    case GBP = 'GBP';
-    case CNY = 'CNY';
-    case CHF = 'CHF';
+    public const string ISO_CURRENCY_CODE = '/^[A-Z]{3}$/';
 
-    public static function of(string|self|null $value): ?static
+    public function __construct(string $code)
     {
-        if ($value instanceof self) {
-            return $value;
+        $code = Str::upper($code);
+
+        if (! Str::matches($code, self::ISO_CURRENCY_CODE)) {
+            throw new InvalidArgumentException(sprintf(
+                'The given value "%s" does not represent an ISO 4217 currency code.',
+                $code,
+            ));
         }
 
-        return static::fromName((string) $value);
+        parent::__construct($code);
     }
 
-    public static function fromName(string $name): ?static
+    public static function default(): static
     {
-        return static::tryFrom(Str::upper($name));
+        $currency = static::tryFrom(
+            (string) App::instance()->option('hksagentur.schema.defaultCurrency')
+        );
+
+        if (! $currency) {
+            throw NotFoundException::for(
+                'The default currency "%s" is not supported.',
+                (string) App::instance()->option('hksagentur.schema.defaultCurrency'),
+            );
+        }
+
+        return $currency;
     }
 
-    public static function default(self $fallback = self::EUR): static
+    public function code(): string
     {
-        return static::of(
-            App::instance()->option('hksagentur.schema.defaultCurrency', $fallback)
-        ) ?? $fallback;
+        return $this->value;
     }
 
-    public function key(): string
+    public function symbol(?string $locale = null): string
     {
-        return Str::lower($this->name);
-    }
-
-    public function name(): string
-    {
-        return $this->name;
-    }
-
-    public function label(): string
-    {
-        return $this->toLocaleString();
-    }
-
-    public function symbol(): string
-    {
-        return match ($this) {
-            self::USD => '$',
-            self::EUR => '€',
-            self::JPY => '¥',
-            self::GBP => '£',
-            self::CNY => '¥',
-            self::CHF => 'CHF',
-        };
+        return $this->formatter($locale)->getSymbol(NumberFormatter::CURRENCY_SYMBOL);
     }
 
     public function minorUnits(): int
     {
-        return match ($this) {
-            self::USD => 2,
-            self::EUR => 2,
-            self::JPY => 0,
-            self::GBP => 2,
-            self::CNY => 2,
-            self::CHF => 2,
-        };
-    }
-
-    public function toString(): string
-    {
-        return $this->name();
+        return $this->formatter('en')->getAttribute(NumberFormatter::FRACTION_DIGITS);
     }
 
     public function toLocaleString(?string $locale = null, array $options = []): string
     {
-        return I18n::translate("hksagentur.schema.currency.{$this->key()}", $this->name(), $locale);
+        return I18n::translate("hksagentur.schema.currency.{$this->value}", $this->value, $locale);
+    }
+
+    protected function formatter(?string $locale): NumberFormatter
+    {
+        $locale ??= I18n::locale();
+
+        return new NumberFormatter("{$locale}@currency={$this->value}", NumberFormatter::CURRENCY);
     }
 }

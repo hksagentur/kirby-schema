@@ -7,7 +7,7 @@
 ]) ?>>
     <meta <?= attr([
         'itemprop' => 'currency',
-        'content' => $item->currency()->name(),
+        'content' => $item->currency()->code(),
     ]) ?>>
     <meta <?= attr([
         'itemprop' => 'value',

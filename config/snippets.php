@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'schema/currency' => dirname(__DIR__) . '/views/snippets/currency.php',
     'schema/distance' => dirname(__DIR__) . '/views/snippets/distance.php',
     'schema/email-address' => dirname(__DIR__) . '/views/snippets/email-address.php',
     'schema/fraction' => dirname(__DIR__) . '/views/snippets/fraction.php',

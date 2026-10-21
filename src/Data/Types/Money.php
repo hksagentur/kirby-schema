@@ -38,8 +38,8 @@ readonly class Money extends DataType implements Arrayable, Comparable, Htmlable
 
         if (is_array($value)) {
             return static::fromMajorUnits(
-                (float) ($value['amount'] ?? 0),
-                Currency::of($value['currency'] ?? null) ?? Currency::default(),
+                value: (float) ($value['amount'] ?? 0),
+                currency: Currency::tryFrom((string) ($value['currency'] ?? '')) ?? Currency::default(),
             );
         }
 
@@ -72,13 +72,23 @@ readonly class Money extends DataType implements Arrayable, Comparable, Htmlable
 
     public static function assertSameCurrency(self $a, self $b): void
     {
-        if ($a->currency !== $b->currency) {
+        if (! $a->isSameCurrency($b)) {
             throw new InvalidArgumentException(sprintf(
                 'Cannot combine monetary amounts in different currencies ("%s" and "%s").',
                 $a->currency->value,
                 $b->currency->value,
             ));
         }
+    }
+
+    public function isSameCurrency(self $other): bool
+    {
+        return $this->currency->equals($other->currency);
+    }
+
+    public function value(): int
+    {
+        return $this->amount;
     }
 
     public function amount(): int
@@ -89,11 +99,6 @@ readonly class Money extends DataType implements Arrayable, Comparable, Htmlable
     public function currency(): Currency
     {
         return $this->currency;
-    }
-
-    public function value(): int
-    {
-        return $this->amount;
     }
 
     public function amountOf(int|float|self $other): int
@@ -133,7 +138,7 @@ readonly class Money extends DataType implements Arrayable, Comparable, Htmlable
             return false;
         }
 
-        return $this->currency === $other->currency && $this->amount === $other->amount;
+        return $this->isSameCurrency($other) && $this->amount === $other->amount;
     }
 
     public function compare(mixed $other): int
