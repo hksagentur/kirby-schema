@@ -2,23 +2,21 @@
 
 namespace Hks\Schema\Cms\Concerns;
 
+use Hks\Schema\Data\Link;
 use Kirby\Cms\ModelWithContent;
-use Kirby\Content\Content;
-use Kirby\Uuid\Uuid;
 
 trait HasLink
 {
-    protected ?Content $link = null;
-    protected ?ModelWithContent $target = null;
+    protected ?Link $link = null;
 
     public function hasLink(): bool
     {
-        return $this->link()->url()->isNotEmpty();
+        return (bool) $this->link()?->uri();
     }
 
-    public function link(): Content
+    public function link(): ?Link
     {
-        return $this->link ??= $this->content()->link()->toObject();
+        return $this->link ??= $this->content()->link()->toDataObject('link');
     }
 
     public function hasTarget(): bool
@@ -28,15 +26,12 @@ trait HasLink
 
     public function target(): ?ModelWithContent
     {
-        return $this->target ??= $this->resolveTarget($this->link()->url()->value());
-    }
+        $model = $this->link()?->model();
 
-    protected function resolveTarget(?string $uuid): ?ModelWithContent
-    {
-        if (! $uuid || ! Uuid::is($uuid)) {
+        if (! ($model instanceof ModelWithContent)) {
             return null;
         }
 
-        return Uuid::for($uuid)?->model();
+        return $model;
     }
 }

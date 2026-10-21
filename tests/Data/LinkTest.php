@@ -146,6 +146,7 @@ class LinkTest extends TestCase
         $this->assertSame([
             'url' => 'https://example.com',
             'title' => 'Example',
+            'icon' => null,
             'target' => '_blank',
             'rel' => 'bookmark',
         ], $link->toArray());
@@ -168,5 +169,18 @@ class LinkTest extends TestCase
 
         $this->assertFalse($link->isActive());
         $this->assertFalse($link->isOpen());
+    }
+
+    public function testFromArrayReadsAnIconAddedToTheBlueprint(): void
+    {
+        $this->assertSame('arrow-up.svg', Link::fromArray(['url' => '#', 'icon' => 'arrow-up.svg'])->icon());
+        $this->assertNull(Link::fromArray(['url' => '#'])->icon());
+    }
+
+    public function testToArrayRoundTripsTheIcon(): void
+    {
+        $link = Link::fromArray(['url' => '#', 'icon' => 'arrow-up.svg']);
+
+        $this->assertEquals($link, Link::fromArray($link->toArray()));
     }
 }

@@ -15,6 +15,7 @@ readonly class Link extends DataObject
     public function __construct(
         public string $uri,
         public ?string $title = null,
+        public ?string $icon = null,
         public ?string $rel = null,
         public LinkTarget $target = LinkTarget::Self,
     ) {
@@ -25,6 +26,7 @@ readonly class Link extends DataObject
         return new static(
             uri: (string) ($value['url'] ?? ''),
             title: $value['title'] ?? null,
+            icon: $value['icon'] ?? null,
             rel: $value['rel'] ?? null,
             target: LinkTarget::of($value['target'] ?? LinkTarget::default()),
         );
@@ -48,6 +50,11 @@ readonly class Link extends DataObject
     public function title(): ?string
     {
         return $this->title;
+    }
+
+    public function icon(): ?string
+    {
+        return $this->icon;
     }
 
     public function rel(): ?string
@@ -87,6 +94,7 @@ readonly class Link extends DataObject
         return [
             'url' => $this->uri,
             'title' => $this->title,
+            'icon' => $this->icon,
             'target' => $this->target->value,
             'rel' => $this->rel,
         ];
