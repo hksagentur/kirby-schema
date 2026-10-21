@@ -3,6 +3,7 @@
 namespace Hks\Schema\Data\Types;
 
 use Hks\Schema\Data\Contracts\Arrayable;
+use Hks\Schema\Format\PhoneNumberFormat;
 use InvalidArgumentException;
 use Kirby\Toolkit\Str;
 
@@ -37,7 +38,7 @@ readonly class PhoneNumber extends StringType implements Arrayable
         $this->countryCode = $matches['countryCode'] ?? null;
 
         $this->nationalTrunkCode = isset($matches['nationalTrunkCode'])
-            ? preg_replace('/\D/', '', $matches['nationalTrunkCode'])
+            ? $this->digits($matches['nationalTrunkCode'])
             : null;
     }
 
@@ -122,18 +123,23 @@ readonly class PhoneNumber extends StringType implements Arrayable
 
     public function toE123String(): string
     {
-        return implode(' ', array_filter([
-            $this->countryCallingCode(),
-            preg_replace('/[^\d\s\-]/', '', $this->nationalSignificantNumber),
-        ]));
+        if (! $this->isInternational()) {
+            return $this->groupedDigits($this->nationalSignificantNumber);
+        }
+
+        return $this->countryCallingCode() . ' ' . $this->groupedDigits($this->significantNumber($this->numberFormat()));
     }
 
-    public function toE164String(): string
+    public function toE164String(?string $countryCode = null): string
     {
-        return implode('', [
-            $this->countryCallingCode(),
-            preg_replace('/[^\d]/', '', $this->nationalSignificantNumber),
-        ]);
+        $format = $this->numberFormat($countryCode);
+        $callingCode = $this->countryCode() ?? $format?->callingCode();
+
+        if ($callingCode === null) {
+            return $this->digits($this->nationalSignificantNumber);
+        }
+
+        return self::INTERNATIONAL_PREFIX_SYMBOL . $callingCode . $this->digits($this->significantNumber($format));
     }
 
     public function toArray(): array
@@ -150,5 +156,33 @@ readonly class PhoneNumber extends StringType implements Arrayable
     public function jsonSerialize(): array
     {
         return $this->toArray();
+    }
+
+    protected function numberFormat(?string $countryCode = null): ?PhoneNumberFormat
+    {
+        return $this->isInternational()
+            ? PhoneNumberFormat::byCallingCode($this->countryCode)
+            : PhoneNumberFormat::get($countryCode);
+    }
+
+    protected function digits(string $number): string
+    {
+        return preg_replace('/\D/', '', $number);
+    }
+
+    protected function groupedDigits(string $number): string
+    {
+        return preg_replace('/[^\d\s\-]/', '', $number);
+    }
+
+    protected function significantNumber(?PhoneNumberFormat $format): string
+    {
+        $number = trim($this->nationalSignificantNumber);
+
+        if ($format?->trunkPrefix() === null) {
+            return $number;
+        }
+
+        return preg_replace('/^\(?' . preg_quote($format->trunkPrefix(), '/') . '\)?\s*/', '', $number);
     }
 }

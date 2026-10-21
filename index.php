@@ -7,39 +7,8 @@ Kirby::plugin('hksagentur/schema', [
     'options' => [
         'defaultCountry' => 'DE',
         'defaultCurrency' => 'EUR',
-        'addressSchemes' => [
-            'postalCodeLocality' => [
-                '{{ streetAddress }}',
-                '{{ postalCode }} {{ addressLocality }}',
-                '{{ addressCountry }}',
-            ],
-            'localityPostalCode' => [
-                '{{ streetAddress }}',
-                '{{ addressLocality }}',
-                '{{ postalCode }}',
-                '{{ addressCountry }}',
-            ],
-            'localityRegionPostalCode' => [
-                '{{ streetAddress }}',
-                '{{ addressLocality }}, {{ addressRegion }} {{ postalCode }}',
-                '{{ addressCountry }}'
-            ],
-            'localityRegionPostalCodeMultiline' => [
-                '{{ streetAddress }}',
-                '{{ addressLocality }}',
-                '{{ addressRegion }}',
-                '{{ postalCode }}',
-                '{{ addressCountry }}',
-            ],
-        ],
-        'addressFormats' => [
-            'AU' => 'localityRegionPostalCodeMultiline',
-            'CA' => 'localityRegionPostalCode',
-            'GB' => 'localityPostalCode',
-            'IE' => 'localityRegionPostalCodeMultiline',
-            'MT' => 'localityPostalCode',
-            'US' => 'localityRegionPostalCode',
-        ],
+        'addressFormats' => [],
+        'phoneNumberFormats' => [],
         'blueprintAliases' => [],
         'dataTypes' => [
             'distance' => Types\Distance::class,

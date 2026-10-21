@@ -1,3 +1,3 @@
 <?php /** @var \Hks\Schema\Data\Types\PhoneNumber $item */ ?>
 
-<?= Html::tel($item->value(), attr: $attrs ?? []) ?>
+<?= Html::tel($item->toE164String(), $item->value(), attr: $attrs ?? []) ?>
