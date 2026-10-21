@@ -23,7 +23,7 @@ Download the project archive and copy the files to the plugin directory of your 
 
 All blueprints provided by the plugin are registered within a custom namespace (`@hksagentur/schema`). You have to reference or extend these blueprints to take advantage of the provided data structures.
 
-A simple exampe would be to use the navigation blueprint for the site:
+A simple example would be to use the navigation blueprint for the site:
 
 ```yaml
 # site/blueprints/site.yml
@@ -60,149 +60,10 @@ tabs:
 
 This applies to all blueprints regardless of their type.
 
-If you only want to use a blueprint without extending it, you can let the plugin generate aliases for you:
+## Value Objects
 
-```php
-<?php
-
-// site/config/config.php
-return [
-  'hksagentur.schema.blueprintAliases' => [
-    'files/image',
-    'files/video',
-  ],
-];
-```
-
-This would make the image and video blueprints available without the namespace as `files/image` or `files/video`. You can also provide a custom name, if you like:
-
-```php
-<?php
-
-// site/config/config.php
-return [
-  'hksagentur.schema.blueprintAliases' => [
-    'files/image' => 'files/gallery-image',
-    'files/video' => 'files/gallery-video',
-  ],
-];
-```
-
-## Converting Content to Value Objects
-
-Referencing a blueprint is only half the story. The content stored in a field, structure object, or
-page can convert itself into an immutable value object that knows how to render its own HTML and
-structured data (JSON-LD) — instead of every project writing its own snippet to format an address,
-a person, or a set of opening hours.
-
-Composite blueprints like [`fields/person`](config/blueprints/fields/person.yml),
-[`fields/organization`](config/blueprints/fields/organization.yml), and
-[`fields/place`](config/blueprints/fields/place.yml) are Kirby `group` fields: referencing one
-flattens its fields directly into whatever contains it (a page, a site, a structure row) rather than
-nesting them under a field of that name — that's what lets the same fragment be reused inline on a
-page or as a column of a `structure`. That means a `person`/`organization`/`place` value object isn't
-reached through a single field's `toDataType()`; it's built from the *whole* page's or row's content
-via `toDataObject()`. A field that stays a single, addressable field in its own right — like
-[`fields/opening-hours`](config/blueprints/fields/opening-hours.yml), which is a `type: object` —
-converts directly with `toDataType()`:
-
-```yaml
-# site/blueprints/site.yml
-tabs:
-  content:
-    label: Content
-    fields:
-      openingHours: @hksagentur/schema/fields/opening-hours
-```
-
-```php
-<?php // site/templates/home.php ?>
-
-<?php $hours = $site->openingHours()->toDataType('opening-hours') ?>
-<?= $hours?->isOpen() ? 'Open now' : 'Closed' ?>
-```
-
-The shipped [`pages/employee`](config/blueprints/pages/employee.yml) blueprint already flattens
-`fields/person` onto the page, so its content converts straight to a `Person` with no extra wiring:
-
-```php
-<?php // site/templates/employee.php ?>
-
-<?php $person = $page->toDataObject('person') ?>
-<?= $person->toHtml() ?>
-```
-
-`organization`/`place` follow the same pattern — reference the field on a page or site to flatten it
-in, then call `toDataObject()` on that page/site (or, for a `place` embedded as a `structure` row, on
-the row itself):
-
-```php
-<?php // site/templates/locations.php ?>
-
-<?php foreach ($page->locations()->toStructure() as $row): ?>
-  <?php $place = $row->toDataObject('place') ?>
-  <?= $place->toHtml() ?>
-<?php endforeach ?>
-```
-
-Four plugin methods resolve a name to a value object:
-
-| Method                                    | Available on     | Resolves to                    |
-| ------------------------------------------ | ----------------- | ------------------------------- |
-| `$field->toDataType('name')`               | `Field`           | `Hks\Schema\Data\Types\DataType` |
-| `$field->toDataObject('name')`             | `Field`           | `Hks\Schema\Data\DataObject`     |
-| `$structureObject->toDataObject('name')`   | `StructureObject` | `Hks\Schema\Data\DataObject`     |
-| `$page->toDataObject('name')`              | `Page`            | `Hks\Schema\Data\DataObject`     |
-
-`name` accepts either a registered alias (`'postal-address'`, `'person'`, …) or a fully qualified
-class name (`PostalAddress::class`). All four methods throw
-`Hks\Schema\Data\Exceptions\NotFoundException` when `name` isn't registered, and
-`Hks\Schema\Data\Exceptions\ValidationException` when the raw content doesn't match the type's
-expected shape — but they differ on what an *empty* field/page/row resolves to:
-
-- `$field->toDataType('name')` / `$field->toDataObject('name')` return `null` for an empty field —
-  guard the result with `?->` or a null check.
-- `$structureObject->toDataObject('name')` / `$page->toDataObject('name')` always return a
-  `DataObject`; a page or structure row has no "empty" state to represent as `null`, so there's
-  nothing to guard against — a `?->` here would just be dead code.
-
-The built-in aliases (see `dataTypes`/`dataObjects` in `index.php`) are:
-
-- **Data types** — `distance`, `email`, `fraction`, `geo-coordinate`, `length`, `markdown`, `markup`,
-  `money`, `opening-hours`, `person-name`, `phone-number`, `postal-address`, `time`, `time-range`,
-  `url`.
-- **Data objects** — `link`, `organization`, `person`, `place`.
-
-Register a project's own type or object alongside the built-in ones:
-
-```php
-<?php
-
-// site/config/config.php
-return [
-  'hksagentur.schema.dataTypes' => [
-    'weight' => \App\Data\Weight::class,
-  ],
-];
-```
-
-### Rendering HTML and structured data
-
-Depending on its shape, a value object implements a mix of these contracts:
-
-- `Htmlable::toHtml(array $attributes = []): string` — renders through a Kirby snippet named
-  `schema/{kebab-case-name}` (e.g. `schema/person`), passing itself as `$item` and `$attributes` as
-  `$attrs`. Because it's a snippet rather than inline PHP, a project can override the markup by
-  placing its own file at the same path (`site/snippets/schema/person.php`) — the project's file
-  wins. Nested value objects compose the same way *inside* the snippet (e.g. `schema/organization`
-  calls `$item->address()?->toHtml(['itemprop' => 'address'])`), so overriding one snippet changes its
-  rendering everywhere it's nested, too.
-- `Schemable::toStructuredData(): array` — a schema.org-shaped node, ready for `json_encode()` into a
-  `<script type="application/ld+json">` tag. Most types return a single node, but a type that
-  naturally produces several (e.g. `OpeningHours`, one per specification/exception) returns a list of
-  nodes instead — check with `array_is_list()` before merging into a shared `@graph` if you don't
-  know the concrete type up front (see AGENTS.md's "node-vs-list" note).
-- `Arrayable::toArray()` — a plain array representation.
+Content stored by the plugin's blueprints converts into immutable value objects that render their
+own HTML and schema.org structured data:
 
 ```php
 <?php // site/templates/employee.php ?>
@@ -211,12 +72,19 @@ Depending on its shape, a value object implements a mix of these contracts:
 <?= $person->toHtml() ?>
 
 <script type="application/ld+json">
-<?= json_encode(array_filter([
-  '@context' => 'https://schema.org',
-  ...$person->toStructuredData(),
-])) ?>
+  <?= json_encode(['@context' => 'https://schema.org', ...$person->toStructuredData()]) ?>
 </script>
 ```
+
+Use `$field->toDataType()` for a single field (e.g. `'opening-hours'`, `'money'`, `'phone-number'`)
+and `toDataObject()` for content made of several fields (`'person'`, `'organization'`, `'place'`,
+`'link'`) on a page, structure row or field. The HTML comes from snippets named `schema/{type}`,
+which a project overrides by placing its own file at `site/snippets/schema/{type}.php`.
+
+## Upgrading
+
+See [UPGRADE.md](UPGRADE.md) for upgrading from v1, and [CHANGELOG.md](CHANGELOG.md) for all
+changes.
 
 ## Available Blueprints
 
@@ -264,7 +132,7 @@ Below is an overview of all available blueprints provided by this plugin. Each e
 | [Gallery](config/blueprints/fields/gallery.yml)                   | `@hksagentur/schema/fields/gallery`          | Group related images in a gallery.                  |
 | [Heading Level](config/blueprints/fields/heading-level.yml)       | `@hksagentur/schema/fields/heading-level`    | HTML heading level to choose from.                  |
 | [Heading](config/blueprints/fields/heading.yml)                   | `@hksagentur/schema/fields/heading`          | Text input for headlines or titles.                 |
-| [Hours](config/blueprints/fields/opening-hours.yml)               | `@hksagentur/schema/fields/opening-hours`    | Opening hours of a store or local business.         |
+| [Opening Hours](config/blueprints/fields/opening-hours.yml)       | `@hksagentur/schema/fields/opening-hours`    | Opening hours of a store or local business.         |
 | [Image](config/blueprints/fields/image.yml)                       | `@hksagentur/schema/fields/image`            | File picker for image files.                        |
 | [Inline Text](config/blueprints/fields/inline-text.yml)           | `@hksagentur/schema/fields/inline-text`      | Formatted inline text elements.                     |
 | [Justify Content](config/blueprints/fields/justify-content.yml)   | `@hksagentur/schema/fields/justify-content`  | Horizontal alignment of content items.              |
