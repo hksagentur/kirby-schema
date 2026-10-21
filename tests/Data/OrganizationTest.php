@@ -45,5 +45,19 @@ class OrganizationTest extends TestCase
         $this->assertArrayNotHasKey('location', (new Organization(name: 'Acme Inc.'))->toStructuredData());
     }
 
+    public function testToHtmlUsesTheSameDefaultTypeAsTheStructuredData(): void
+    {
+        $organization = new Organization(name: 'Acme Inc.');
 
+        $this->assertStringContainsString('itemtype="https://schema.org/Organization"', $organization->toHtml());
+        $this->assertSame('Organization', $organization->toStructuredData()['@type']);
+    }
+
+    public function testToHtmlAcceptsAMoreSpecificType(): void
+    {
+        $html = (new Organization(name: 'Acme Inc.'))->toHtml(['itemtype' => 'https://schema.org/LocalBusiness']);
+
+        $this->assertStringContainsString('itemtype="https://schema.org/LocalBusiness"', $html);
+        $this->assertStringNotContainsString('schema.org/Organization', $html);
+    }
 }

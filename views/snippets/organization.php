@@ -2,7 +2,7 @@
 
 <div <?= attr([
     'itemscope' => true,
-    'itemtype' => 'https://schema.org/LocalBusiness',
+    'itemtype' => 'https://schema.org/Organization',
     ...$attrs ?? [],
 ]) ?>>
     <div <?= attr([
