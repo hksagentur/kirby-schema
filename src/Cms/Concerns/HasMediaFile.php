@@ -6,8 +6,8 @@ use Kirby\Cms\File;
 
 trait HasMediaFile
 {
-    protected ?File $image = null;
-    protected ?File $video = null;
+    use HasImage;
+    use HasVideo;
 
     public function mediaType(): ?string
     {
@@ -21,25 +21,5 @@ trait HasMediaFile
             'video' => $this->video(),
             default => null,
         };
-    }
-
-    public function hasImage(): bool
-    {
-        return $this->image() !== null;
-    }
-
-    public function image(): ?File
-    {
-        return $this->image ??= $this->content()->image()->toFile();
-    }
-
-    public function hasVideo(): bool
-    {
-        return $this->video() !== null;
-    }
-
-    public function video(): ?File
-    {
-        return $this->video ??= $this->content()->video()->toFile();
     }
 }
