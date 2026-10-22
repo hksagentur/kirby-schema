@@ -9,10 +9,20 @@ use Kirby\Toolkit\Str;
 
 readonly class PhoneNumber extends StringType implements Arrayable
 {
-    public const string INTERNATIONAL_PREFIX_SYMBOL = '+';
+    /**
+     * Matches a country calling code.
+     *
+     * Calling codes are prefix-free, so their first digits decide how many digits belong to them.
+     *
+     * @link https://www.itu.int/rec/T-REC-E.164
+     */
+    public const string COUNTRY_CODE = '[17]|2[07]|3[0-469]|4[013-9]|5[1-8]|6[0-6]|8[1246]|9[0-58]|[2-9]\d{2}';
 
-    public const string ITU_E123 = '/^(?:(?<internationalPrefixSymbol>\+)(?<countryCode>\d{1,3}))?\s*(?<nationalSignificantNumber>(?<nationalTrunkCode>\(\d+\)|0\d+)?[\/\s-]*\s*(?<subscriberNumber>[\d\s-]*\d))$/u';
-    public const string ITU_E164 = '/^(?<internationalPrefixSymbol>\+)?(?<countryCode>\d{1,3})(?<nationalSignificantNumber>\d{1,12})$/u';
+    public const string ITU_E123 = '/^(?:(?<internationalPrefix>\\' . self::INTERNATIONAL_PREFIX_SYMBOL . '|' . self::INTERNATIONAL_PREFIX . ')(?<countryCode>' . self::COUNTRY_CODE . '))?\s*(?<nationalSignificantNumber>(?<nationalTrunkCode>\(\d+\)|0\d+)?[\/\s-]*\s*(?<subscriberNumber>[\d\s-]*\d))$/u';
+    public const string ITU_E164 = '/^(?<internationalPrefix>\\' . self::INTERNATIONAL_PREFIX_SYMBOL . ')?(?<countryCode>' . self::COUNTRY_CODE . ')(?<nationalSignificantNumber>\d{1,12})$/u';
+
+    public const string INTERNATIONAL_PREFIX = '00';
+    public const string INTERNATIONAL_PREFIX_SYMBOL = '+';
 
     public string $nationalSignificantNumber;
     public ?string $subscriberNumber;

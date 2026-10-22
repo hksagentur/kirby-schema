@@ -113,4 +113,22 @@ class PhoneNumberTest extends TestCase
         $this->assertSame('tel:+494202910160', (new PhoneNumber('04202-91016-0'))->toUri());
     }
 
+    public function testTheInternationalPrefixZeroZeroIsReadLikeAPlus(): void
+    {
+        $number = new PhoneNumber('0049 4202 91016-0');
+
+        $this->assertTrue($number->isInternational());
+        $this->assertSame('49', $number->countryCode());
+        $this->assertSame('+494202910160', $number->toE164String());
+        $this->assertSame('+494202910160', (new PhoneNumber('0049 (0) 4202 910160'))->toE164String());
+    }
+
+    public function testTheCountryCodeEndsWhereTheCallingCodeEnds(): void
+    {
+        $this->assertSame('49', (new PhoneNumber('+494202910160'))->countryCode());
+        $this->assertSame('1', (new PhoneNumber('+14155550100'))->countryCode());
+        $this->assertSame('353', (new PhoneNumber('+3531234567'))->countryCode());
+        $this->assertSame('49', (new PhoneNumber('00494202910160'))->countryCode());
+    }
+
 }
