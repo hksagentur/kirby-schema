@@ -1,11 +1,19 @@
 <?php /** @var \Hks\Schema\Data\Organization $item */ ?>
 
 <div <?= attr([
+    'class' => [
+        'h-card',
+        ...A::wrap($attrs['class'] ?? []),
+    ],
     'itemscope' => true,
     'itemtype' => 'https://schema.org/Organization',
-    ...$attrs ?? [],
+    ...A::without($attrs ?? [], 'class'),
 ]) ?>>
     <div <?= attr([
+        'class' => [
+            'p-name',
+            'p-org',
+        ],
         'itemprop' => 'name',
         'hidden' => true,
     ]) ?>>
@@ -13,19 +21,23 @@
     </div>
 
     <?= $item->address()?->toHtml([
+        'class' => 'p-adr',
         'itemprop' => 'address',
     ]) ?>
 
     <?= $item->coordinates()?->toHtml([
+        'class' => 'p-geo',
         'itemprop' => 'geo',
         'hidden' => true,
     ]) ?>
 
     <?= $item->email()?->toHtml([
+        'class' => 'u-email',
         'itemprop' => 'email',
     ]) ?>
 
     <?= $item->telephone()?->toHtml([
+        'class' => 'p-tel',
         'itemprop' => 'telephone',
     ]) ?>
 

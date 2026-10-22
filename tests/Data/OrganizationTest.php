@@ -2,7 +2,9 @@
 
 namespace Hks\Schema\Data;
 
+use Hks\Schema\Data\Types\EmailAddress;
 use Hks\Schema\Data\Types\GeoCoordinate;
+use Hks\Schema\Data\Types\PhoneNumber;
 use Hks\Schema\Data\Types\PostalAddress;
 use Hks\Schema\Data\Types\Url;
 use Hks\Schema\TestCase;
@@ -60,4 +62,27 @@ class OrganizationTest extends TestCase
         $this->assertStringContainsString('itemtype="https://schema.org/LocalBusiness"', $html);
         $this->assertStringNotContainsString('schema.org/Organization', $html);
     }
+
+    public function testToHtmlRendersAnHCardAlongsideTheMicrodata(): void
+    {
+        $html = (new Organization(
+            name: 'Acme Inc.',
+            address: PostalAddress::from([
+                'streetAddress' => 'Main Street 1',
+                'postalCode' => '12345',
+                'addressLocality' => 'Springfield',
+                'addressCountry' => 'DE',
+            ]),
+            email: new EmailAddress('info@acme.example'),
+            telephone: new PhoneNumber('+49 30 123456'),
+        ))->toHtml(['class' => 'colophon']);
+
+        $this->assertStringContainsString('class="h-card colophon"', $html);
+        $this->assertStringContainsString('class="p-name p-org"', $html);
+        $this->assertStringContainsString('class="h-adr p-adr"', $html);
+        $this->assertStringContainsString('<span class="p-locality" itemprop="addressLocality">Springfield</span>', $html);
+        $this->assertStringContainsString('class="u-email"', $html);
+        $this->assertStringContainsString('class="p-tel"', $html);
+    }
+
 }

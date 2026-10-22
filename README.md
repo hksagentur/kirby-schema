@@ -74,7 +74,7 @@ except that the original stays available to extend instead of being copied. Keep
 ## Value Objects
 
 Content stored by the plugin's blueprints converts into immutable value objects that render their
-own HTML and schema.org structured data:
+own HTML (with microdata and microformats) and schema.org structured data:
 
 ```php
 <?php // site/templates/employee.php ?>
