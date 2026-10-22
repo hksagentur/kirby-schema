@@ -54,7 +54,11 @@ abstract class Migration
                 $log("{$id} ({$lang}): " . implode(', ', $changeset->dirty()), error: false);
 
                 if (! $dryRun) {
-                    $version->update($changeset->toArray(), $lang);
+                    $version->save(
+                        fields: $changeset->applyTo($version->read($lang)),
+                        language: $lang,
+                        overwrite: true
+                    );
                 }
 
                 $updated++;

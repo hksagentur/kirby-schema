@@ -60,6 +60,22 @@ class ChangesetTest extends TestCase
         );
     }
 
+    public function testRenameKeepsThePositionOfTheField(): void
+    {
+        $changes = Changeset::of(new Content(['locality' => 'Achim', 'title' => 'Home']))
+            ->rename('locality', 'addressLocality')
+            ->set('country', 'DE');
+
+        $this->assertSame(
+            ['addresslocality' => 'Achim', 'title' => 'Home', 'country' => 'DE'],
+            $changes->apply(),
+        );
+        $this->assertSame(
+            ['uuid' => 'x', 'addresslocality' => 'Achim', 'title' => 'Home', 'country' => 'DE'],
+            $changes->applyTo(['uuid' => 'x', 'locality' => 'Achim', 'title' => 'Home']),
+        );
+    }
+
     public function testModelReturnsTheParentOfTheContent(): void
     {
         $page = new Page(['slug' => 'home']);
@@ -93,7 +109,7 @@ class ChangesetTest extends TestCase
         $content = Data::decode($changes->toArray()['blocks'], 'json')[0]['content'];
 
         $this->assertSame([['url' => '#', 'target' => '_blank']], $content['items']);
-        $this->assertSame(['postalcode' => '1', 'addresslocality' => 'Achim'], $content['meta']);
+        $this->assertSame(['addresslocality' => 'Achim', 'postalcode' => '1'], $content['meta']);
     }
 
     public function testSetIgnoresTheValueTheContentAlreadyHolds(): void

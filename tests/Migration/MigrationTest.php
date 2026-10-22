@@ -160,6 +160,22 @@ class MigrationTest extends TestCase
         $this->assertSame(1, $updated);
         $this->assertSame(['jane (en): occupation, responsibilities, qualifications'], $messages);
     }
+
+    public function testRunSavesRenamedFieldsInPlace(): void
+    {
+        $this->app->page('jane')->version('latest')->save([
+            'occupation' => 'Carpenter, Mason',
+            'note' => 'Since 2020',
+        ], 'en', overwrite: true);
+
+        $updated = (new MovePersonTags())->run(fn (string $message, bool $error) => null);
+
+        $fields = $this->app->page('jane')->version('latest')->read('en');
+
+        $this->assertSame(1, $updated);
+        $this->assertSame(['qualifications', 'note'], array_keys($fields));
+        $this->assertSame(['Carpenter', 'Mason'], Data::decode($fields['qualifications'], 'yaml'));
+    }
 }
 
 class RenameCompanyAddress extends Migration

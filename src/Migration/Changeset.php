@@ -16,11 +16,13 @@ readonly class Changeset
 {
     /**
      * @param array<string, mixed> $values
+     * @param array<string, string> $renamed
      * @param string[] $removed
      */
     protected function __construct(
         protected Content $content,
         protected array $values = [],
+        protected array $renamed = [],
         protected array $removed = [],
     ) {
     }
@@ -92,9 +94,17 @@ readonly class Changeset
             return $this;
         }
 
+        $from = strtolower($from);
+        $to = strtolower($to);
+
         $value = $this->content->get($from)->value();
 
-        return $this->remove($from)->set($to, $map ? $map($value) : $value);
+        $changeset = $this->remove($from)->set(
+            field: $to,
+            value: $map ? $map($value) : $value
+        );
+
+        return $changeset->with(renamed: [...$this->renamed, $from => $to]);
     }
 
     /**
@@ -197,16 +207,21 @@ readonly class Changeset
      */
     public function apply(): array
     {
-        return [
-            ...A::without($this->content->toArray(), $this->removed),
-            ...$this->values,
-        ];
+        return $this->patch($this->content->toArray(), $this->values);
     }
 
     /**
-     * Returns the changes in the shape Kirby's `Version::update()` expects.
+     * @param array<string, mixed> $fields
+     */
+    public function applyTo(array $fields): array
+    {
+        return $this->patch($fields, A::without($this->toArray(), $this->removed));
+    }
+
+    /**
+     * Returns the changed fields, encoded for storage.
      *
-     * Removed fields are `null`; blocks/layouts are JSON, other nested values YAML.
+     * Removed fields are `null`; blocks and layouts are JSON, other nested values YAML.
      *
      * @return array<string, mixed>
      */
@@ -248,14 +263,56 @@ readonly class Changeset
     }
 
     /**
-     * @param array<string, mixed> $values
-     * @param string[] $removed
+     * @param ?array<string, mixed> $values
+     * @param ?array<string, string> $renamed
+     * @param ?string[] $removed
      */
-    protected function with(array $values, array $removed = []): static
+    protected function with(?array $values = null, ?array $renamed = null, ?array $removed = null): static
     {
-        return new static($this->content, $values, $removed);
+        return new static(
+            content: $this->content,
+            values: $values ?? $this->values,
+            renamed: $renamed ?? $this->renamed,
+            removed: $removed ?? $this->removed,
+        );
     }
 
+    /**
+     * Applies values and removals to fields.
+     *
+     * A renamed field takes the place of its old one, new fields go last.
+     *
+     * @param array<string, mixed> $fields
+     * @param array<string, mixed> $values
+     * @return array<string, mixed>
+     */
+    protected function patch(array $fields, array $values): array
+    {
+        $result = [];
+
+        foreach ($fields as $field => $value) {
+            $to = $this->renamed[$field] ?? null;
+
+            if ($to !== null && array_key_exists($to, $values)) {
+                $result[$to] = $values[$to];
+            }
+
+            if (! in_array($field, $this->removed, true)) {
+                $result[$field] = array_key_exists($field, $values) ? $values[$field] : $value;
+            }
+        }
+
+        return [...$result, ...$values];
+    }
+
+    /**
+     * Encodes a nested value for storage.
+     *
+     * Kirby stores blocks and layouts as JSON and every other field as YAML. The model's blueprint
+     * decides, so a field it doesn't define is stored as YAML.
+     *
+     * @param array<string, mixed> $value
+     */
     protected function encode(string $field, array $value): string
     {
         $type = A::get(
