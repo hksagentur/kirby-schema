@@ -1,19 +1,19 @@
 type: group
 fields:
-  extends: @hksagentur/schema/fields/name
+  extends: schema/fields/name
   description:
-    extends: @hksagentur/schema/fields/inline-text
+    extends: schema/fields/inline-text
     label:
       *: hksagentur.schema.field.person.description
   lineContact:
     type: line
-  email: @hksagentur/schema/fields/email
-  telephone: @hksagentur/schema/fields/telephone
-  fax: @hksagentur/schema/fields/fax
+  email: schema/fields/email
+  telephone: schema/fields/telephone
+  fax: schema/fields/fax
   jobTitle:
     type: text
     label:
       *: hksagentur.schema.field.person.jobTitle
     counter: false
-  qualifications: @hksagentur/schema/fields/qualifications
-  expertise: @hksagentur/schema/fields/expertise
+  qualifications: schema/fields/qualifications
+  expertise: schema/fields/expertise

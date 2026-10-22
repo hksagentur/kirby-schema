@@ -15,5 +15,5 @@ fields:
     required: true
   lineAddress:
     type: line
-  address: @hksagentur/schema/fields/address
-  coordinates: @hksagentur/schema/fields/coordinates
+  address: schema/fields/address
+  coordinates: schema/fields/coordinates

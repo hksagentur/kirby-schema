@@ -10,10 +10,10 @@ fields:
     required: true
     multiple: false
   videoCodec:
-    extends: @hksagentur/schema/fields/video-codec
+    extends: schema/fields/video-codec
     label:
       *: hksagentur.schema.field.videoFormats.videoCodec
   audioCodec:
-    extends: @hksagentur/schema/fields/audio-codec
+    extends: schema/fields/audio-codec
     label:
       *: hksagentur.schema.field.videoFormats.audioCodec

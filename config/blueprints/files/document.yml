@@ -18,18 +18,18 @@ columns:
     width: 2/3
     fields:
       label:
-        extends: @hksagentur/schema/fields/heading
+        extends: schema/fields/heading
         label:
           *: hksagentur.schema.file.document.label
       description:
-        extends: @hksagentur/schema/fields/inline-text
+        extends: schema/fields/inline-text
         label:
           *: hksagentur.schema.file.document.description
   sidebar:
     width: 1/3
     fields:
       cover:
-        extends: @hksagentur/schema/fields/image
+        extends: schema/fields/image
         label:
           *: hksagentur.schema.file.document.cover
         query: model.parent.images.template('image')
@@ -39,4 +39,4 @@ columns:
           *: hksagentur.schema.file.document.author
         icon: user
         counter: false
-      source:  @hksagentur/schema/fields/source
+      source:  schema/fields/source

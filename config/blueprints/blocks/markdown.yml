@@ -4,6 +4,6 @@ label: "{{ text }}"
 icon: markdown
 tabs:
   content:
-    extends: @hksagentur/schema/tabs/content
+    extends: schema/tabs/content
     fields:
-      text: @hksagentur/schema/fields/markdown
+      text: schema/fields/markdown

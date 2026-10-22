@@ -21,44 +21,55 @@ Download the project archive and copy the files to the plugin directory of your 
 
 ## Usage
 
-All blueprints provided by the plugin are registered within a custom namespace (`@hksagentur/schema`). You have to reference or extend these blueprints to take advantage of the provided data structures.
-
-A simple example would be to use the navigation blueprint for the site:
-
-```yaml
-# site/blueprints/site.yml
-tabs:
-  content:
-    label: Content
-    fields: []
-  settings:
-    label: Settings
-    fields:
-      navigation: @hksagentur/schema/fields/navigation
-```
-
-Instead of referencing the provided blueprints directly you can use them as a base and start customizing:
+Every blueprint of the plugin is registered under two names: `schema/<type>/<name>` to use and
+customize, and `@hksagentur/schema/<type>/<name>` for the original. Reference a blueprint by its
+`schema/` name, e.g. the navigation for the site:
 
 ```yaml
 # site/blueprints/site.yml
 tabs:
-  content:
-    label: Content
-    fields: []
   settings:
     label: Settings
     fields:
-      navigation:
-        extends: @hksagentur/schema/fields/navigation
-        fields:
-          classNames:
-            type: text
-            label: HTML Classes
-          target: false
-          rel: false
+      navigation: schema/fields/navigation
 ```
 
-This applies to all blueprints regardless of their type.
+Extend it where it's used to change it in one place:
+
+```yaml
+navigation:
+  extends: schema/fields/navigation
+  fields:
+    classNames:
+      type: text
+      label: HTML Classes
+    rel: false
+```
+
+### Customizing blueprints
+
+The plugin's blocks, pages and tabs use the `schema/` names as well. To change a blueprint
+everywhere — e.g. to add a field from another plugin — put a file of the same name into
+`site/blueprints/schema/` (or register the name in a plugin) and extend the original:
+
+```yaml
+# site/blueprints/schema/fields/link.yml
+extends: '@hksagentur/schema/fields/link'
+fields:
+  icon:
+    type: icon
+```
+
+Leave out `extends` to replace the blueprint entirely. This works like overriding one of Kirby's
+core blocks (see [Customizing core blocks](https://getkirby.com/docs/guide/page-builder/customizing-core-blocks)),
+except that the original stays available to extend instead of being copied. Keep in mind:
+
+- An override applies wherever the `schema/` name is used. A blueprint referencing
+  `@hksagentur/schema/…` gets the original.
+- Extend the `@hksagentur/schema/` original in an override, never its own `schema/` name: Kirby
+  follows `extends` until PHP runs out of memory.
+- `site/blueprints/` always wins. A plugin registering a `schema/` name only wins if it loads after
+  this plugin — Kirby loads plugins in alphabetical order.
 
 ## Value Objects
 
@@ -88,95 +99,95 @@ changes.
 
 ## Available Blueprints
 
-Below is an overview of all available blueprints provided by this plugin. Each entry lists the readable name, the ID (for reference/extension), and a short description.
+Below is an overview of all available blueprints provided by this plugin. Each entry lists the readable name, the ID (for reference/extension; the original is the same ID prefixed with `@hksagentur/`), and a short description.
 
 ### Block Blueprints
 
 | Name                                                  | ID                                      | Description                                                 |
 | ----------------------------------------------------- | --------------------------------------- | ----------------------------------------------------------- |
-| [Accordion](config/blueprints/blocks/accordion.yml)   | `@hksagentur/schema/blocks/accordion`   | Collapsible group of contents.                              |
-| [Billboard](config/blueprints/blocks/billboard.yml)   | `@hksagentur/schema/blocks/billboard`   | Promotional banner showcasing key messages or visuals.      |
-| [Cards](config/blueprints/blocks/cards.yml)           | `@hksagentur/schema/blocks/cards`       | Present related content in concise, self-containing blocks. |
-| [Collection](config/blueprints/blocks/collection.yml) | `@hksagentur/schema/blocks/collection`  | Customizable list of related pages.                         |
-| [Disclosure](config/blueprints/blocks/disclosure.yml) | `@hksagentur/schema/blocks/disclosure`  | Expandable and collapsible content section.                 |
-| [Gallery](config/blueprints/blocks/gallery.yml)       | `@hksagentur/schema/blocks/gallery`     | Group related images in a gallery.                          |
-| [Heading](config/blueprints/blocks/heading.yml)       | `@hksagentur/schema/blocks/heading`     | Define the documents hierarchy using headings.              |
-| [Hero](config/blueprints/blocks/hero.yml)             | `@hksagentur/schema/blocks/hero`        | Prominent section highlighting main message.                |
-| [Image](config/blueprints/blocks/image.yml)           | `@hksagentur/schema/blocks/image`       | Embed images from internal or external sources.             |
-| [Media Text](config/blueprints/blocks/media-text.yml) | `@hksagentur/schema/blocks/media-text`  | Combine media with descriptive text.                        |
-| [Tabs](config/blueprints/blocks/tabs.yml)             | `@hksagentur/schema/blocks/tabs`        | Spread related contents across multiple tabs.               |
-| [Video](config/blueprints/blocks/video.yml)           | `@hksagentur/schema/blocks/video`       | Play embedded media content.                                |
+| [Accordion](config/blueprints/blocks/accordion.yml)   | `schema/blocks/accordion`   | Collapsible group of contents.                              |
+| [Billboard](config/blueprints/blocks/billboard.yml)   | `schema/blocks/billboard`   | Promotional banner showcasing key messages or visuals.      |
+| [Cards](config/blueprints/blocks/cards.yml)           | `schema/blocks/cards`       | Present related content in concise, self-containing blocks. |
+| [Collection](config/blueprints/blocks/collection.yml) | `schema/blocks/collection`  | Customizable list of related pages.                         |
+| [Disclosure](config/blueprints/blocks/disclosure.yml) | `schema/blocks/disclosure`  | Expandable and collapsible content section.                 |
+| [Gallery](config/blueprints/blocks/gallery.yml)       | `schema/blocks/gallery`     | Group related images in a gallery.                          |
+| [Heading](config/blueprints/blocks/heading.yml)       | `schema/blocks/heading`     | Define the documents hierarchy using headings.              |
+| [Hero](config/blueprints/blocks/hero.yml)             | `schema/blocks/hero`        | Prominent section highlighting main message.                |
+| [Image](config/blueprints/blocks/image.yml)           | `schema/blocks/image`       | Embed images from internal or external sources.             |
+| [Media Text](config/blueprints/blocks/media-text.yml) | `schema/blocks/media-text`  | Combine media with descriptive text.                        |
+| [Tabs](config/blueprints/blocks/tabs.yml)             | `schema/blocks/tabs`        | Spread related contents across multiple tabs.               |
+| [Video](config/blueprints/blocks/video.yml)           | `schema/blocks/video`       | Play embedded media content.                                |
 
 ### Field Blueprints
 
 | Name                                                              | ID                                           | Description                                         |
 | ----------------------------------------------------------------- | -------------------------------------------- | --------------------------------------------------- |
-| [Actions](config/blueprints/fields/actions.yml)                   | `@hksagentur/schema/fields/actions`          | Group of links.                                     |
-| [Address](config/blueprints/fields/address.yml)                   | `@hksagentur/schema/fields/address`          | Postal address fields.                              |
-| [Align Content](config/blueprints/fields/align-content.yml)       | `@hksagentur/schema/fields/align-content`    | Vertical alignment of content items.                |
-| [Author](config/blueprints/fields/author.yml)                     | `@hksagentur/schema/fields/author`           | Assign a user as content author.                    |
-| [Blocks](config/blueprints/fields/blocks.yml)                     | `@hksagentur/schema/fields/blocks`           | Flexible content builder using Kirby blocks.        |
-| [Caption](config/blueprints/fields/caption.yml)                   | `@hksagentur/schema/fields/caption`          | Short description for images or figures.            |
-| [Category](config/blueprints/fields/category.yml)                 | `@hksagentur/schema/fields/category`         | Category selection with autocompletion.             |
-| [Channels](config/blueprints/fields/channels.yml)                 | `@hksagentur/schema/fields/channels`         | Link to related social media channels.              |
-| [Content Layout](config/blueprints/fields/content-layout.yml)     | `@hksagentur/schema/fields/content-layout`   | Arrange content blocks in a layout.                 |
-| [Coordinates](config/blueprints/fields/coordinates.yml)           | `@hksagentur/schema/fields/coordinates`      | Geographic coordinates of a place.                  |
-| [Cover](config/blueprints/fields/cover.yml)                       | `@hksagentur/schema/fields/cover`            | Preview image of a page or entity.                  |
-| [Created](config/blueprints/fields/created.yml)                   | `@hksagentur/schema/fields/created`          | Automatically populated creation date.              |
-| [Currency](config/blueprints/fields/currency.yml)                 | `@hksagentur/schema/fields/currency`         | Select the currency for prices or amounts.          |
-| [Email](config/blueprints/fields/email.yml)                       | `@hksagentur/schema/fields/email`            | Email address of a person or organization.          |
-| [Expertise](config/blueprints/fields/expertise.yml)               | `@hksagentur/schema/fields/expertise`        | Subject-matter areas a person is knowledgeable in.  |
-| [Eyebrow](config/blueprints/fields/eyebrow.yml)                   | `@hksagentur/schema/fields/eyebrow`          | Small text above a headline.                        |
-| [Fax](config/blueprints/fields/fax.yml)                           | `@hksagentur/schema/fields/fax`              | Fax number of a person or organization.             |
-| [Featured](config/blueprints/fields/featured.yml)                 | `@hksagentur/schema/fields/featured`         | Mark content as featured.                           |
-| [Gallery](config/blueprints/fields/gallery.yml)                   | `@hksagentur/schema/fields/gallery`          | Group related images in a gallery.                  |
-| [Heading Level](config/blueprints/fields/heading-level.yml)       | `@hksagentur/schema/fields/heading-level`    | HTML heading level to choose from.                  |
-| [Heading](config/blueprints/fields/heading.yml)                   | `@hksagentur/schema/fields/heading`          | Text input for headlines or titles.                 |
-| [Opening Hours](config/blueprints/fields/opening-hours.yml)       | `@hksagentur/schema/fields/opening-hours`    | Opening hours of a store or local business.         |
-| [Image](config/blueprints/fields/image.yml)                       | `@hksagentur/schema/fields/image`            | File picker for image files.                        |
-| [Inline Text](config/blueprints/fields/inline-text.yml)           | `@hksagentur/schema/fields/inline-text`      | Formatted inline text elements.                     |
-| [Justify Content](config/blueprints/fields/justify-content.yml)   | `@hksagentur/schema/fields/justify-content`  | Horizontal alignment of content items.              |
-| [License](config/blueprints/fields/license.yml)                   | `@hksagentur/schema/fields/license`          | A license document applied to an item.              |
-| [Limit](config/blueprints/fields/limit.yml)                       | `@hksagentur/schema/fields/limit`            | Specify a maximum value or amount.                  |
-| [Link](config/blueprints/fields/link.yml)                         | `@hksagentur/schema/fields/link`             | Reference an internal or external document.         |
-| [Logo](config/blueprints/fields/logo.yml)                         | `@hksagentur/schema/fields/logo`             | File picker for a logo.                             |
-| [Markdown](config/blueprints/fields/markdown.yml)                 | `@hksagentur/schema/fields/markdown`         | Markdown editor for formatted text.                 |
-| [Name](config/blueprints/fields/name.yml)                         | `@hksagentur/schema/fields/name`             | Separate fields for the individual parts of a name. |
-| [Navigation](config/blueprints/fields/navigation.yml)             | `@hksagentur/schema/fields/navigation`       | Hierarchical navigation structure.                  |
-| [Offset](config/blueprints/fields/offset.yml)                     | `@hksagentur/schema/fields/offset`           | Display offset for lists or queries.                |
-| [Open](config/blueprints/fields/open.yml)                         | `@hksagentur/schema/fields/open`             | Toggle open/closed state of blocks.                 |
-| [Organization](config/blueprints/fields/organization.yml)         | `@hksagentur/schema/fields/organization`     | Organization details with address and contact info. |
-| [Person](config/blueprints/fields/person.yml)                     | `@hksagentur/schema/fields/person`           | Contact details for a person.                       |
-| [Place](config/blueprints/fields/place.yml)                       | `@hksagentur/schema/fields/place`            | Name and address of a physical location.            |
-| [Price](config/blueprints/fields/price.yml)                       | `@hksagentur/schema/fields/price`            | The offer price of a product.                       |
-| [Published](config/blueprints/fields/published.yml)               | `@hksagentur/schema/fields/published`        | Date when the page was first published.             |
-| [Qualifications](config/blueprints/fields/qualifications.yml)     | `@hksagentur/schema/fields/qualifications`   | Academic degrees or professional qualifications.    |
-| [Ratio](config/blueprints/fields/ratio.yml)                       | `@hksagentur/schema/fields/ratio`            | Selection of common aspect ratios.                  |
-| [Reverse](config/blueprints/fields/reverse.yml)                   | `@hksagentur/schema/fields/reverse`          | Reverse the order of a sequence.                    |
-| [Rich Text](config/blueprints/fields/rich-text.yml)               | `@hksagentur/schema/fields/rich-text`        | Editor for formatted, rich content.                 |
-| [Source](config/blueprints/fields/source.yml)                     | `@hksagentur/schema/fields/source`           | Source and license information of a file.           |
-| [Tags](config/blueprints/fields/tags.yml)                         | `@hksagentur/schema/fields/tags`             | Associate an entity with tags.                      |
-| [Telephone](config/blueprints/fields/telephone.yml)               | `@hksagentur/schema/fields/telephone`        | Telephone number of a person or organization.       |
-| [Updated](config/blueprints/fields/updated.yml)                   | `@hksagentur/schema/fields/updated`          | Last modification date of a page.                   |
-| [Video](config/blueprints/fields/video.yml)                       | `@hksagentur/schema/fields/video`            | File picker for videos files.                       |
-| [Website](config/blueprints/fields/website.yml)                   | `@hksagentur/schema/fields/website`          | URL to an external website.                         |
+| [Actions](config/blueprints/fields/actions.yml)                   | `schema/fields/actions`          | Group of links.                                     |
+| [Address](config/blueprints/fields/address.yml)                   | `schema/fields/address`          | Postal address fields.                              |
+| [Align Content](config/blueprints/fields/align-content.yml)       | `schema/fields/align-content`    | Vertical alignment of content items.                |
+| [Author](config/blueprints/fields/author.yml)                     | `schema/fields/author`           | Assign a user as content author.                    |
+| [Blocks](config/blueprints/fields/blocks.yml)                     | `schema/fields/blocks`           | Flexible content builder using Kirby blocks.        |
+| [Caption](config/blueprints/fields/caption.yml)                   | `schema/fields/caption`          | Short description for images or figures.            |
+| [Category](config/blueprints/fields/category.yml)                 | `schema/fields/category`         | Category selection with autocompletion.             |
+| [Channels](config/blueprints/fields/channels.yml)                 | `schema/fields/channels`         | Link to related social media channels.              |
+| [Content Layout](config/blueprints/fields/content-layout.yml)     | `schema/fields/content-layout`   | Arrange content blocks in a layout.                 |
+| [Coordinates](config/blueprints/fields/coordinates.yml)           | `schema/fields/coordinates`      | Geographic coordinates of a place.                  |
+| [Cover](config/blueprints/fields/cover.yml)                       | `schema/fields/cover`            | Preview image of a page or entity.                  |
+| [Created](config/blueprints/fields/created.yml)                   | `schema/fields/created`          | Automatically populated creation date.              |
+| [Currency](config/blueprints/fields/currency.yml)                 | `schema/fields/currency`         | Select the currency for prices or amounts.          |
+| [Email](config/blueprints/fields/email.yml)                       | `schema/fields/email`            | Email address of a person or organization.          |
+| [Expertise](config/blueprints/fields/expertise.yml)               | `schema/fields/expertise`        | Subject-matter areas a person is knowledgeable in.  |
+| [Eyebrow](config/blueprints/fields/eyebrow.yml)                   | `schema/fields/eyebrow`          | Small text above a headline.                        |
+| [Fax](config/blueprints/fields/fax.yml)                           | `schema/fields/fax`              | Fax number of a person or organization.             |
+| [Featured](config/blueprints/fields/featured.yml)                 | `schema/fields/featured`         | Mark content as featured.                           |
+| [Gallery](config/blueprints/fields/gallery.yml)                   | `schema/fields/gallery`          | Group related images in a gallery.                  |
+| [Heading Level](config/blueprints/fields/heading-level.yml)       | `schema/fields/heading-level`    | HTML heading level to choose from.                  |
+| [Heading](config/blueprints/fields/heading.yml)                   | `schema/fields/heading`          | Text input for headlines or titles.                 |
+| [Opening Hours](config/blueprints/fields/opening-hours.yml)       | `schema/fields/opening-hours`    | Opening hours of a store or local business.         |
+| [Image](config/blueprints/fields/image.yml)                       | `schema/fields/image`            | File picker for image files.                        |
+| [Inline Text](config/blueprints/fields/inline-text.yml)           | `schema/fields/inline-text`      | Formatted inline text elements.                     |
+| [Justify Content](config/blueprints/fields/justify-content.yml)   | `schema/fields/justify-content`  | Horizontal alignment of content items.              |
+| [License](config/blueprints/fields/license.yml)                   | `schema/fields/license`          | A license document applied to an item.              |
+| [Limit](config/blueprints/fields/limit.yml)                       | `schema/fields/limit`            | Specify a maximum value or amount.                  |
+| [Link](config/blueprints/fields/link.yml)                         | `schema/fields/link`             | Reference an internal or external document.         |
+| [Logo](config/blueprints/fields/logo.yml)                         | `schema/fields/logo`             | File picker for a logo.                             |
+| [Markdown](config/blueprints/fields/markdown.yml)                 | `schema/fields/markdown`         | Markdown editor for formatted text.                 |
+| [Name](config/blueprints/fields/name.yml)                         | `schema/fields/name`             | Separate fields for the individual parts of a name. |
+| [Navigation](config/blueprints/fields/navigation.yml)             | `schema/fields/navigation`       | Hierarchical navigation structure.                  |
+| [Offset](config/blueprints/fields/offset.yml)                     | `schema/fields/offset`           | Display offset for lists or queries.                |
+| [Open](config/blueprints/fields/open.yml)                         | `schema/fields/open`             | Toggle open/closed state of blocks.                 |
+| [Organization](config/blueprints/fields/organization.yml)         | `schema/fields/organization`     | Organization details with address and contact info. |
+| [Person](config/blueprints/fields/person.yml)                     | `schema/fields/person`           | Contact details for a person.                       |
+| [Place](config/blueprints/fields/place.yml)                       | `schema/fields/place`            | Name and address of a physical location.            |
+| [Price](config/blueprints/fields/price.yml)                       | `schema/fields/price`            | The offer price of a product.                       |
+| [Published](config/blueprints/fields/published.yml)               | `schema/fields/published`        | Date when the page was first published.             |
+| [Qualifications](config/blueprints/fields/qualifications.yml)     | `schema/fields/qualifications`   | Academic degrees or professional qualifications.    |
+| [Ratio](config/blueprints/fields/ratio.yml)                       | `schema/fields/ratio`            | Selection of common aspect ratios.                  |
+| [Reverse](config/blueprints/fields/reverse.yml)                   | `schema/fields/reverse`          | Reverse the order of a sequence.                    |
+| [Rich Text](config/blueprints/fields/rich-text.yml)               | `schema/fields/rich-text`        | Editor for formatted, rich content.                 |
+| [Source](config/blueprints/fields/source.yml)                     | `schema/fields/source`           | Source and license information of a file.           |
+| [Tags](config/blueprints/fields/tags.yml)                         | `schema/fields/tags`             | Associate an entity with tags.                      |
+| [Telephone](config/blueprints/fields/telephone.yml)               | `schema/fields/telephone`        | Telephone number of a person or organization.       |
+| [Updated](config/blueprints/fields/updated.yml)                   | `schema/fields/updated`          | Last modification date of a page.                   |
+| [Video](config/blueprints/fields/video.yml)                       | `schema/fields/video`            | File picker for videos files.                       |
+| [Website](config/blueprints/fields/website.yml)                   | `schema/fields/website`          | URL to an external website.                         |
 
 ### File Blueprints
 
 | Name                                             | ID                                  | Description                                                  |
 | ------------------------------------------------ | ----------------------------------- | ------------------------------------------------------------ |
-| [Document](config/blueprints/files/document.yml) | `@hksagentur/schema/files/document` | Complementary documents such as PDFs or compressed archives. |
-| [Image](config/blueprints/files/image.yml)       | `@hksagentur/schema/files/image`    | Generic image with alternative text and caption.             |
-| [Logo](config/blueprints/files/logo.yml)         | `@hksagentur/schema/files/logo`     | Visual identity of a brand or institution.                   |
-| [Video](config/blueprints/files/video.yml)       | `@hksagentur/schema/files/video`    | Video file with poster and caption.                          |
+| [Document](config/blueprints/files/document.yml) | `schema/files/document` | Complementary documents such as PDFs or compressed archives. |
+| [Image](config/blueprints/files/image.yml)       | `schema/files/image`    | Generic image with alternative text and caption.             |
+| [Logo](config/blueprints/files/logo.yml)         | `schema/files/logo`     | Visual identity of a brand or institution.                   |
+| [Video](config/blueprints/files/video.yml)       | `schema/files/video`    | Video file with poster and caption.                          |
 
 ### Page Blueprints
 
 | Name                                             | ID                                  | Description                                           |
 | ------------------------------------------------ | ----------------------------------- | ----------------------------------------------------- |
-| [Article](config/blueprints/pages/article.yml)   | `@hksagentur/schema/pages/article`  | Short publication like a news article or blog post.   |
-| [Page](config/blueprints/pages/default.yml)      | `@hksagentur/schema/pages/default`  | Generic page using the Kirby block builder.           |
-| [Employee](config/blueprints/pages/employee.yml) | `@hksagentur/schema/pages/employee` | Personal profile of an employee.                      |
+| [Article](config/blueprints/pages/article.yml)   | `schema/pages/article`  | Short publication like a news article or blog post.   |
+| [Page](config/blueprints/pages/default.yml)      | `schema/pages/default`  | Generic page using the Kirby block builder.           |
+| [Employee](config/blueprints/pages/employee.yml) | `schema/pages/employee` | Personal profile of an employee.                      |
 
 ## License
 

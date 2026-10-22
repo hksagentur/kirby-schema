@@ -4,16 +4,16 @@ label: "{{ title }}"
 icon: info-card
 tabs:
   content:
-    extends: @hksagentur/schema/tabs/content
+    extends: schema/tabs/content
     fields:
       level:
-        extends: @hksagentur/schema/fields/heading-level
+        extends: schema/fields/heading-level
         default: h3
-      title: @hksagentur/schema/fields/heading
-      eyebrow: @hksagentur/schema/fields/eyebrow
-      text: @hksagentur/schema/fields/inline-text
+      title: schema/fields/heading
+      eyebrow: schema/fields/eyebrow
+      text: schema/fields/inline-text
       link:
         type: object
         fields:
-          extends: @hksagentur/schema/fields/link
-      media: @hksagentur/schema/fields/media
+          extends: schema/fields/link
+      media: schema/fields/media

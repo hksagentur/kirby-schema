@@ -10,13 +10,13 @@ image:
 
 tabs:
   content:
-    extends: @hksagentur/schema/tabs/content
+    extends: schema/tabs/content
     columns:
       main:
         fields:
-          blocks: @hksagentur/schema/fields/blocks
+          blocks: schema/fields/blocks
       sidebar:
         sections:
-          meta: @hksagentur/schema/sections/meta
-          subpages: @hksagentur/schema/sections/subpages
-  media: @hksagentur/schema/tabs/media
+          meta: schema/sections/meta
+          subpages: schema/sections/subpages
+  media: schema/tabs/media

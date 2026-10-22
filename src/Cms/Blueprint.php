@@ -2,111 +2,38 @@
 
 namespace Hks\Schema\Cms;
 
-use Kirby\Cms\App;
-use Kirby\Data\Yaml;
-use Kirby\Exception\NotFoundException;
-use Kirby\Filesystem\F;
-use Kirby\Toolkit\A;
-use Stringable;
-
-class Blueprint implements Stringable
+class Blueprint
 {
-    public function __construct(
-        protected string $root
-    ) {
+    public static function package(string $namespace): string
+    {
+        return basename($namespace);
     }
 
-    public static function register(string $directory, array $files): array
+    public static function vendor(string $namespace): ?string
     {
+        if (! str_contains($namespace, '/')) {
+            return null;
+        }
+
+        return ltrim(dirname($namespace), '@');
+    }
+
+    public static function namespace(string $namespace, string $directory): array
+    {
+        $prefix = static::package($namespace);
+
         $blueprints = [];
 
-        foreach ($files as $file) {
-            $blueprint = new static(($directory . '/' . $file . '.yml'));
+        foreach (glob($directory . '/*/*.yml') as $file) {
+            $name = basename(dirname($file)) . '/' . basename($file, '.yml');
 
-            if (! $blueprint->exists()) {
-                throw new NotFoundException(key: 'blueprint.notFound', data: ['name' => $file]);
-            }
+            $blueprints["{$namespace}/{$name}"] = $file;
 
-            $blueprints["@hksagentur/schema/{$file}"] = $blueprint;
+            $blueprints["{$prefix}/{$name}"] = [
+                'extends' => "{$namespace}/{$name}",
+            ];
         }
 
         return $blueprints;
-    }
-
-    public static function load(string $directory): array
-    {
-        $files = [];
-
-        foreach (glob($directory . '/*/*.yml') as $file) {
-            $files[] = F::name(F::dirname($file)) . '/' . F::name($file);
-        }
-
-        return static::register($directory, $files);
-    }
-
-    public function exists(): bool
-    {
-        return F::exists($this->root);
-    }
-
-    public function root(): string
-    {
-        return $this->root;
-    }
-
-    public function type(): ?string
-    {
-        return match ($this->directory()) {
-            'blocks' => 'block',
-            'fields' => 'field',
-            'files' => 'file',
-            'pages' => 'page',
-            'sections' => 'section',
-            'tabs' => 'tab',
-            default => null,
-        };
-    }
-
-    public function name(): string
-    {
-        return $this->directory() . '/' . F::name($this->root);
-    }
-
-    public function directory(): string
-    {
-        return F::name(F::dirname($this->root));
-    }
-
-    public function extension(): string
-    {
-        return F::extension($this->root);
-    }
-
-    public function read(): array
-    {
-        return App::instance()->apply('hksagentur.schema.blueprint:after', [
-            'name' => $this->name(),
-            'blueprint' => Yaml::read($this->root),
-        ], 'blueprint');
-    }
-
-    public function extend(array $props): array
-    {
-        return A::merge($this->read(), $props, A::MERGE_REPLACE);
-    }
-
-    public function __invoke(): array
-    {
-        return $this->read();
-    }
-
-    public function __toString(): string
-    {
-        return $this->root;
-    }
-
-    public function __debugInfo(): array
-    {
-        return $this->read();
     }
 }

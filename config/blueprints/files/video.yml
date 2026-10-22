@@ -14,17 +14,17 @@ columns:
     width: 2/3
     fields:
       label:
-        extends: @hksagentur/schema/fields/heading
+        extends: schema/fields/heading
         label:
           *: hksagentur.schema.file.video.label
       description:
-        extends: @hksagentur/schema/fields/inline-text
+        extends: schema/fields/inline-text
         label:
           *: hksagentur.schema.file.video.description
-      poster: @hksagentur/schema/fields/video-poster
-      formats: @hksagentur/schema/fields/video-formats
-      subtitles: @hksagentur/schema/fields/video-subtitles
-      captions: @hksagentur/schema/fields/video-captions
+      poster: schema/fields/video-poster
+      formats: schema/fields/video-formats
+      subtitles: schema/fields/video-subtitles
+      captions: schema/fields/video-captions
   sidebar:
     width: 1/3
     fields:
@@ -34,4 +34,4 @@ columns:
           *: hksagentur.schema.file.video.author
         icon: user
         counter: false
-      source:  @hksagentur/schema/fields/source
+      source:  schema/fields/source

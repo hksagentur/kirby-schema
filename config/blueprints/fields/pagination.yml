@@ -1,4 +1,4 @@
 type: group
 fields:
-  paginationMethod: @hksagentur/schema/fields/pagination-method
-  paginationVariable: @hksagentur/schema/fields/pagination-variable
+  paginationMethod: schema/fields/pagination-method
+  paginationVariable: schema/fields/pagination-variable

@@ -1,15 +1,15 @@
 type: group
 fields:
-  mediaType: @hksagentur/schema/fields/media-type
+  mediaType: schema/fields/media-type
   image:
-    extends: @hksagentur/schema/fields/image
+    extends: schema/fields/image
     layout: list
     required: false
     multiple: true
     when:
       mediaType: image
   video:
-    extends: @hksagentur/schema/fields/video
+    extends: schema/fields/video
     layout: list
     required: false
     multiple: false

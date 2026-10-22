@@ -18,13 +18,13 @@ create:
 
 tabs:
   content:
-    extends: @hksagentur/schema/tabs/content
+    extends: schema/tabs/content
     columns:
       main:
         fields:
-          person: @hksagentur/schema/fields/person
-          blocks: @hksagentur/schema/fields/blocks
+          person: schema/fields/person
+          blocks: schema/fields/blocks
       sidebar:
         sections:
-          meta: @hksagentur/schema/sections/meta
-  media: @hksagentur/schema/tabs/media
+          meta: schema/sections/meta
+  media: schema/tabs/media

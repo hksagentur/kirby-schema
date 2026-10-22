@@ -16,13 +16,13 @@ create:
 
 tabs:
   content:
-    extends: @hksagentur/schema/tabs/content
+    extends: schema/tabs/content
     columns:
       main:
         fields:
-          blocks: @hksagentur/schema/field/blocks
+          blocks: schema/fields/blocks
       sidebar:
         sections:
-          meta: @hksagentur/schema/sections/meta
-          taxonomies: @hksagentur/schema/sections/taxonomies
-  media: @hksagentur/schema/tabs/media
+          meta: schema/sections/meta
+          taxonomies: schema/sections/taxonomies
+  media: schema/tabs/media

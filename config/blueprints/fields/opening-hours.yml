@@ -5,35 +5,35 @@
     *: hksagentur.schema.field.openingHours.help
   fields:
     monday:
-      extends: @hksagentur/schema/fields/opening-hours-specification
+      extends: schema/fields/opening-hours-specification
       label:
         *: hksagentur.schema.weekDay.monday.long
     tuesday:
-      extends: @hksagentur/schema/fields/opening-hours-specification
+      extends: schema/fields/opening-hours-specification
       label:
         *: hksagentur.schema.weekDay.tuesday.long
     wednesday:
-      extends: @hksagentur/schema/fields/opening-hours-specification
+      extends: schema/fields/opening-hours-specification
       label:
         *: hksagentur.schema.weekDay.wednesday.long
     thursday:
-      extends: @hksagentur/schema/fields/opening-hours-specification
+      extends: schema/fields/opening-hours-specification
       label:
         *: hksagentur.schema.weekDay.thursday.long
     friday:
-      extends: @hksagentur/schema/fields/opening-hours-specification
+      extends: schema/fields/opening-hours-specification
       label:
         *: hksagentur.schema.weekDay.friday.long
     saturday:
-      extends: @hksagentur/schema/fields/opening-hours-specification
+      extends: schema/fields/opening-hours-specification
       label:
         *: hksagentur.schema.weekDay.saturday.long
     sunday:
-      extends: @hksagentur/schema/fields/opening-hours-specification
+      extends: schema/fields/opening-hours-specification
       label:
         *: hksagentur.schema.weekDay.sunday.long
     exceptions:
-      extends: @hksagentur/schema/fields/opening-hours-exception
+      extends: schema/fields/opening-hours-exception
       label:
         *: hksagentur.schema.field.openingHours.exceptions
   default:

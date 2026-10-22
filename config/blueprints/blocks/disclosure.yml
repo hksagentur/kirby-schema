@@ -4,21 +4,21 @@ label: "{{ title }}"
 icon: expand
 tabs:
   content:
-    extends: @hksagentur/schema/tabs/content
+    extends: schema/tabs/content
     fields:
       level:
-        extends: @hksagentur/schema/fields/heading-level
+        extends: schema/fields/heading-level
         default: h2
       title:
-        extends: @hksagentur/schema/fields/heading
+        extends: schema/fields/heading
         label:
           *: hksagentur.schema.block.disclosure.summary
         placeholder:
           *: hksagentur.schema.block.disclosure.placeholder
         required: true
       layout:
-        extends: @hksagentur/schema/fields/content-layout
+        extends: schema/fields/content-layout
         required: true
       open:
-        extends: @hksagentur/schema/fields/open
+        extends: schema/fields/open
         default: false

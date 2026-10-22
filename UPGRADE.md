@@ -24,6 +24,7 @@ v2 is a rewrite and not a drop-in upgrade. Changes that touch stored content nee
 
 ### Low impact changes
 
+- [Blueprint names](#blueprint-names)
 - [Blueprint aliases](#blueprint-aliases)
 - [Blueprint class](#blueprint-class)
 - [Formatter and factory classes](#formatter-and-factory-classes)
@@ -263,11 +264,11 @@ the methods keep their names, so templates don't change.
 
 **Likelihood of impact: Medium**
 
-| v1 field ID                                 | v2 field ID                                              |
-| ------------------------------------------- | -------------------------------------------------------- |
-| `@hksagentur/schema/fields/hours`           | `@hksagentur/schema/fields/opening-hours`                |
-| `@hksagentur/schema/fields/hours-day`       | `@hksagentur/schema/fields/opening-hours-specification`  |
-| `@hksagentur/schema/fields/hours-exception` | `@hksagentur/schema/fields/opening-hours-exception`      |
+| v1 field ID                                 | v2 field ID                                  |
+| ------------------------------------------- | -------------------------------------------- |
+| `@hksagentur/schema/fields/hours`           | `schema/fields/opening-hours`                |
+| `@hksagentur/schema/fields/hours-day`       | `schema/fields/opening-hours-specification`  |
+| `@hksagentur/schema/fields/hours-exception` | `schema/fields/opening-hours-exception`      |
 
 The stored content is unchanged; update the references in the project's blueprints.
 
@@ -330,23 +331,41 @@ moving it over.
 
 ## Low impact changes
 
+### Blueprint names
+
+**Likelihood of impact: Low**
+
+Every blueprint is also registered as `schema/<type>/<name>`, and the plugin's own blueprints use
+those names. `@hksagentur/schema/…` references keep working, but they get the original and skip
+customizations a project makes in `site/blueprints/schema/` (see the README). Replace them once:
+
+```yaml
+# Before
+link: '@hksagentur/schema/fields/link'
+
+# After
+link: schema/fields/link
+```
+
 ### Blueprint aliases
 
 **Likelihood of impact: Low**
 
-The `hksagentur.schema.aliases` option is gone. To use a blueprint without the namespace, extend it
-from a file of the project's own:
+The `hksagentur.schema.aliases` option is gone. Use the short `schema/…` names instead, or extend a
+blueprint from a file of the project's own to use it without a prefix:
 
 ```yaml
 # site/blueprints/files/image.yml
-extends: @hksagentur/schema/files/image
+extends: schema/files/image
 ```
 
 ### Blueprint class
 
 **Likelihood of impact: Low**
 
-`Hks\Schema\Plugin\Blueprint` moved to `Hks\Schema\Cms\Blueprint`.
+`Hks\Schema\Plugin\Blueprint` is gone. `Hks\Schema\Cms\Blueprint::namespace()` registers a directory
+of blueprints the way this plugin does; `vendor()` and `package()` split a `@vendor/package`
+namespace.
 
 ### Formatter and factory classes
 

@@ -1,9 +1,9 @@
-extends: @hksagentur/schema/blocks/disclosure
+extends: schema/blocks/disclosure
 name:
   *: hksagentur.schema.block.accordionItem.name
 tabs:
   content:
-    extends: @hksagentur/schema/tabs/content
+    extends: schema/tabs/content
     fields:
       level:
         default: h3

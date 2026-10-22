@@ -1,4 +1,4 @@
 type: fields
 fields:
-  category: @hksagentur/schema/fields/category
-  tags: @hksagentur/schema/fields/tags
+  category: schema/fields/category
+  tags: schema/fields/tags

@@ -4,9 +4,9 @@ label: "{{ caption }}"
 icon: video
 tabs:
   content:
-    extends: @hksagentur/schema/tabs/content
+    extends: schema/tabs/content
     fields:
-      location: @hksagentur/schema/fields/media-location
+      location: schema/fields/media-location
       url:
         type: url
         label:
@@ -16,7 +16,7 @@ tabs:
         when:
           location: web
       video:
-        extends: @hksagentur/schema/fields/video
+        extends: schema/fields/video
         label:
           *: hksagentur.schema.block.video.file
         layout: list
@@ -25,14 +25,14 @@ tabs:
         when:
           location: kirby
       caption:
-        extends: @hksagentur/schema/fields/caption
+        extends: schema/fields/caption
         label:
           *: hksagentur.schema.block.video.caption
   settings:
-    extends: @hksagentur/schema/tabs/settings
+    extends: schema/tabs/settings
     fields:
       ratio:
-        extends: @hksagentur/schema/fields/ratio
+        extends: schema/fields/ratio
         label:
           *: hksagentur.schema.block.video.ratio
         width: 1/2
@@ -64,12 +64,12 @@ tabs:
         width: 1/2
         default: true
       preloading:
-        extends: @hksagentur/schema/fields/video-preloading
+        extends: schema/fields/video-preloading
         label:
           *: hksagentur.schema.block.video.preloading
         width: 1/2
       priority:
-        extends: @hksagentur/schema/fields/image-priority
+        extends: schema/fields/image-priority
         label:
           *: hksagentur.schema.block.video.priority
         width: 1/2

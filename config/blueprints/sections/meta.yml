@@ -1,6 +1,6 @@
 type: fields
 fields:
-  cover: @hksagentur/schema/fields/cover
-  created: @hksagentur/schema/fields/created
-  updated: @hksagentur/schema/fields/updated
-  author: @hksagentur/schema/fields/author
+  cover: schema/fields/cover
+  created: schema/fields/created
+  updated: schema/fields/updated
+  author: schema/fields/author

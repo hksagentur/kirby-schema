@@ -30,4 +30,4 @@ columns:
           *: hksagentur.schema.file.image.author
         icon: user
         counter: false
-      source:  @hksagentur/schema/fields/source
+      source:  schema/fields/source

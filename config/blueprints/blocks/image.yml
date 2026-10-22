@@ -4,11 +4,11 @@ label: "{{ caption }}"
 icon: image
 tabs:
   content:
-    extends: @hksagentur/schema/tabs/content
+    extends: schema/tabs/content
     fields:
-      location: @hksagentur/schema/fields/media-location
+      location: schema/fields/media-location
       image:
-        extends: @hksagentur/schema/fields/image
+        extends: schema/fields/image
         label:
           *: hksagentur.schema.block.image.file
         layout: list
@@ -29,7 +29,7 @@ tabs:
           *: hksagentur.schema.block.image.alt
         icon: title
       caption:
-        extends: @hksagentur/schema/fields/caption
+        extends: schema/fields/caption
         label:
           *: hksagentur.schema.block.image.caption
       link:
@@ -38,10 +38,10 @@ tabs:
         type: text
         icon: url
   settings:
-    extends: @hksagentur/schema/tabs/settings
+    extends: schema/tabs/settings
     fields:
       ratio:
-        extends: @hksagentur/schema/fields/ratio
+        extends: schema/fields/ratio
         label:
           *: hksagentur.schema.block.image.ratio
         width: 1/2
@@ -51,12 +51,12 @@ tabs:
           *: hksagentur.schema.block.image.crop
         width: 1/2
       loading:
-        extends: @hksagentur/schema/fields/image-loading
+        extends: schema/fields/image-loading
         label:
           *: hksagentur.schema.block.image.loading
         width: 1/2
       priority:
-        extends: @hksagentur/schema/fields/image-priority
+        extends: schema/fields/image-priority
         label:
           *: hksagentur.schema.block.image.priority
         width: 1/2

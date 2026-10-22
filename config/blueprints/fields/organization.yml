@@ -14,11 +14,11 @@ fields:
     counter: false
   lineAddress:
     type: line
-  address: @hksagentur/schema/fields/address
-  coordinates: @hksagentur/schema/fields/coordinates
+  address: schema/fields/address
+  coordinates: schema/fields/coordinates
   lineContact:
     type: line
-  telephone: @hksagentur/schema/fields/telephone
-  fax: @hksagentur/schema/fields/fax
-  email: @hksagentur/schema/fields/email
-  website: @hksagentur/schema/fields/website
+  telephone: schema/fields/telephone
+  fax: schema/fields/fax
+  email: schema/fields/email
+  website: schema/fields/website

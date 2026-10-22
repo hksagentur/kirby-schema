@@ -4,10 +4,10 @@ label: "{{ text }}"
 icon: title
 tabs:
   content:
-    extends: @hksagentur/schema/tabs/content
+    extends: schema/tabs/content
     fields:
-      level: @hksagentur/schema/fields/heading-level
+      level: schema/fields/heading-level
       text:
-        extends: @hksagentur/schema/fields/heading
+        extends: schema/fields/heading
         label:
           *: hksagentur.schema.block.heading.text

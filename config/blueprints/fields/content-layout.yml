@@ -19,4 +19,4 @@ fieldsets:
   - video
 settings:
   fields:
-    alignment: @hksagentur/schema/fields/align-content
+    alignment: schema/fields/align-content

@@ -11,7 +11,7 @@ fields:
     label:
       *: hksagentur.schema.field.source.sourceUrl
   license:
-    extends: @hksagentur/schema/fields/license
+    extends: schema/fields/license
     label:
       *: hksagentur.schema.field.source.license
   customLicense:

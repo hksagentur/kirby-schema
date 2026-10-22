@@ -2,7 +2,7 @@ type: structure
 label:
   *: hksagentur.schema.field.channels.label
 fields:
-  extends: @hksagentur/schema/fields/link
+  extends: schema/fields/link
   icon:
     type: select
     label:

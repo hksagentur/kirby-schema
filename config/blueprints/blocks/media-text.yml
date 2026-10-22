@@ -4,21 +4,21 @@ label: "{{ title }}"
 icon: layout-columns
 tabs:
   content:
-    extends: @hksagentur/schema/tabs/content
+    extends: schema/tabs/content
     fields:
       level:
-        extends: @hksagentur/schema/fields/heading-level
+        extends: schema/fields/heading-level
         default: h2
-      title: @hksagentur/schema/fields/heading
-      eyebrow: @hksagentur/schema/fields/eyebrow
-      text: @hksagentur/schema/fields/rich-text
+      title: schema/fields/heading
+      eyebrow: schema/fields/eyebrow
+      text: schema/fields/rich-text
       link:
         type: object
         fields:
-          extends: @hksagentur/schema/fields/link
-      media: @hksagentur/schema/fields/media
+          extends: schema/fields/link
+      media: schema/fields/media
   settings:
-    extends: @hksagentur/schema/tabs/settings
+    extends: schema/tabs/settings
     fields:
-      alignment: @hksagentur/schema/fields/align-content
-      reverse: @hksagentur/schema/fields/reverse
+      alignment: schema/fields/align-content
+      reverse: schema/fields/reverse

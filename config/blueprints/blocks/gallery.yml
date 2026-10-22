@@ -4,10 +4,10 @@ label: "{{ caption }}"
 icon: dashboard
 tabs:
   content:
-    extends: @hksagentur/schema/tabs/content
+    extends: schema/tabs/content
     fields:
       images:
-        extends: @hksagentur/schema/fields/image
+        extends: schema/fields/image
         label:
           *: hksagentur.schema.block.gallery.images
         layout: cards
@@ -15,14 +15,14 @@ tabs:
         query: model.images
         multiple: true
       caption:
-        extends: @hksagentur/schema/fields/caption
+        extends: schema/fields/caption
         label:
           *: hksagentur.schema.block.gallery.caption
   settings:
-    extends: @hksagentur/schema/tabs/settings
+    extends: schema/tabs/settings
     fields:
       ratio:
-        extends: @hksagentur/schema/fields/ratio
+        extends: schema/fields/ratio
         label:
           *: hksagentur.schema.block.image.ratio
         width: 1/2

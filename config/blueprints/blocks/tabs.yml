@@ -4,26 +4,26 @@ label: "{{ title }}"
 icon: grid-bottom
 tabs:
   content:
-    extends: @hksagentur/schema/tabs/content
+    extends: schema/tabs/content
     fields:
       level:
-        extends: @hksagentur/schema/fields/heading-level
+        extends: schema/fields/heading-level
         default: h2
-      title: @hksagentur/schema/fields/heading
-      text: @hksagentur/schema/fields/inline-text
+      title: schema/fields/heading
+      text: schema/fields/inline-text
       tabs:
         type: structure
         label:
           *: hksagentur.schema.block.tabs.tabs
         fields:
           title:
-            extends: @hksagentur/schema/fields/heading
+            extends: schema/fields/heading
             required: true
           layout:
-            extends: @hksagentur/schema/fields/content-layout
+            extends: schema/fields/content-layout
             required: true
           open:
-            extends: @hksagentur/schema/fields/open
+            extends: schema/fields/open
             default: false
         columns:
           title: true

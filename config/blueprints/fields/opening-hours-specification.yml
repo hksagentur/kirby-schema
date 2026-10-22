@@ -3,7 +3,7 @@ label:
   *: hksagentur.schema.field.openingHoursSpecification.label
 fields:
   timeRange:
-    extends: @hksagentur/schema/fields/time-range
+    extends: schema/fields/time-range
     fields:
       start:
         label:
