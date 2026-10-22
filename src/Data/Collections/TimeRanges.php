@@ -4,6 +4,7 @@ namespace Hks\Schema\Data\Collections;
 
 use DateTimeInterface;
 use Hks\Schema\Data\Concerns\InteractsWithValues;
+use Hks\Schema\Data\Contracts\Localizable;
 use Hks\Schema\Data\Types\Time;
 use Hks\Schema\Data\Types\TimeRange;
 use Hks\Schema\Toolkit\Assert;
@@ -12,7 +13,7 @@ use Stringable;
 /**
  * @extends DataCollection<int, TimeRange>
  */
-readonly class TimeRanges extends DataCollection implements Stringable
+readonly class TimeRanges extends DataCollection implements Localizable, Stringable
 {
     use InteractsWithValues;
 
@@ -30,15 +31,14 @@ readonly class TimeRanges extends DataCollection implements Stringable
         $this->timeRanges = $timeRanges;
     }
 
+    public function at(string|Time|DateTimeInterface $time): ?TimeRange
+    {
+        return $this->findBy(fn (TimeRange $timeRange): bool => $timeRange->contains($time));
+    }
+
     public function contains(string|Time|DateTimeInterface $time): bool
     {
-        foreach ($this->timeRanges as $timeRange) {
-            if ($timeRange->contains($time)) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->at($time) !== null;
     }
 
     public function format(int|string|null $timeFormat = null, string $timeSeparator = ' – ', ?string $locale = null): string
@@ -72,6 +72,11 @@ readonly class TimeRanges extends DataCollection implements Stringable
     public function toString(): string
     {
         return implode(', ', array_map(strval(...), $this->timeRanges));
+    }
+
+    public function toLocaleString(?string $locale = null, array $options = []): string
+    {
+        return $this->format(locale: $locale);
     }
 
     public function all(): array

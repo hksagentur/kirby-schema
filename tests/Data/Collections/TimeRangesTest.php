@@ -128,4 +128,25 @@ class TimeRangesTest extends TestCase
             ['13:00:00', '17:00:00'],
         ], $timeRanges->toArray());
     }
+
+    public function testAtReturnsTheTimeRangeContainingTheGivenMoment(): void
+    {
+        $timeRanges = new TimeRanges([
+            TimeRange::from(['09:00', '12:00']),
+            TimeRange::from(['13:00', '17:00']),
+        ]);
+
+        $this->assertSame('17:00:00', $timeRanges->at('15:00')?->end()->toString());
+        $this->assertNull($timeRanges->at('12:30'));
+    }
+
+    public function testToLocaleStringFormatsAllTimeRanges(): void
+    {
+        $timeRanges = new TimeRanges([
+            TimeRange::from(['09:00', '12:00']),
+            TimeRange::from(['13:00', '17:00']),
+        ]);
+
+        $this->assertSame($timeRanges->format(locale: 'de'), $timeRanges->toLocaleString('de'));
+    }
 }
