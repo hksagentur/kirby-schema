@@ -54,7 +54,7 @@ readonly class WeekDays extends DataCollection implements Stringable, Localizabl
 
     public function contains(WeekDay $day): bool
     {
-        return in_array($day, $this->days);
+        return in_array($day, $this->days, true);
     }
 
     public function startDay(): ?WeekDay
@@ -72,42 +72,46 @@ readonly class WeekDays extends DataCollection implements Stringable, Localizabl
         return $this->days;
     }
 
-    public function format(?string $dayFormat = null, string $daySeparator = ' – ', ?string $locale = null): string
+    /**
+     * @param callable(WeekDay): string $callback
+     */
+    public function join(callable $callback, string $rangeSeparator = ' – ', string $listSeparator = ', '): string
     {
-        $options = $dayFormat !== null ? ['style' => $dayFormat] : [];
-
-        $days = array_map(
-            fn (WeekDay $day) => $day->toLocaleString(locale: $locale, options: $options),
-            $this->days,
-        );
+        $days = $this->map($callback);
 
         if ($this->isRange()) {
-            return sprintf('%s%s%s', A::first($days), $daySeparator, A::last($days));
+            return A::first($days) . $rangeSeparator . A::last($days);
         }
 
-        return implode(', ', $days);
+        return implode($listSeparator, $days);
+    }
+
+    public function format(?string $dayFormat = null, string $daySeparator = ' – ', ?string $locale = null): string
+    {
+        $options = match (true) {
+            $dayFormat !== null => ['style' => $dayFormat],
+            default => [],
+        };
+
+        return $this->join(
+            callback: fn (WeekDay $day) => $day->toLocaleString(locale: $locale, options: $options),
+            rangeSeparator: $daySeparator,
+        );
     }
 
     public function toString(): string
     {
-        $days = array_map(fn (WeekDay $day) => $day->shortName(), $this->days);
-
-        if ($this->isRange()) {
-            return sprintf('%s-%s', A::first($days), A::last($days));
-        }
-
-        return implode(', ', $days);
+        return $this->join(
+            callback: fn (WeekDay $day) => $day->shortName(),
+            rangeSeparator: '-',
+        );
     }
 
     public function toLocaleString(?string $locale = null, array $options = []): string
     {
-        $days = array_map(fn (WeekDay $day) => $day->toLocaleString(locale: $locale, options: $options), $this->days);
-
-        if ($this->isRange()) {
-            return sprintf('%s – %s', A::first($days), A::last($days));
-        }
-
-        return implode(', ', $days);
+        return $this->join(
+            callback: fn (WeekDay $day) => $day->toLocaleString(locale: $locale, options: $options),
+        );
     }
 
     public function __toString(): string
