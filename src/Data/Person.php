@@ -9,6 +9,7 @@ use Hks\Schema\Data\Types\PersonName;
 use Hks\Schema\Data\Types\PhoneNumber;
 use Kirby\Cms\App;
 use Kirby\Cms\File;
+use Kirby\Data\Yaml;
 
 readonly class Person extends DataObject
 {
@@ -41,8 +42,8 @@ readonly class Person extends DataObject
             telephone: isset($value['telephone']) ? PhoneNumber::tryFrom($value['telephone']) : null,
             fax: isset($value['fax']) ? PhoneNumber::tryFrom($value['fax']) : null,
             jobTitle: $value['jobtitle'] ?? null,
-            qualifications: $value['qualifications'] ?? [],
-            expertise: $value['expertise'] ?? [],
+            qualifications: Yaml::decode($value['qualifications'] ?? null),
+            expertise: Yaml::decode($value['expertise'] ?? null),
         );
     }
 

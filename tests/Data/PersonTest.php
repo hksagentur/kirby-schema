@@ -135,4 +135,16 @@ class PersonTest extends TestCase
         $this->assertArrayNotHasKey('hasCredential', $data);
         $this->assertArrayNotHasKey('knowsAbout', $data);
     }
+
+    public function testDecodesQualificationsAndExpertiseStoredAsYaml(): void
+    {
+        $person = Person::fromArray([
+            'name' => 'Jane Doe',
+            'qualifications' => "- Master of Science Digital Media",
+            'expertise' => "- Kirby CMS\n- Accessibility",
+        ]);
+
+        $this->assertSame(['Master of Science Digital Media'], $person->qualifications());
+        $this->assertSame(['Kirby CMS', 'Accessibility'], $person->expertise());
+    }
 }
