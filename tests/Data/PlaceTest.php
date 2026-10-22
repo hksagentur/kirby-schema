@@ -29,6 +29,18 @@ class PlaceTest extends TestCase
         $this->assertNull($place->coordinates());
     }
 
+    public function testFromArrayLeavesTheAddressNullWhenItsFieldsAreEmpty(): void
+    {
+        $place = Place::fromArray([
+            'name' => 'Head Office',
+            'streetaddress' => '',
+            'postalcode' => '',
+            'addresslocality' => '',
+        ]);
+
+        $this->assertNull($place->address());
+    }
+
     public function testToStructuredDataRendersAPlaceNodeWithAddressAndGeo(): void
     {
         $place = new Place(

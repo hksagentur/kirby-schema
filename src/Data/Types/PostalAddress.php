@@ -31,11 +31,11 @@ readonly class PostalAddress extends DataType implements Arrayable, Htmlable, Lo
         public ?string $region = null,
     ) {
         if (
-            ! isset($streetAddress) &&
-            ! isset($postalCode) &&
-            ! isset($locality) &&
-            ! isset($country) &&
-            ! isset($region)
+            static::isBlank($streetAddress) &&
+            static::isBlank($postalCode) &&
+            static::isBlank($locality) &&
+            static::isBlank($country) &&
+            static::isBlank($region)
         ) {
             throw new InvalidArgumentException(
                 'A postal address must have at least one property set.'
@@ -49,7 +49,10 @@ readonly class PostalAddress extends DataType implements Arrayable, Htmlable, Lo
             return $value;
         }
 
-        $value = array_change_key_case($value);
+        $value = array_filter(
+            array_change_key_case($value),
+            fn (mixed $part): bool => ! static::isBlank($part),
+        );
 
         return new static(
             $value['streetaddress'] ?? null,

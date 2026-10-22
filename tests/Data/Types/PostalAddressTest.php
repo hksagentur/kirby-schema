@@ -20,6 +20,34 @@ class PostalAddressTest extends TestCase
         $this->assertInstanceOf(Htmlable::class, PostalAddress::from(['streetAddress' => 'Musterstraße 1']));
     }
 
+    public function testFromTurnsEmptyPartsIntoNull(): void
+    {
+        $address = PostalAddress::from([
+            'streetAddress' => '',
+            'postalCode' => '28832',
+            'addressLocality' => 'Achim',
+            'addressRegion' => '',
+            'addressCountry' => '',
+        ]);
+
+        $this->assertFalse($address->hasStreetAddress());
+        $this->assertFalse($address->hasRegion());
+        $this->assertFalse($address->hasCountry());
+        $this->assertNull($address->streetAddress());
+        $this->assertSame('28832', $address->postalCode());
+    }
+
+    public function testTryFromReturnsNullWhenAllPartsAreEmpty(): void
+    {
+        $this->assertNull(PostalAddress::tryFrom([
+            'streetAddress' => '',
+            'postalCode' => '',
+            'addressLocality' => '',
+            'addressRegion' => '',
+            'addressCountry' => '',
+        ]));
+    }
+
     public function testEqualsIsTrueWhenAllStructuredFieldsMatch(): void
     {
         $address = new PostalAddress('Musterstraße 1', '12345', 'Berlin', 'DE', 'Berlin');

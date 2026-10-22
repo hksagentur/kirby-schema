@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented in this file.
 
+## Unreleased
+
+### Fixed
+
+- `PostalAddress::from()` treats empty parts (`''`) as missing, so `hasStreetAddress()` & co. return
+  `false` for an empty field, and `tryFrom()` returns `null` when every part is empty. `Place` and
+  `Organization` no longer get an empty address from blank fields.
+
 ## 2.0.0-alpha.3 — 2026-10-22
 
 ### Added
