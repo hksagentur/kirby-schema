@@ -3,12 +3,12 @@ fields:
   streetAddress:
     type: text
     label:
-      *: hksagentur.schema.field.address.streetaddress
+      *: hksagentur.schema.field.address.streetAddress
     counter: false
   postalCode:
     type: text
     label:
-      *: hksagentur.schema.field.address.postalcode
+      *: hksagentur.schema.field.address.postalCode
     width: 1/4
     counter: false
   addressLocality:
