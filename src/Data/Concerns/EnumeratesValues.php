@@ -133,4 +133,28 @@ trait EnumeratesValues
     {
         yield from $this->all();
     }
+
+    /**
+     * @param callable(TValue, TKey): bool $callback
+     * @return ?TValue
+     */
+    protected function findBy(callable $callback): mixed
+    {
+        foreach ($this->all() as $key => $value) {
+            if ($callback($value, $key)) {
+                return $value;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param callable(TValue, TKey): bool $callback
+     * @return static<TKey, TValue>
+     */
+    protected function filterBy(callable $callback): static
+    {
+        return new static(array_filter($this->all(), $callback, ARRAY_FILTER_USE_BOTH));
+    }
 }
