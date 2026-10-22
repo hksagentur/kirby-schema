@@ -29,6 +29,9 @@
     "laravel/pint": "^1.27",
     "phpunit/phpunit": "^11.5"
   },
+  "conflict": {
+    "getkirby/cms": "<5.1"
+  },
   "config": {
     "optimize-autoloader": true,
     "allow-plugins": {
