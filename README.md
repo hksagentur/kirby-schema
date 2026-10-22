@@ -220,6 +220,13 @@ Below is an overview of all available blueprints provided by this plugin. Each e
 | [Page](config/blueprints/pages/default.yml)      | `schema/pages/default`  | Generic page using the Kirby block builder.           |
 | [Employee](config/blueprints/pages/employee.yml) | `schema/pages/employee` | Personal profile of an employee.                      |
 
+## Credits
+
+- Country calling codes follow [ITU-T Recommendation E.164](https://www.itu.int/rec/T-REC-E.164).
+- Address formats in `resources/address-*.php` are adapted from [Google's address metadata](https://github.com/google/libaddressinput/wiki/AddressValidationMetadata) ([CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)).
+- Calling codes and trunk prefixes in `resources/calling-codes.php` are taken from [libphonenumber](https://github.com/google/libphonenumber) ([Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)).
+
+
 ## License
 
 ISC License. Please see [License File](LICENSE.txt) for more information.
