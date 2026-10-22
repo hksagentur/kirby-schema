@@ -7,6 +7,13 @@ use Kirby\Toolkit\Str;
 
 class I18n extends \Kirby\Toolkit\I18n
 {
+    /**
+     * Joins values into a localized list, e.g. `A, B, and C`.
+     *
+     * With a limit, the rest is summarized, e.g. `A, B, and 3 others`.
+     *
+     * @param array<string|int|float|\Stringable> $values
+     */
     public static function oxfordList(array $values, ?int $limit = null, ?string $locale = null): string
     {
         $total = count($values);

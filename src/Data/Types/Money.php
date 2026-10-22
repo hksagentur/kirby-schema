@@ -86,6 +86,9 @@ readonly class Money extends DataType implements Arrayable, Comparable, Htmlable
         return $this->currency->equals($other->currency);
     }
 
+    /**
+     * Get the amount in minor units, e.g. cents.
+     */
     public function value(): int
     {
         return $this->amount;

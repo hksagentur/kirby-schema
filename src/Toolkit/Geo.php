@@ -18,7 +18,9 @@ class Geo
     public const float EARTH_RADIUS = 6371000.0;
 
     /**
-     * Great-circle distance between two point on a sphere (Haversine formular).
+     * Returns the great-circle distance between two points in meters.
+     *
+     * Uses the Haversine formula on a spherical earth.
      */
     public static function distance(float $fromLatitude, float $fromLongitude, float $toLatitude, float $toLongitude): float
     {
@@ -34,9 +36,9 @@ class Geo
     }
 
     /**
-     * Calculate degrees-minutes-seconds from decimalDesgrees.
+     * Splits decimal degrees into degrees, minutes and seconds.
      *
-     * @return float[]
+     * @return array{float, float, float}
      */
     public static function dms(float $decimalDegrees, int $precision = 2): array
     {
@@ -50,7 +52,7 @@ class Geo
     }
 
     /**
-     * Format the latitude of a geographic coordinate using DMS notation.
+     * Formats a latitude in degrees, minutes and seconds, e.g. `52° 31' 12.03"N`.
      */
     public static function formatLatitude(float $decimalDegrees, ?string $locale = null): string
     {
@@ -68,7 +70,7 @@ class Geo
     }
 
     /**
-     * Format the longitude of a geographic coordinate using DMS notation.
+     * Formats a longitude in degrees, minutes and seconds, e.g. `13° 24' 17.83"E`.
      */
     public static function formatLongitude(float $decimalDegrees, ?string $locale = null): string
     {

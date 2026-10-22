@@ -7,9 +7,9 @@ use Hks\Schema\Data\Exceptions\TypeMismatchException;
 class Assert
 {
     /**
-     * Assert that the given iterable contains only items of the specified type.
+     * Throws unless every item is an instance of the given class.
      *
-     * @param iterable $items
+     * @param iterable<mixed> $items
      * @param class-string $type
      */
     public static function containsOnly(iterable $items, string $type): void
