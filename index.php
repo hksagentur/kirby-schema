@@ -11,6 +11,7 @@ Kirby::plugin('hksagentur/schema', [
         'phoneNumberFormats' => [],
         'migrations' => [],
         'dataTypes' => [
+            'area' => Types\Area::class,
             'currency' => Types\Currency::class,
             'distance' => Types\Distance::class,
             'email-address' => Types\EmailAddress::class,

@@ -8,7 +8,8 @@ use Hks\Schema\Data\Contracts\Comparable;
 use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Contracts\Localizable;
 use Hks\Schema\Data\Exceptions\TypeMismatchException;
-use Kirby\Toolkit\I18n;
+use Hks\Schema\Toolkit\Number;
+use Kirby\Toolkit\A;
 
 readonly class Length extends NumberType implements Arrayable, Comparable, Htmlable, Localizable
 {
@@ -137,13 +138,15 @@ readonly class Length extends NumberType implements Arrayable, Comparable, Htmla
         );
     }
 
+    /**
+     * @param array{separator?: string, precision?: int, maxPrecision?: int, roundingMode?: string, roundingIncrement?: int|float} $options
+     */
     public function toLocaleString(?string $locale = null, array $options = []): string
     {
-        return sprintf(
-            '%s %s',
-            I18n::formatNumber($this->value(), $locale),
-            $this->unit()->symbol(),
-        );
+        $separator = $options['separator'] ?? "\u{00A0}";
+        $options = A::without($options, 'separator');
+
+        return Number::format($this->value(), $locale, $options) . $separator . $this->unit()->symbol();
     }
 
     public function toArray(): array
