@@ -153,6 +153,11 @@ readonly class PhoneNumber extends StringType implements Arrayable
         ];
     }
 
+    public function toUri(?string $countryCode = null): string
+    {
+        return 'tel:' . $this->toE164String($countryCode);
+    }
+
     public function jsonSerialize(): array
     {
         return $this->toArray();

@@ -107,4 +107,10 @@ class PhoneNumberTest extends TestCase
     {
         $this->assertSame('0221 123456', (new PhoneNumber('0221 123456'))->toE123String());
     }
+
+    public function testToUriLinksToTheE164Number(): void
+    {
+        $this->assertSame('tel:+494202910160', (new PhoneNumber('04202-91016-0'))->toUri());
+    }
+
 }

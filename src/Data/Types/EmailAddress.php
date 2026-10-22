@@ -88,6 +88,11 @@ readonly class EmailAddress extends StringType implements Arrayable
         ];
     }
 
+    public function toUri(): string
+    {
+        return 'mailto:' . $this->value;
+    }
+
     public function jsonSerialize(): array
     {
         return $this->toArray();
