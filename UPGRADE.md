@@ -28,6 +28,7 @@ v2 is a rewrite and not a drop-in upgrade. Changes that touch stored content nee
 - [Blueprint aliases](#blueprint-aliases)
 - [Blueprint class](#blueprint-class)
 - [Formatter and factory classes](#formatter-and-factory-classes)
+- [National phone numbers](#national-phone-numbers)
 - [Suggested packages](#suggested-packages)
 
 ## Content migrations
@@ -389,6 +390,22 @@ namespace.
 `CurrencyFormatter`, `NumberFormatter`, `GeoCoordinateFactory` and `GeoCoordinateFormatter` are
 gone. Use the value objects in `Hks\Schema\Data\Types` (`PostalAddress`, `OpeningHours`, `Money`,
 `GeoCoordinate`) through `toDataType()`/`toDataObject()`.
+
+### National phone numbers
+
+**Likelihood of impact: Low**
+
+`PhoneNumber::$nationalSignificantNumber` included the trunk prefix (`04202 91016-0`), which E.164
+excludes from the national significant number. The property is now `$nationalNumber`, and
+`nationalSignificantNumber()` returns the number without the trunk prefix (`4202 91016-0`).
+
+```php
+// Before
+$phone->nationalSignificantNumber
+
+// After
+$phone->nationalNumber()
+```
 
 ### Suggested packages
 

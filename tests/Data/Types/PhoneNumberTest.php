@@ -131,4 +131,10 @@ class PhoneNumberTest extends TestCase
         $this->assertSame('49', (new PhoneNumber('00494202910160'))->countryCode());
     }
 
+    public function testTheNationalSignificantNumberDropsTheTrunkPrefix(): void
+    {
+        $this->assertSame('04202 91016-0', (new PhoneNumber('04202 91016-0'))->nationalNumber());
+        $this->assertSame('4202 91016-0', (new PhoneNumber('04202 91016-0'))->nationalSignificantNumber());
+        $this->assertSame('4202 910160', (new PhoneNumber('+49 (0) 4202 910160'))->nationalSignificantNumber());
+    }
 }

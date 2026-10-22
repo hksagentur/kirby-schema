@@ -18,13 +18,13 @@ readonly class PhoneNumber extends StringType implements Arrayable
      */
     public const string COUNTRY_CODE = '[17]|2[07]|3[0-469]|4[013-9]|5[1-8]|6[0-6]|8[1246]|9[0-58]|[2-9]\d{2}';
 
-    public const string ITU_E123 = '/^(?:(?<internationalPrefix>\\' . self::INTERNATIONAL_PREFIX_SYMBOL . '|' . self::INTERNATIONAL_PREFIX . ')(?<countryCode>' . self::COUNTRY_CODE . '))?\s*(?<nationalSignificantNumber>(?<nationalTrunkCode>\(\d+\)|0\d+)?[\/\s-]*\s*(?<subscriberNumber>[\d\s-]*\d))$/u';
+    public const string ITU_E123 = '/^(?:(?<internationalPrefix>\\' . self::INTERNATIONAL_PREFIX_SYMBOL . '|' . self::INTERNATIONAL_PREFIX . ')(?<countryCode>' . self::COUNTRY_CODE . '))?\s*(?<nationalNumber>(?<nationalTrunkCode>\(\d+\)|0\d+)?[\/\s-]*\s*(?<subscriberNumber>[\d\s-]*\d))$/u';
     public const string ITU_E164 = '/^(?<internationalPrefix>\\' . self::INTERNATIONAL_PREFIX_SYMBOL . ')?(?<countryCode>' . self::COUNTRY_CODE . ')(?<nationalSignificantNumber>\d{1,12})$/u';
 
     public const string INTERNATIONAL_PREFIX = '00';
     public const string INTERNATIONAL_PREFIX_SYMBOL = '+';
 
-    public string $nationalSignificantNumber;
+    public string $nationalNumber;
     public ?string $subscriberNumber;
     public ?string $nationalTrunkCode;
     public ?string $countryCode;
@@ -42,7 +42,7 @@ readonly class PhoneNumber extends StringType implements Arrayable
 
         $matches = array_filter($matches, static fn (string $match): bool => $match !== '');
 
-        $this->nationalSignificantNumber = $matches['nationalSignificantNumber'];
+        $this->nationalNumber = $matches['nationalNumber'];
 
         $this->subscriberNumber = $matches['subscriberNumber'] ?? null;
         $this->countryCode = $matches['countryCode'] ?? null;
@@ -87,9 +87,14 @@ readonly class PhoneNumber extends StringType implements Arrayable
         return $this->countryCode !== null ? self::INTERNATIONAL_PREFIX_SYMBOL . $this->countryCode : null;
     }
 
-    public function nationalSignificantNumber(): string
+    public function nationalNumber(): string
     {
-        return $this->nationalSignificantNumber;
+        return $this->nationalNumber;
+    }
+
+    public function nationalSignificantNumber(?string $countryCode = null): string
+    {
+        return $this->significantNumber($this->numberFormat($countryCode));
     }
 
     public function nationalTrunkCode(): ?string
@@ -111,7 +116,7 @@ readonly class PhoneNumber extends StringType implements Arrayable
     {
         $significantNumber = $this->hasSubscriberNumber()
             ? $this->subscriberNumber()
-            : $this->nationalSignificantNumber();
+            : $this->nationalNumber();
 
         $total = Str::length($significantNumber);
 
@@ -134,7 +139,7 @@ readonly class PhoneNumber extends StringType implements Arrayable
     public function toE123String(): string
     {
         if (! $this->isInternational()) {
-            return $this->groupedDigits($this->nationalSignificantNumber);
+            return $this->groupedDigits($this->nationalNumber);
         }
 
         return $this->countryCallingCode() . ' ' . $this->groupedDigits($this->significantNumber($this->numberFormat()));
@@ -146,7 +151,7 @@ readonly class PhoneNumber extends StringType implements Arrayable
         $callingCode = $this->countryCode() ?? $format?->callingCode();
 
         if ($callingCode === null) {
-            return $this->digits($this->nationalSignificantNumber);
+            return $this->digits($this->nationalNumber);
         }
 
         return self::INTERNATIONAL_PREFIX_SYMBOL . $callingCode . $this->digits($this->significantNumber($format));
@@ -158,7 +163,7 @@ readonly class PhoneNumber extends StringType implements Arrayable
             'value' => $this->value,
             'countryCode' => $this->countryCode,
             'nationalTrunkCode' => $this->nationalTrunkCode,
-            'nationalSignificantNumber' => $this->nationalSignificantNumber,
+            'nationalNumber' => $this->nationalNumber,
             'subscriberNumber' => $this->subscriberNumber,
         ];
     }
@@ -192,7 +197,7 @@ readonly class PhoneNumber extends StringType implements Arrayable
 
     protected function significantNumber(?PhoneNumberFormat $format): string
     {
-        $number = trim($this->nationalSignificantNumber);
+        $number = trim($this->nationalNumber);
 
         if ($format?->trunkPrefix() === null) {
             return $number;
