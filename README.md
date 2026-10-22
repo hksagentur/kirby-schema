@@ -71,6 +71,35 @@ except that the original stays available to extend instead of being copied. Keep
 - `site/blueprints/` always wins. A plugin registering a `schema/` name only wins if it loads after
   this plugin — Kirby loads plugins in alphabetical order.
 
+### Blocks
+
+The block blueprints come with block models in `Hks\Schema\Cms\Blocks`. The plugin doesn't
+register them, since the project picks the block types in its fieldsets — and some of them are
+Kirby's own core blocks. Register the ones you use:
+
+```php
+// site/plugins/site/index.php
+Kirby::plugin('project/site', [
+    'blockModels' => [
+        'card' => Hks\Schema\Cms\Blocks\CardBlock::class,
+        'image' => Hks\Schema\Cms\Blocks\ImageBlock::class,
+    ],
+]);
+```
+
+```yaml
+# site/blueprints/pages/default.yml
+fields:
+  blocks:
+    type: blocks
+    fieldsets:
+      card: schema/blocks/card
+      image: schema/blocks/image
+```
+
+The models return fields as stored; defaults come from the blueprints, and values derived from a
+linked page or file are up to your block snippets.
+
 ## Value Objects
 
 Content stored by the plugin's blueprints converts into immutable value objects that render their

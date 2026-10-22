@@ -8,8 +8,8 @@ use Kirby\Content\Field;
 
 /**
  * @method Field caption()
- * @method Field crop()
  * @method Field ratio()
+ * @method Field crop()
  */
 class GalleryBlock extends Block
 {

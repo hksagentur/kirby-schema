@@ -8,6 +8,7 @@ use Kirby\Cms\Blocks;
 use Kirby\Content\Field;
 
 /**
+ * @method Field level()
  * @method Field title()
  * @method Field eyebrow()
  * @method Field text()
@@ -15,11 +16,6 @@ use Kirby\Content\Field;
 class CardsBlock extends Block
 {
     use HasLink;
-
-    public function level(): Field
-    {
-        return $this->content()->level()->or('h2');
-    }
 
     public function cards(): Blocks
     {

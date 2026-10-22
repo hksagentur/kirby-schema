@@ -8,6 +8,7 @@ use Kirby\Cms\Layouts;
 use Kirby\Content\Field;
 
 /**
+ * @method Field level()
  * @method Field title()
  */
 class AccordionItemBlock extends Block
@@ -20,11 +21,6 @@ class AccordionItemBlock extends Block
     public function isClosed(): bool
     {
         return ! $this->isOpen();
-    }
-
-    public function level(): Field
-    {
-        return $this->content()->level()->or('h3');
     }
 
     public function text(): Field

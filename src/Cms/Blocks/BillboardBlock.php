@@ -8,17 +8,13 @@ use Kirby\Cms\Blocks;
 use Kirby\Content\Field;
 
 /**
+ * @method Field level()
  * @method Field title()
  * @method Field text()
  */
 class BillboardBlock extends Block
 {
     use HasLink;
-
-    public function level(): Field
-    {
-        return $this->content()->level()->or('h2');
-    }
 
     public function cards(): Blocks
     {

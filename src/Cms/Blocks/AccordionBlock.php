@@ -7,16 +7,12 @@ use Kirby\Cms\Blocks;
 use Kirby\Content\Field;
 
 /**
+ * @method Field level()
  * @method Field title()
  * @method Field text()
  */
 class AccordionBlock extends Block
 {
-    public function level(): Field
-    {
-        return $this->content()->level()->or('h2');
-    }
-
     public function items(): Blocks
     {
         return $this->content()->items()->toBlocks();

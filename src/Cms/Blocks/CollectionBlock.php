@@ -9,6 +9,7 @@ use Kirby\Cms\Pages;
 use Kirby\Content\Field;
 
 /**
+ * @method Field level()
  * @method Field title()
  * @method Field text()
  */
@@ -26,19 +27,14 @@ class CollectionBlock extends Block
         return $this->source()->value() === 'custom';
     }
 
-    public function level(): Field
-    {
-        return $this->content()->level()->or('h2');
-    }
-
     public function source(): Field
     {
-        return $this->content()->get('parent')->or('current');
+        return $this->content()->get('parent');
     }
 
     public function status(): Field
     {
-        return $this->content()->get('status')->or('listed');
+        return $this->content()->get('status');
     }
 
     public function offset(): int

@@ -6,12 +6,10 @@ use Kirby\Cms\Block;
 use Kirby\Content\Field;
 
 /**
+ * @method Field level()
  * @method Field text()
  */
 class HeadingBlock extends Block
 {
-    public function level(): Field
-    {
-        return $this->content()->level()->or('h2');
-    }
+    //
 }

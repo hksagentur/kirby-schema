@@ -8,6 +8,7 @@ use Kirby\Cms\Layouts;
 use Kirby\Content\Field;
 
 /**
+ * @method Field level()
  * @method Field title()
  */
 class DisclosureBlock extends Block
@@ -20,11 +21,6 @@ class DisclosureBlock extends Block
     public function isClosed(): bool
     {
         return ! $this->isOpen();
-    }
-
-    public function level(): Field
-    {
-        return $this->content()->level()->or('h2');
     }
 
     public function text(): Field

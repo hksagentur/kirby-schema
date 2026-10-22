@@ -309,15 +309,29 @@ now.
 
 **Likelihood of impact: Medium**
 
-`ratio()` on `GalleryBlock`, `ImageBlock` and `VideoBlock` no longer falls back to `'auto'`, and
-`ImageBlock::thumb()`, `thumbOptions()`, `thumbDimensions()` and `thumbResizeStrategy()` are gone.
+The block classes return their fields as stored. Defaults come from the blueprints (`default:`),
+which Kirby fills in when a block is created in the Panel; derived values move into the project's
+block snippets:
+
+- `level()` no longer falls back to a heading level, `CollectionBlock::source()`/`status()` no
+  longer to `current`/`listed`, `MediaTextBlock::alignment()` no longer to `normal`, and `ratio()`
+  on `GalleryBlock`, `ImageBlock` and `VideoBlock` no longer to `'auto'`. Blocks saved before a
+  blueprint had the default can hold an empty value.
+- `CardBlock::title()`, `eyebrow()` and `text()` no longer fall back to the linked page's title,
+  category and excerpt; `ImageBlock::src()`, `alt()`, `caption()` and `VideoBlock::url()`,
+  `caption()` no longer to the selected file's.
+- `ImageBlock::thumb()`, `thumbOptions()`, `thumbDimensions()` and `thumbResizeStrategy()` are gone.
 
 ```php
 // Before
-$block->ratio()->value()
+<h3><?= $block->title() ?></h3>
+<figcaption><?= $block->caption() ?></figcaption>
+<div style="--ratio: <?= $block->ratio() ?>">
 
 // After
-$block->ratio()->or('auto')->value()
+<h3><?= $block->title()->or($block->target()?->title()) ?></h3>
+<figcaption><?= $block->caption()->or($block->image()?->caption()) ?></figcaption>
+<div style="--ratio: <?= $block->ratio()->or('auto') ?>">
 ```
 
 ### Image and video options

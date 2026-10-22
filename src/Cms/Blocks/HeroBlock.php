@@ -10,6 +10,7 @@ use Kirby\Cms\Structure;
 use Kirby\Content\Field;
 
 /**
+ * @method Field level()
  * @method Field title()
  * @method Field eyebrow()
  * @method Field text()
@@ -25,11 +26,6 @@ class HeroBlock extends Block implements HasKeyVisual
             'image' => $this->image(),
             default => null,
         };
-    }
-
-    public function level(): Field
-    {
-        return $this->content()->level()->or('h1');
     }
 
     public function actions(): ?Structure

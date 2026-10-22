@@ -10,9 +10,11 @@ use Kirby\Cms\File;
 use Kirby\Content\Field;
 
 /**
+ * @method Field level()
  * @method Field title()
  * @method Field eyebrow()
  * @method Field text()
+ * @method Field alignment()
  * @method Field reverse()
  */
 class MediaTextBlock extends Block implements HasKeyVisual
@@ -27,15 +29,5 @@ class MediaTextBlock extends Block implements HasKeyVisual
             'image' => $this->image(),
             default => null,
         };
-    }
-
-    public function level(): Field
-    {
-        return $this->content()->level()->or('h3');
-    }
-
-    public function alignment(): Field
-    {
-        return $this->content()->alignment()->or('normal');
     }
 }
