@@ -278,7 +278,7 @@ return [
     'hksagentur.schema.openingHours.opened' => 'Opened',
     'hksagentur.schema.oxfordList.two' => '{{ first }} and {{ second }}',
     'hksagentur.schema.oxfordList.many' => '{{ list }}, and {{ last }}',
-    'hksagentur.schema.oxfordList.truncated' => ['{{ list }}, and 0 others', '{{ list }}, and 1 other', '{{ list }}, and 0 others'],
+    'hksagentur.schema.oxfordList.truncated' => ['{{ list }}, and 0 others', '{{ list }}, and 1 other', '{{ list }}, and {{ count }} others'],
     'hksagentur.schema.page.article.title' => 'Article',
     'hksagentur.schema.page.default.title' => 'Page',
     'hksagentur.schema.page.employee.title' => 'Employee',

@@ -29,16 +29,16 @@ class I18nTest extends TestCase
         $this->assertSame('Apple, Banana, and 1 other', $result);
     }
 
-    public function testOxfordListTruncationBranchDoesNotFatalOnMultipleRemainingItems(): void
+    public function testOxfordListTruncatesToSeveralOthersWithPluralWording(): void
     {
-        // Regression test for a missing `use Kirby\Toolkit\Str;` import that
-        // made this branch (the only one reaching `Str::template()`) fatal
-        // with "Class not found" on every call — not asserting the exact
-        // wording here since the ">1 remaining" plural form in lang/en.php is
-        // itself a separate, pre-existing bug (flagged, not fixed here).
-        $result = I18n::oxfordList(['Apple', 'Banana', 'Cherry', 'Date'], limit: 2, locale: 'en');
-
-        $this->assertStringStartsWith('Apple, Banana', $result);
+        $this->assertSame(
+            'Apple, Banana, and 2 others',
+            I18n::oxfordList(['Apple', 'Banana', 'Cherry', 'Date'], limit: 2, locale: 'en'),
+        );
+        $this->assertSame(
+            'Apple, Banana und 2 weitere',
+            I18n::oxfordList(['Apple', 'Banana', 'Cherry', 'Date'], limit: 2, locale: 'de'),
+        );
     }
 
     public function testOxfordListTruncatesToASingleOtherWithSingularWordingInGerman(): void
