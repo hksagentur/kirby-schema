@@ -1,0 +1,12 @@
+type: group
+fields:
+  contactType:
+    type: text
+    label:
+      *: hksagentur.schema.field.contactPoint.contactType.label
+    help:
+      *: hksagentur.schema.field.contactPoint.contactType.help
+    required: true
+    counter: false
+  telephone: schema/fields/telephone
+  email: schema/fields/email

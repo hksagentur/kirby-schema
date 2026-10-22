@@ -1,0 +1,12 @@
+type: structure
+label:
+  *: hksagentur.schema.field.contactPoints.label
+fields:
+  extends: schema/fields/contact-point
+columns:
+  contactType:
+    width: 1/3
+  telephone:
+    width: 1/3
+  email:
+    width: 1/3

@@ -89,7 +89,7 @@ own HTML (with microdata and microformats) and schema.org structured data:
 
 Use `$field->toDataType()` for a single field (e.g. `'opening-hours'`, `'money'`, `'phone-number'`)
 and `toDataObject()` for content made of several fields (`'person'`, `'organization'`, `'place'`,
-`'link'`) on a page, structure row or field. The HTML comes from snippets named `schema/{type}`,
+`'contact-point'`, `'link'`) on a page, structure row or field. The HTML comes from snippets named `schema/{type}`,
 which a project overrides by placing its own file at `site/snippets/schema/{type}.php`.
 
 ## Upgrading
@@ -131,6 +131,8 @@ Below is an overview of all available blueprints provided by this plugin. Each e
 | [Category](config/blueprints/fields/category.yml)                 | `schema/fields/category`         | Category selection with autocompletion.             |
 | [Channels](config/blueprints/fields/channels.yml)                 | `schema/fields/channels`         | Link to related social media channels.              |
 | [Content Layout](config/blueprints/fields/content-layout.yml)     | `schema/fields/content-layout`   | Arrange content blocks in a layout.                 |
+| [Contact point](config/blueprints/fields/contact-point.yml)      | `schema/fields/contact-point`    | Contact type, telephone and email of an organization. |
+| [Contact points](config/blueprints/fields/contact-points.yml)    | `schema/fields/contact-points`   | Structure of contact points.                        |
 | [Coordinates](config/blueprints/fields/coordinates.yml)           | `schema/fields/coordinates`      | Geographic coordinates of a place.                  |
 | [Cover](config/blueprints/fields/cover.yml)                       | `schema/fields/cover`            | Preview image of a page or entity.                  |
 | [Created](config/blueprints/fields/created.yml)                   | `schema/fields/created`          | Automatically populated creation date.              |

@@ -2,12 +2,14 @@
 
 namespace Hks\Schema\Data;
 
+use Hks\Schema\Data\Collections\ContactPoints;
 use Hks\Schema\Data\Types\EmailAddress;
 use Hks\Schema\Data\Types\GeoCoordinate;
 use Hks\Schema\Data\Types\PhoneNumber;
 use Hks\Schema\Data\Types\PostalAddress;
 use Hks\Schema\Data\Types\Url;
 use Kirby\Cms\App;
+use Kirby\Data\Yaml;
 
 readonly class Organization extends DataObject
 {
@@ -19,11 +21,14 @@ readonly class Organization extends DataObject
         public ?PhoneNumber $telephone = null,
         public ?PhoneNumber $fax = null,
         public ?Url $website = null,
+        public ContactPoints $contactPoints = new ContactPoints(),
     ) {
     }
 
     public static function fromArray(array $value): static
     {
+        $value = array_change_key_case($value);
+
         return new static(
             name: $value['name'] ?? '',
             address: PostalAddress::tryFrom($value['address'] ?? $value),
@@ -32,6 +37,7 @@ readonly class Organization extends DataObject
             telephone: isset($value['telephone']) ? PhoneNumber::tryFrom($value['telephone']) : null,
             fax: isset($value['fax']) ? PhoneNumber::tryFrom($value['fax']) : null,
             website: isset($value['website']) ? Url::tryFrom($value['website']) : null,
+            contactPoints: ContactPoints::fromArray(Yaml::decode($value['contactpoints'] ?? null)),
         );
     }
 
@@ -70,6 +76,11 @@ readonly class Organization extends DataObject
         return $this->website;
     }
 
+    public function contactPoints(): ContactPoints
+    {
+        return $this->contactPoints;
+    }
+
     public function toHtml(array $attributes = []): string
     {
         return App::instance()->snippet('schema/organization', [
@@ -88,6 +99,7 @@ readonly class Organization extends DataObject
             'telephone' => $this->telephone?->toString(),
             'fax' => $this->fax?->toString(),
             'website' => $this->website?->toString(),
+            'contactPoints' => $this->contactPoints->toArray(),
         ];
     }
 
@@ -101,6 +113,7 @@ readonly class Organization extends DataObject
             'telephone' => $this->telephone?->value,
             'faxNumber' => $this->fax?->value,
             'url' => $this->website?->value,
+            'contactPoint' => $this->contactPoints->toStructuredData(),
             'location' => $this->address || $this->coordinates ? array_filter([
                 '@type' => 'Place',
                 'address' => $this->address?->toStructuredData(),

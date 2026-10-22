@@ -44,4 +44,10 @@
     <?= $item->fax()?->toHtml([
         'itemprop' => 'faxNumber',
     ]) ?>
+
+    <?php foreach ($item->contactPoints() as $contactPoint) : ?>
+        <?= $contactPoint->toHtml([
+            'itemprop' => 'contactPoint',
+        ]) ?>
+    <?php endforeach ?>
 </div>

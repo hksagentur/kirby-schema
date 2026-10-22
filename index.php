@@ -29,6 +29,7 @@ Kirby::plugin('hksagentur/schema', [
             'url' => Types\Url::class,
         ],
         'dataObjects' => [
+            'contact-point' => Data\ContactPoint::class,
             'link' => Data\Link::class,
             'organization' => Data\Organization::class,
             'person' => Data\Person::class,

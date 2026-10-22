@@ -85,4 +85,41 @@ class OrganizationTest extends TestCase
         $this->assertStringContainsString('class="p-tel"', $html);
     }
 
+    public function testResolvesContactPointsStoredAsYaml(): void
+    {
+        $organization = Organization::fromArray([
+            'name' => 'Acme Inc.',
+            'contactpoints' => "- contacttype: Customer service\n  telephone: +49 30 123456\n  email: service@acme.example",
+        ]);
+
+        $contactPoint = $organization->contactPoints()->first();
+
+        $this->assertCount(1, $organization->contactPoints());
+
+        $this->assertSame('Customer service', $contactPoint->type());
+        $this->assertSame('+49 30 123456', $contactPoint->telephone()?->value);
+        $this->assertSame('service@acme.example', $contactPoint->email()?->value);
+    }
+
+    public function testToStructuredDataListsContactPoints(): void
+    {
+        $organization = Organization::fromArray([
+            'name' => 'Acme Inc.',
+            'contactPoints' => [
+                ['contactType' => 'Sales', 'email' => 'sales@acme.example'],
+            ],
+        ]);
+
+        $this->assertSame([
+            [
+                '@type' => 'ContactPoint',
+                'contactType' => 'Sales',
+                'email' => 'sales@acme.example',
+            ],
+        ], $organization->toStructuredData()['contactPoint']);
+
+        $this->assertArrayNotHasKey('contactPoint', (new Organization(name: 'Acme Inc.'))->toStructuredData());
+        $this->assertStringContainsString('itemprop="contactPoint"', $organization->toHtml());
+    }
+
 }

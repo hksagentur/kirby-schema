@@ -22,3 +22,4 @@ fields:
   fax: schema/fields/fax
   email: schema/fields/email
   website: schema/fields/website
+  contactPoints: schema/fields/contact-points
