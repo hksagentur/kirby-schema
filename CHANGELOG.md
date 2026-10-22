@@ -2,6 +2,89 @@
 
 All notable changes to this project are documented in this file.
 
+## 2.0.0-alpha.3 — 2026-10-22
+
+### Added
+
+- Every blueprint is also registered as `schema/<type>/<name>`, extending the original
+  `@hksagentur/schema/<type>/<name>`. The plugin's own blueprints reference the `schema/` names, so a
+  file in `site/blueprints/schema/` (or a plugin registering the name) customizes a blueprint
+  everywhere; extend the `@hksagentur/schema/` original from it, or leave out `extends` to replace it.
+- The `organization`, `person`, `place`, `postal-address` and `geo-coordinate` snippets render
+  microformats (`h-card`, `h-adr`, `h-geo` and their properties) alongside the microdata. Classes
+  passed to `toHtml()` are added to the root class instead of replacing it.
+- `Hks\Schema\Data\ContactPoint` (`type`, `telephone`, `email`), registered as the
+  `contact-point` data object with a `schema/contact-point` snippet. `fields/organization` has a
+  `contactPoints` structure (`fields/contact-points` of `fields/contact-point`);
+  `Organization::contactPoints()` returns them as a `Data\Collections\ContactPoints` collection
+  (`findByType()`, and `telephone()`/`email()` of a contact type or the first one) and
+  `toStructuredData()` lists them as `contactPoint`. `ContactPoint::type()` is the contact type
+  (schema.org's `contactType`); `hasType()` compares it ignoring case.
+- `TimeRanges::at($time)` returns the time range containing a moment, e.g. to show until when a
+  place is open; `TimeRanges` is `Localizable` like `TimeRange` and `WeekDays`.
+- `WeekDays::join($callback, $rangeSeparator, $listSeparator)` renders each day through a callback
+  and joins them as a range (`Mo – Fr`) or a list; `format()`, `toString()` and `toLocaleString()`
+  build on it.
+- Protected `findBy()` and `filterBy()` helpers for `DataCollection` subclasses.
+- `Organization::alternateName()`, read from the `alternateName` field `fields/organization` already
+  had, and rendered as `alternateName` in `toStructuredData()`.
+- `Hks\Schema\Toolkit\Number`: `format()` with precision and rounding options, and `range()`
+  (`from 120`, `up to 180`, `120–180`) rounding its bounds outwards.
+- An `area` data type: `Area` with an `AreaUnit` (m², ha, km², ft², ac, mi²), modelled on `Length`
+  — `$field->toDataType('area')?->toLocaleString()` renders `120 m²`.
+- `EmailAddress::toUri()` (`mailto:…`) and `PhoneNumber::toUri()` (`tel:` and the E.164 number),
+  like `GeoCoordinate::toUri()`.
+- The ISC license text (`LICENSE.txt`) the README already linked to, and credits for the bundled
+  address and calling code data.
+
+### Changed
+
+- `Length::toLocaleString()` (and `Distance`) separate the unit with a non-breaking space and take
+  `Number::format()`'s options plus a `separator`.
+- `PhoneNumber::$nationalSignificantNumber` is renamed to `$nationalNumber` (with the trunk prefix,
+  as written); `nationalSignificantNumber()` returns the number without it, as E.164 defines it.
+- `composer.json` declares a conflict with `getkirby/cms` below 5.1, so Composer refuses an
+  incompatible Kirby without installing a second copy of it.
+- `ImageBlock`/`VideoBlock` use the `HasImage`/`HasVideo` concerns instead of their own `image()`/
+  `video()`, and gain `hasImage()`/`hasVideo()`.
+- The `email` data type is renamed to `email-address`, matching `EmailAddress::type()` and the
+  `schema/email-address` snippet like every other data type: `toDataType('email-address')`.
+
+### Removed
+
+- Fallbacks in the block classes: `level()`, `CollectionBlock::source()`/`status()` and
+  `MediaTextBlock::alignment()` return the stored value (the blueprints set the defaults), and
+  `CardBlock::title()`/`eyebrow()`/`text()`, `ImageBlock::src()`/`alt()`/`caption()` and
+  `VideoBlock::url()`/`caption()` no longer derive a value from the linked page or selected file.
+  Project snippets do that now (see UPGRADE.md, "Block accessors").
+- The `hksagentur.schema.blueprint:after` hook: customize a blueprint from `site/blueprints/schema/`
+  instead.
+- `Cms\Blueprint` instances and `Blueprint::register()`/`load()`: `Blueprint::namespace($namespace,
+  $directory)` registers every blueprint of a directory under the namespace and the public name,
+  the namespace's package (`@hksagentur/schema` → `schema`); `Blueprint::vendor()`/`package()` split
+  a namespace.
+
+### Fixed
+
+- `Changeset::rename()` keeps the renamed field's position — in objects, structure rows and blocks,
+  and when `Migration::run()` saves — instead of moving it to the end.
+- `Math::leastCommonMultiple()` returns an `int` as declared instead of a `float`.
+- `I18n::oxfordList()` with a limit said `and 0 others` in English for more than one remaining
+  value; it shows the count now.
+- `PhoneNumber` reads the international prefix `00` like `+` (`0049 4202 …` was taken for a
+  national number), and a country code written without a following space ends where the calling
+  code ends (`+494202910160` was read as country code `494`, `+14155550100` as `141`).
+- The address fields were labeled with raw translation keys in the Panel since the v2 rename
+  (`addressLocality`, `addressCountry`, `addressRegion`), and a few labels were missing in English
+  (alternate name, video ratio and crop, document and video titles, image caption) or German (image
+  URL).
+- The `opening-hours` snippet listed the days of a specification one after another without
+  separators; it renders them as a range or list now, keeping a `dayOfWeek` meta for each day.
+- `Person::fromArray()` failed with a `TypeError` on `qualifications`/`expertise` read from page or
+  structure content, where Kirby keeps them as YAML strings; they're decoded now.
+- `pages/article` referenced a misspelled `field/blocks` blueprint, so its `blocks` field fell back
+  to Kirby's default fieldsets instead of `fields/blocks`.
+
 ## 2.0.0-alpha.2 — 2026-10-22
 
 ### Added
@@ -77,8 +160,8 @@ All notable changes to this project are documented in this file.
 
 ## 2.0.0-alpha.1 — 2026-09-10
 
-A from-scratch rewrite. See [UPGRADE.md](UPGRADE.md) for the full list of breaking changes and
-[ROADMAP.md](ROADMAP.md) for the design rationale. Highlights:
+A from-scratch rewrite. See [UPGRADE.md](UPGRADE.md) for the full list of breaking changes.
+Highlights:
 
 ### Added
 
