@@ -7,13 +7,14 @@
             'itemtype' => 'https://schema.org/OpeningHoursSpecification',
         ]) ?>>
             <dt>
-                <?php foreach ($specification->weekDays()->all() as $weekDay) : ?>
+                <?php foreach ($specification->weekDays() as $weekDay) : ?>
                     <meta <?= attr([
                         'itemprop' => 'dayOfWeek',
                         'content' => $weekDay->toIriString(),
                     ]) ?>>
-                    <?= esc($weekDay->toLocaleString()) ?>
                 <?php endforeach ?>
+
+                <?= esc($specification->weekDays()->toLocaleString()) ?>
             </dt>
             <dd>
                 <?= $specification->toHtml() ?>
