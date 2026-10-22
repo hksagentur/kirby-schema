@@ -20,7 +20,7 @@ class FieldMethodsTest extends TestCase
         $field = new Field(null, 'email', 'jane@example.com');
 
         $this->assertTrue(
-            $field->toDataType('email')->isEqualTo(new EmailAddress('jane@example.com'))
+            $field->toDataType('email-address')->isEqualTo(new EmailAddress('jane@example.com'))
         );
     }
 
@@ -68,7 +68,7 @@ class FieldMethodsTest extends TestCase
         $scalar = new Field(null, 'email', null);
         $array = new Field(null, 'address', null);
 
-        $this->assertNull($scalar->toDataType('email'));
+        $this->assertNull($scalar->toDataType('email-address'));
         $this->assertNull($array->toDataType('postal-address'));
     }
 
@@ -78,7 +78,7 @@ class FieldMethodsTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
 
-        $field->toDataType('email');
+        $field->toDataType('email-address');
     }
 
     public function testToDataTypePreservesTheOriginalValidationErrorAsThePreviousException(): void
@@ -86,7 +86,7 @@ class FieldMethodsTest extends TestCase
         $field = new Field(null, 'email', 'not-an-email');
 
         try {
-            $field->toDataType('email');
+            $field->toDataType('email-address');
             $this->fail('Expected an exception to be thrown.');
         } catch (InvalidArgumentException $exception) {
             $this->assertNotNull($exception->getPrevious());

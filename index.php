@@ -13,7 +13,7 @@ Kirby::plugin('hksagentur/schema', [
         'dataTypes' => [
             'currency' => Types\Currency::class,
             'distance' => Types\Distance::class,
-            'email' => Types\EmailAddress::class,
+            'email-address' => Types\EmailAddress::class,
             'fraction' => Types\Fraction::class,
             'geo-coordinate' => Types\GeoCoordinate::class,
             'length' => Types\Length::class,

@@ -11,7 +11,7 @@ class RegistryTest extends TestCase
 {
     public function testDataTypeResolvesARegisteredNameToItsClass(): void
     {
-        $this->assertSame(EmailAddress::class, Registry::dataType('email'));
+        $this->assertSame(EmailAddress::class, Registry::dataType('email-address'));
     }
 
     public function testDataTypeReturnsNullForAnUnregisteredName(): void
