@@ -122,4 +122,12 @@ class OrganizationTest extends TestCase
         $this->assertStringContainsString('itemprop="contactPoint"', $organization->toHtml());
     }
 
+    public function testResolvesTheAlternateName(): void
+    {
+        $organization = Organization::fromArray(['name' => 'Acme Inc.', 'alternatename' => 'Acme']);
+
+        $this->assertSame('Acme', $organization->alternateName());
+        $this->assertSame('Acme', $organization->toStructuredData()['alternateName']);
+        $this->assertNull(Organization::fromArray(['name' => 'Acme Inc.'])->alternateName());
+    }
 }

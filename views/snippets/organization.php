@@ -20,6 +20,13 @@
         <?= esc($item->name()) ?>
     </div>
 
+    <?php if ($alternateName = $item->alternateName()) : ?>
+        <meta <?= attr([
+            'itemprop' => 'alternateName',
+            'content' => $alternateName,
+        ]) ?>>
+    <?php endif ?>
+
     <?= $item->address()?->toHtml([
         'class' => 'p-adr',
         'itemprop' => 'address',

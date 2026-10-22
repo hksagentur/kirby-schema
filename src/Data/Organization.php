@@ -15,6 +15,7 @@ readonly class Organization extends DataObject
 {
     public function __construct(
         public string $name,
+        public ?string $alternateName = null,
         public ?PostalAddress $address = null,
         public ?GeoCoordinate $coordinates = null,
         public ?EmailAddress $email = null,
@@ -31,6 +32,7 @@ readonly class Organization extends DataObject
 
         return new static(
             name: $value['name'] ?? '',
+            alternateName: $value['alternatename'] ?? null,
             address: PostalAddress::tryFrom($value['address'] ?? $value),
             coordinates: GeoCoordinate::tryFrom($value['coordinates'] ?? $value),
             email: isset($value['email']) ? EmailAddress::tryFrom($value['email']) : null,
@@ -44,6 +46,11 @@ readonly class Organization extends DataObject
     public function name(): string
     {
         return $this->name;
+    }
+
+    public function alternateName(): ?string
+    {
+        return $this->alternateName;
     }
 
     public function address(): ?PostalAddress
@@ -93,6 +100,7 @@ readonly class Organization extends DataObject
     {
         return [
             'name' => $this->name,
+            'alternateName' => $this->alternateName,
             'address' => $this->address?->toArray(),
             'coordinates' => $this->coordinates?->toArray(),
             'email' => $this->email?->toString(),
@@ -108,6 +116,7 @@ readonly class Organization extends DataObject
         return array_filter([
             '@type' => $type,
             'name' => $this->name,
+            'alternateName' => $this->alternateName,
             'address' => $this->address?->toStructuredData(),
             'email' => $this->email?->value,
             'telephone' => $this->telephone?->value,
