@@ -9,6 +9,9 @@ All notable changes to this project are documented in this file.
 - `PostalAddress::from()` treats empty parts (`''`) as missing, so `hasStreetAddress()` & co. return
   `false` for an empty field, and `tryFrom()` returns `null` when every part is empty. `Place` and
   `Organization` no longer get an empty address from blank fields.
+- The `mapWithKeys()` collection method keeps the keys returned by the callback. Plain values (e.g.
+  arrays) were renumbered from `0`, which broke opening-hours exceptions keyed by date (also in
+  1.43.1).
 
 ## 2.0.0-alpha.3 — 2026-10-22
 
