@@ -27,6 +27,27 @@ class ResponsiveImage extends PendingImage
 
         $this->attributes = Attributes::from($options['attributes'] ?? []);
 
+        $this->quality($options['quality'] ?? 80);
+
         return $this;
+    }
+
+    /**
+     * Scale a fixed quality down for formats that compress better,
+     * as the original implementation did.
+     */
+    protected function resolveQuality(string $format): ?int
+    {
+        $quality = $this->modification('quality');
+
+        if (! is_int($quality)) {
+            return parent::resolveQuality($format);
+        }
+
+        return match ($format) {
+            'avif' => (int) (0.6 * $quality),
+            'webp' => (int) (0.75 * $quality),
+            default => $quality,
+        };
     }
 }
