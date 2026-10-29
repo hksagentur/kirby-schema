@@ -12,6 +12,11 @@ All notable changes to this project are documented in this file.
 - The `mapWithKeys()` collection method keeps the keys returned by the callback. Plain values (e.g.
   arrays) were renumbered from `0`, which broke opening-hours exceptions keyed by date (also in
   1.43.1).
+- `Link::fromArray()` treats an empty `target` (`''`) as missing and falls back to `_self`. The
+  Panel saves `''` for links created before the field had a default, which threw a `TypeError`.
+  `fields/link` makes `target` required and turns off the toggles' reset, so it can't be cleared.
+- `LinkTarget::of()` no longer accepts `null` and returns the enum instead of `null`, like
+  `WeekDay::of()`. An invalid value throws a `ValueError`.
 
 ## 2.0.0-alpha.3 — 2026-10-22
 

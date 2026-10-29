@@ -11,13 +11,13 @@ enum LinkTarget: string
     case Parent = '_parent';
     case Top = '_top';
 
-    public static function of(string|self|null $value): ?static
+    public static function of(string|self $value): static
     {
         if ($value instanceof self) {
             return $value;
         }
 
-        return static::tryFrom($value ?? '');
+        return static::from($value);
     }
 
     public static function default(): static

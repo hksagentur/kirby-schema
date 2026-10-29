@@ -9,7 +9,7 @@ use Kirby\Cms\App;
 use Kirby\Cms\File;
 use Kirby\Cms\Page;
 use Kirby\Cms\User;
-use TypeError;
+use ValueError;
 
 class LinkTest extends TestCase
 {
@@ -127,9 +127,14 @@ class LinkTest extends TestCase
         $this->assertSame(LinkTarget::Self, Link::fromArray(['url' => '#'])->target());
     }
 
+    public function testFromArrayDefaultsTargetToSelfWhenEmpty(): void
+    {
+        $this->assertSame(LinkTarget::Self, Link::fromArray(['url' => '#', 'target' => ''])->target());
+    }
+
     public function testFromArrayThrowsGivenAnInvalidTargetValue(): void
     {
-        $this->expectException(TypeError::class);
+        $this->expectException(ValueError::class);
 
         Link::fromArray(['url' => '#', 'target' => 'not-a-target']);
     }

@@ -28,7 +28,7 @@ readonly class Link extends DataObject
             title: $value['title'] ?? null,
             icon: $value['icon'] ?? null,
             rel: $value['rel'] ?? null,
-            target: LinkTarget::of($value['target'] ?? LinkTarget::default()),
+            target: ! empty($value['target']) ? LinkTarget::of($value['target']) : LinkTarget::Self,
         );
     }
 

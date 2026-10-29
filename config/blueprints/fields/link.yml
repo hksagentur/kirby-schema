@@ -20,6 +20,8 @@ fields:
     type: toggles
     label:
       *: hksagentur.schema.field.link.target.label
+    required: true
+    reset: false
     default: _self
     options:
       - value: _self
