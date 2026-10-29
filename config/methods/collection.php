@@ -19,7 +19,9 @@ return [
             }
         }
 
-        return new Collection($data);
+        // The constructor appends plain values with numeric keys,
+        // so the mapped keys have to be set as the data directly.
+        return (new Collection())->data($data);
     },
 
 ];
