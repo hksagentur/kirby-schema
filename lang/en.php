@@ -157,7 +157,7 @@ return [
     'hksagentur.schema.field.link.target.blank' => 'New window',
     'hksagentur.schema.field.link.target.parent' => 'Parent frame',
     'hksagentur.schema.field.link.target.top' => 'Topmost frame',
-    'hksagentur.schema.field.link.title' => 'Title',
+    'hksagentur.schema.field.link.text' => 'Text',
     'hksagentur.schema.field.link.url' => 'URL',
     'hksagentur.schema.field.logo.label' => 'Logo',
     'hksagentur.schema.field.markdown.label' => 'Text',

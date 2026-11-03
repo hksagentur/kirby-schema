@@ -10,6 +10,7 @@ v2 is a rewrite and not a drop-in upgrade. Changes that touch stored content nee
 - [Updating dependencies](#updating-dependencies)
 - [Address fields](#address-fields)
 - [Link target](#link-target)
+- [Link text](#link-text)
 - [Person tags](#person-tags)
 - [Model traits](#model-traits)
 - [Responsive images and videos](#responsive-images-and-videos)
@@ -194,6 +195,26 @@ through `toDataObject('link')` throws a `TypeError` until it's migrated: `true` 
 
 // After
 'target' => $link->target()->or('_self')->value() === '_self' ? null : $link->target()->value(),
+```
+
+### Link text
+
+**Likelihood of impact: High** — requires a content migration
+
+The visible text of `fields/link` (and `fields/actions`, `fields/channels`, `fields/navigation`) is
+stored as `text` instead of `title`, as in Kirby's `(link: … text: …)` tag, where `title` is the
+`title` attribute. `Link::title()` is now `Link::text()`, which falls back to the title of the linked
+page when the text is empty; the constructor argument is `text`. Rename the key wherever a project
+stores links, e.g. with `->rename('title', 'text')` on each link in a migration like
+`ConvertLinkTargets` above; mind that blocks have a `title` of their own, so rename it only on the
+link objects and rows, not on the block.
+
+```php
+// Before
+<?= esc($link->title() ?? $link->url()) ?>
+
+// After
+<?= esc($link->text() ?? $link->url()) ?>
 ```
 
 ### Person tags

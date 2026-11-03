@@ -15,7 +15,7 @@ fields:
       x: X
       xing: Xing
 columns:
-  title:
+  text:
     width: 1/2
   url:
     width: 1/4

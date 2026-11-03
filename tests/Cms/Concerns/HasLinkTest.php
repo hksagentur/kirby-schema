@@ -19,7 +19,7 @@ class HasLinkTest extends TestCase
     {
         $block = new HasLinkBlock([
             'type' => 'test',
-            'content' => ['link' => ['url' => 'https://example.com', 'title' => 'Example', 'icon' => 'arrow.svg']],
+            'content' => ['link' => ['url' => 'https://example.com', 'text' => 'Example', 'icon' => 'arrow.svg']],
         ]);
 
         $this->assertTrue($block->hasLink());
@@ -36,6 +36,23 @@ class HasLinkTest extends TestCase
         $this->assertFalse($block->hasLink());
         $this->assertNull($block->link());
         $this->assertFalse($block->hasTarget());
+    }
+
+    public function testHasLinkIsFalseForALinkToADraft(): void
+    {
+        $this->app = new App([
+            'roots' => ['index' => static::TMP],
+            'site' => ['drafts' => [
+                ['slug' => 'secret', 'content' => ['uuid' => 'test-has-link-draft']],
+            ]],
+        ]);
+
+        $block = new HasLinkBlock([
+            'type' => 'test',
+            'content' => ['link' => ['url' => 'page://test-has-link-draft']],
+        ]);
+
+        $this->assertFalse($block->hasLink());
     }
 
     public function testTargetResolvesThePageALinkPointsTo(): void

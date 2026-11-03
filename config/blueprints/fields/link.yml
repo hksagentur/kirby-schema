@@ -1,9 +1,9 @@
 type: group
 fields:
-  title:
+  text:
     type: text
     label:
-      *: hksagentur.schema.field.link.title
+      *: hksagentur.schema.field.link.text
     counter: false
   url:
     type: link

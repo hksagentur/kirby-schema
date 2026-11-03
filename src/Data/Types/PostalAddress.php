@@ -49,10 +49,7 @@ readonly class PostalAddress extends DataType implements Arrayable, Htmlable, Lo
             return $value;
         }
 
-        $value = array_filter(
-            array_change_key_case($value),
-            fn (mixed $part): bool => ! static::isBlank($part),
-        );
+        $value = array_filter(array_change_key_case($value));
 
         return new static(
             $value['streetaddress'] ?? null,

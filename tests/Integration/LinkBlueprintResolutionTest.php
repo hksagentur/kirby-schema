@@ -14,7 +14,7 @@ class LinkBlueprintResolutionTest extends TestCase
     public function testToDataObjectResolvesALinkFromContentShapedByItsOwnBlueprint(): void
     {
         $content = static::contentFromBlueprint('@hksagentur/schema/fields/link', [
-            'title' => 'Example',
+            'text' => 'Example',
             'url' => 'https://example.com',
             'target' => '_blank',
             'rel' => 'bookmark',
@@ -25,7 +25,7 @@ class LinkBlueprintResolutionTest extends TestCase
         $link = $structureObject->toDataObject('link');
 
         $this->assertInstanceOf(Link::class, $link);
-        $this->assertSame('Example', $link->title());
+        $this->assertSame('Example', $link->text());
         $this->assertSame('https://example.com', $link->url());
         $this->assertSame(LinkTarget::Blank, $link->target());
         $this->assertSame('bookmark', $link->rel());
@@ -37,14 +37,14 @@ class LinkBlueprintResolutionTest extends TestCase
         // the structure row, the same "extends" pattern `person.yml` already uses — so a row
         // resolves through the exact same `Link::fromArray()` shape as `link.yml` on its own.
         $content = static::contentFromBlueprint('@hksagentur/schema/fields/actions', [
-            'title' => 'Example',
+            'text' => 'Example',
             'url' => 'https://example.com',
         ]);
 
         $link = (new StructureObject(['content' => $content]))->toDataObject('link');
 
         $this->assertInstanceOf(Link::class, $link);
-        $this->assertSame('Example', $link->title());
+        $this->assertSame('Example', $link->text());
         $this->assertSame('https://example.com', $link->url());
     }
 }

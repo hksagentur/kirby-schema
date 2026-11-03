@@ -5,6 +5,7 @@ namespace Hks\Schema\Data;
 use Hks\Schema\Concerns\InteractsWithTmp;
 use Hks\Schema\Data\Types\LinkTarget;
 use Hks\Schema\TestCase;
+use InvalidArgumentException;
 use Kirby\Cms\App;
 use Kirby\Cms\File;
 use Kirby\Cms\Page;
@@ -19,10 +20,10 @@ class LinkTest extends TestCase
 
     public function testFromArrayResolvesAnExternalUrlAsIs(): void
     {
-        $link = Link::fromArray(['url' => 'https://example.com', 'title' => 'Example']);
+        $link = Link::fromArray(['url' => 'https://example.com', 'text' => 'Example']);
 
         $this->assertSame('https://example.com', $link->url());
-        $this->assertSame('Example', $link->title());
+        $this->assertSame('Example', $link->text());
         $this->assertNull($link->model());
     }
 
@@ -91,7 +92,7 @@ class LinkTest extends TestCase
 
     public function testToStructuredDataOmitsUrlForADanglingReference(): void
     {
-        $link = Link::fromArray(['url' => 'page://does-not-exist', 'title' => 'Ghost']);
+        $link = Link::fromArray(['url' => 'page://does-not-exist', 'text' => 'Ghost']);
 
         $this->assertArrayNotHasKey('url', $link->toStructuredData());
     }
@@ -114,6 +115,94 @@ class LinkTest extends TestCase
 
         $this->assertInstanceOf(Page::class, $link->page());
         $this->assertSame('/about', $link->url());
+    }
+
+    public function testFromArrayTreatsEmptyStringsAsMissing(): void
+    {
+        $link = Link::fromArray(['url' => 'https://example.com', 'text' => '', 'icon' => '', 'rel' => '']);
+
+        $this->assertNull($link->text());
+        $this->assertNull($link->icon());
+        $this->assertNull($link->rel());
+    }
+
+    public function testAnEmptyUriIsRejected(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        Link::fromArray(['url' => '', 'text' => 'Group']);
+    }
+
+    public function testTextPrefersTheStoredText(): void
+    {
+        $link = Link::fromArray(['url' => 'https://example.com', 'text' => 'Example']);
+
+        $this->assertSame('Example', $link->text());
+    }
+
+    public function testTextFallsBackToThePageTitle(): void
+    {
+        $this->app = new App([
+            'roots' => ['index' => static::TMP],
+            'site' => ['children' => [
+                ['slug' => 'about', 'content' => ['uuid' => 'test-label-about', 'title' => 'About us']],
+            ]],
+        ]);
+
+        $link = Link::fromArray(['url' => 'page://test-label-about', 'text' => '']);
+
+        $this->assertSame('About us', $link->text());
+        $this->assertSame('About us', $link->toStructuredData()['name']);
+    }
+
+    public function testTextIsNullWithoutStoredTextOrPage(): void
+    {
+        $link = Link::fromArray(['url' => 'https://example.com']);
+
+        $this->assertNull($link->text());
+    }
+
+    public function testUrlIsNullForADraftPage(): void
+    {
+        $this->app = new App([
+            'roots' => ['index' => static::TMP],
+            'site' => ['drafts' => [
+                ['slug' => 'secret', 'content' => ['uuid' => 'test-draft-secret', 'title' => 'Secret']],
+            ]],
+        ]);
+
+        $link = Link::fromArray(['url' => 'page://test-draft-secret']);
+
+        $this->assertInstanceOf(Page::class, $link->page());
+        $this->assertTrue($link->page()->isDraft());
+        $this->assertNull($link->url());
+    }
+
+    public function testToHtmlRendersNothingWithoutAUrl(): void
+    {
+        $this->app = new App([
+            'roots' => ['index' => static::TMP],
+            'site' => ['drafts' => [
+                ['slug' => 'secret', 'content' => ['uuid' => 'test-draft-html', 'title' => 'Secret']],
+            ]],
+        ]);
+
+        $link = Link::fromArray(['url' => 'page://test-draft-html', 'text' => 'Secret']);
+
+        $this->assertSame('', trim($link->toHtml()));
+    }
+
+    public function testToHtmlUsesTheTextAndFallsBackToTheUrl(): void
+    {
+        $this->app = new App([
+            'roots' => ['index' => static::TMP],
+            'site' => ['children' => [
+                ['slug' => 'about', 'content' => ['uuid' => 'test-html-about', 'title' => 'About us']],
+            ]],
+        ]);
+
+        $this->assertStringContainsString('About us', Link::fromArray(['url' => 'page://test-html-about', 'text' => ''])->toHtml());
+        $this->assertStringContainsString('>mailto:hello@example.com<', preg_replace('/\s+/', '', Link::fromArray(['url' => 'mailto:hello@example.com', 'text' => ''])->toHtml()));
     }
 
     public function testFromArrayResolvesAValidTargetOption(): void
@@ -143,14 +232,14 @@ class LinkTest extends TestCase
     {
         $link = Link::fromArray([
             'url' => 'https://example.com',
-            'title' => 'Example',
+            'text' => 'Example',
             'target' => '_blank',
             'rel' => 'bookmark',
         ]);
 
         $this->assertSame([
             'url' => 'https://example.com',
-            'title' => 'Example',
+            'text' => 'Example',
             'icon' => null,
             'target' => '_blank',
             'rel' => 'bookmark',
@@ -159,7 +248,7 @@ class LinkTest extends TestCase
 
     public function testToStructuredDataRendersAWebPageNode(): void
     {
-        $link = new Link(uri: 'https://example.com', title: 'Example');
+        $link = new Link(uri: 'https://example.com', text: 'Example');
 
         $this->assertSame([
             '@type' => 'WebPage',

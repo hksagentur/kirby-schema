@@ -16,7 +16,7 @@ fields:
         fields:
           extends: schema/fields/link
         columns:
-          title:
+          text:
             width: 1/2
           url:
             width: 1/4
@@ -24,7 +24,7 @@ fields:
             width: 1/4
             text: false
     columns:
-      title:
+      text:
         width: 1/2
       url:
         width: 1/4
@@ -32,7 +32,7 @@ fields:
         width: 1/4
         text: false
 columns:
-  title:
+  text:
     width: 1/2
   url:
     width: 1/4

@@ -11,7 +11,7 @@ trait HasLink
 
     public function hasLink(): bool
     {
-        return (bool) $this->link()?->uri();
+        return $this->link()?->url() !== null;
     }
 
     public function link(): ?Link

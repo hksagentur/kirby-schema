@@ -4,8 +4,22 @@ All notable changes to this project are documented in this file.
 
 ## Unreleased
 
+### Changed
+
+- The visible text of a link is stored as `text` instead of `title` (`fields/link` and the fields
+  extending it), as in Kirby's `(link: … text: …)` tag, where `title` is the `title` attribute.
+  `Link::title()` is now `Link::text()` and falls back to the title of the linked page when the text
+  is empty; the `schema/link` snippet and `toStructuredData()` use it. Requires a content migration,
+  see [UPGRADE.md](UPGRADE.md#link-text).
+- `Link` throws an `InvalidArgumentException` for an empty URI.
+
 ### Fixed
 
+- `Link::fromArray()` treats an empty `text`, `icon` and `rel` (`''`) as missing. The Panel saves
+  `''` for an empty field, so the snippet's fallback never applied and links rendered without text.
+- `Link::url()` returns `null` for a page that isn't published (a draft), so links to it no longer
+  lead to a 404. `HasLink::hasLink()` checks `url()` instead of the raw `uri()`, and the `schema/link`
+  snippet renders nothing without a URL.
 - `PostalAddress::from()` treats empty parts (`''`) as missing, so `hasStreetAddress()` & co. return
   `false` for an empty field, and `tryFrom()` returns `null` when every part is empty. `Place` and
   `Organization` no longer get an empty address from blank fields.
