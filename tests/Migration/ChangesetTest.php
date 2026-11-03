@@ -38,6 +38,17 @@ class ChangesetTest extends TestCase
         $this->assertArrayHasKey('title', $this->changes()->set('title', null)->apply());
     }
 
+    public function testRemoveOnlyChangesAnExistingField(): void
+    {
+        $this->assertTrue($this->changes()->remove('missing')->isEmpty());
+        $this->assertSame([], $this->changes()->remove('missing')->dirty());
+    }
+
+    public function testRemoveDropsAPendingValueOfANewField(): void
+    {
+        $this->assertTrue($this->changes()->set('subtitle', 'Welcome')->remove('subtitle')->isEmpty());
+    }
+
     public function testSetAfterRemoveRestoresTheField(): void
     {
         $this->assertSame(['title' => 'Start'], $this->changes()->remove('title')->set('title', 'Start')->toArray());

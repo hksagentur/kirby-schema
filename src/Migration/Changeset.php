@@ -78,9 +78,14 @@ readonly class Changeset
     public function remove(string $field): static
     {
         $field = strtolower($field);
+        $values = A::without($this->values, $field);
+
+        if (! $this->content->has($field)) {
+            return $this->with(values: $values);
+        }
 
         return $this->with(
-            values: A::without($this->values, $field),
+            values: $values,
             removed: array_values(array_unique([...$this->removed, $field])),
         );
     }

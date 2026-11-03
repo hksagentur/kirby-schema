@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented in this file.
 
+## Unreleased
+
+### Fixed
+
+- `Changeset::remove()` only marks a field as removed when the content has it, like `rename()`.
+  Removing a missing field left the changeset dirty, so a migration such as removing old address
+  fields rewrote every matching page on each run and wasn't idempotent.
+
 ## 2.0.0-alpha.4 — 2026-11-03
 
 ### Changed
