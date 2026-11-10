@@ -2,11 +2,9 @@
 
 namespace Hks\Schema\Cms\Blocks;
 
-use Hks\Schema\Cms\Concerns\HasMediaFile;
-use Hks\Schema\Cms\Contracts\HasKeyVisual;
 use Hks\Schema\Cms\Concerns\HasLink;
+use Hks\Schema\Cms\Concerns\HasMediaFile;
 use Kirby\Cms\Block;
-use Kirby\Cms\File;
 use Kirby\Content\Field;
 
 /**
@@ -17,17 +15,8 @@ use Kirby\Content\Field;
  * @method Field alignment()
  * @method Field reverse()
  */
-class MediaTextBlock extends Block implements HasKeyVisual
+class MediaTextBlock extends Block
 {
     use HasLink;
     use HasMediaFile;
-
-    public function keyVisual(): ?File
-    {
-        return match ($this->mediaType()) {
-            'video' => $this->poster(),
-            'image' => $this->image(),
-            default => null,
-        };
-    }
 }
