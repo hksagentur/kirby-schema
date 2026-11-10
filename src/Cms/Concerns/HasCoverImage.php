@@ -6,15 +6,22 @@ use Kirby\Cms\File;
 
 trait HasCoverImage
 {
-    protected ?File $coverImage = null;
+    /** @var array<string, File|null> */
+    protected array $coverImage = [];
 
-    public function hasCoverImage(): bool
+    public function hasCoverImage(?string $languageCode = null): bool
     {
-        return $this->coverImage() !== null;
+        return $this->coverImage($languageCode) !== null;
     }
 
-    public function coverImage(): ?File
+    public function coverImage(?string $languageCode = null): ?File
     {
-        return $this->coverImage ??= $this->content()->cover()->toFile();
+        $key = $this->kirby()->languageCode($languageCode) ?? 'default';
+
+        if (! array_key_exists($key, $this->coverImage)) {
+            $this->coverImage[$key] = $this->content($languageCode)->cover()->toFile();
+        }
+
+        return $this->coverImage[$key];
     }
 }

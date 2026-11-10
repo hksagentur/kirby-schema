@@ -4,6 +4,14 @@ All notable changes to this project are documented in this file.
 
 ## Unreleased
 
+### Changed
+
+- `HasCoverImage::coverImage()`/`hasCoverImage()` and `HasGalleryImages::galleryImages()`/
+  `hasGalleryImages()` take an optional language code like `HasBlocks::blocks()` and resolve the
+  files once per language. They cached the first language they were called in. The protected
+  `$coverImage` and `$galleryImages` properties are now arrays keyed by language code, and a missing
+  cover is no longer looked up again on every call.
+
 ### Fixed
 
 - `video-format` and `video-track` files show their Panel cards in the ratio of the section they are

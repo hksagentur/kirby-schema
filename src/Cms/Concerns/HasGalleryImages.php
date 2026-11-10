@@ -6,15 +6,18 @@ use Kirby\Cms\Files;
 
 trait HasGalleryImages
 {
-    protected ?Files $galleryImages = null;
+    /** @var array<string, Files> */
+    protected array $galleryImages = [];
 
-    public function hasGalleryImages(): bool
+    public function hasGalleryImages(?string $languageCode = null): bool
     {
-        return $this->galleryImages()->isNotEmpty();
+        return $this->galleryImages($languageCode)->isNotEmpty();
     }
 
-    public function galleryImages(): ?Files
+    public function galleryImages(?string $languageCode = null): ?Files
     {
-        return $this->galleryImages ??= $this->content()->gallery()->toFiles();
+        $key = $this->kirby()->languageCode($languageCode) ?? 'default';
+
+        return $this->galleryImages[$key] ??= $this->content($languageCode)->gallery()->toFiles();
     }
 }
