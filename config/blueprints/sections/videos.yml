@@ -1,7 +1,8 @@
 type: files
 label:
   *: hksagentur.schema.section.videos.label
-template: video
+query: model.files.filterBy('template', 'in', ['video', 'video-format'])
+create: false
 layout: list
 info: "{{ file.mime }} ({{ file.niceSize }})"
 batch: true

@@ -6,7 +6,9 @@ fields:
     type: files
     label:
       *: hksagentur.schema.field.videoTracks.file
-    query: model.siblings.filterBy('extension', 'vtt')
+    query: model.siblings.template('video-track')
+    uploads:
+      template: video-track
     required: true
     multiple: false
   title:

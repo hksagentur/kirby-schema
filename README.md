@@ -211,6 +211,8 @@ Below is an overview of all available blueprints provided by this plugin. Each e
 | [Image](config/blueprints/files/image.yml)       | `schema/files/image`    | Generic image with alternative text and caption.             |
 | [Logo](config/blueprints/files/logo.yml)         | `schema/files/logo`     | Visual identity of a brand or institution.                   |
 | [Video](config/blueprints/files/video.yml)       | `schema/files/video`    | Video file with poster and caption.                          |
+| [Video Format](config/blueprints/files/video-format.yml) | `schema/files/video-format` | Alternative encoding of a video (MP4, WebM).  |
+| [Video Track](config/blueprints/files/video-track.yml)   | `schema/files/video-track`  | Subtitles or captions of a video (WebVTT).    |
 
 ### Page Blueprints
 

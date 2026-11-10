@@ -1,0 +1,7 @@
+title:
+  *: hksagentur.schema.file.videoTrack.title
+
+icon: file-text
+
+accept:
+  extension: vtt

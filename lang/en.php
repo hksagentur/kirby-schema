@@ -261,6 +261,8 @@ return [
     'hksagentur.schema.file.video.label' => 'Title',
     'hksagentur.schema.file.video.description' => 'Description',
     'hksagentur.schema.file.video.author' => 'Author',
+    'hksagentur.schema.file.videoFormat.title' => 'Video format',
+    'hksagentur.schema.file.videoTrack.title' => 'Text track',
     'hksagentur.schema.currency.CHF' => 'Swiss Franc',
     'hksagentur.schema.currency.CNY' => 'Chinese Yuan',
     'hksagentur.schema.currency.EUR' => 'Euro',

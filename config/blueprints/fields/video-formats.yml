@@ -6,7 +6,9 @@ fields:
     type: files
     label:
       *: hksagentur.schema.field.videoFormats.file
-    query: model.siblings.filterBy('mime', 'in', ['video/webm', 'video/mp4'])
+    query: model.siblings.template('video-format')
+    uploads:
+      template: video-format
     required: true
     multiple: false
   videoCodec:

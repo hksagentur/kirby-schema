@@ -1,0 +1,9 @@
+title:
+  *: hksagentur.schema.file.videoFormat.title
+
+icon: file-video
+
+accept:
+  mime:
+    - video/mp4
+    - video/webm

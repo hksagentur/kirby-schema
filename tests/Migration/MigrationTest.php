@@ -5,6 +5,7 @@ namespace Hks\Schema\Migration;
 use Hks\Schema\Concerns\InteractsWithTmp;
 use Hks\Schema\TestCase;
 use Kirby\Cms\App;
+use Kirby\Cms\File;
 use Kirby\Cms\ModelWithContent;
 use Kirby\Data\Data;
 use Kirby\Toolkit\Str;
@@ -68,6 +69,24 @@ class MigrationTest extends TestCase
                         'slug' => 'house',
                         'content' => ['occupation' => 'Not a person'],
                     ],
+                    [
+                        'slug' => 'film',
+                        'files' => [
+                            [
+                                'filename' => 'film.mp4',
+                                'content' => [
+                                    'template' => 'video',
+                                    'formats' => Data::encode([['file' => ['file://film-h265']]], 'yaml'),
+                                    'subtitles' => Data::encode([['file' => ['film.de.vtt'], 'language' => 'de']], 'yaml'),
+                                    'captions' => '',
+                                ],
+                            ],
+                            ['filename' => 'film.h265.mp4', 'content' => ['uuid' => 'film-h265']],
+                            ['filename' => 'film.de.vtt', 'content' => ['uuid' => 'film-de']],
+                            ['filename' => 'film.webm', 'content' => ['template' => 'video']],
+                            ['filename' => 'unused.webm'],
+                        ],
+                    ],
                 ],
             ],
         ]);
@@ -119,6 +138,35 @@ class MigrationTest extends TestCase
 
         $this->assertTrue($migration->appliesTo($this->app->page('jane')));
         $this->assertFalse($migration->appliesTo($this->app->page('house')));
+    }
+
+    public function testAssignsTheTemplateOfTheVideoFieldThatReferencesAFile(): void
+    {
+        $migration = new AssignVideoFileTemplates();
+        $film = $this->app->page('film');
+
+        $this->assertSame(['template' => 'video-format'], $migration->migrate(Changeset::of($film->file('film.h265.mp4')->content()))->toArray());
+        $this->assertSame(['template' => 'video-track'], $migration->migrate(Changeset::of($film->file('film.de.vtt')->content()))->toArray());
+    }
+
+    public function testRunStoresTheTemplateOnce(): void
+    {
+        $log = fn (string $message, bool $error) => null;
+
+        $this->assertSame(2, (new AssignVideoFileTemplates())->run($log));
+        $this->assertSame('video-format', $this->app->page('film')->file('film.h265.mp4')->version('latest')->read('en')['template']);
+        $this->assertSame(0, (new AssignVideoFileTemplates())->run($log));
+    }
+
+    public function testLeavesVideosAndUnreferencedFilesAlone(): void
+    {
+        $migration = new AssignVideoFileTemplates();
+        $film = $this->app->page('film');
+
+        $this->assertFalse($migration->appliesTo($film), 'pages');
+        $this->assertFalse($migration->appliesTo($film->file('film.mp4')), 'the video itself');
+        $this->assertFalse($migration->appliesTo($film->file('unused.webm')), 'not referenced');
+        $this->assertTrue($migration->migrate(Changeset::of($film->file('film.webm')->content()))->isEmpty(), 'has a template');
     }
 
     public function testAMigratedModelHasNoMoreChanges(): void
@@ -210,6 +258,44 @@ class ConvertLinkTargets extends Migration
             false, 'false', '' => $link->remove('target'),
             default => $link,
         };
+    }
+}
+
+class AssignVideoFileTemplates extends Migration
+{
+    public const TEMPLATES = [
+        'formats' => 'video-format',
+        'subtitles' => 'video-track',
+        'captions' => 'video-track',
+    ];
+
+    public function appliesTo(ModelWithContent $model): bool
+    {
+        return $model instanceof File && $this->templateFor($model) !== null;
+    }
+
+    public function migrate(Changeset $changeset): Changeset
+    {
+        if ($changeset->content()->get('template')->or('default')->value() !== 'default') {
+            return $changeset;
+        }
+
+        return $changeset->set('template', $this->templateFor($changeset->model()));
+    }
+
+    protected function templateFor(File $file): ?string
+    {
+        foreach ($file->siblings(false)->template('video') as $video) {
+            foreach (static::TEMPLATES as $field => $template) {
+                foreach ($video->content()->get($field)->toStructure() as $row) {
+                    if ($file->kirby()->file($row->file()->yaml()[0] ?? '', $file->parent())?->is($file)) {
+                        return $template;
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 }
 

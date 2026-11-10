@@ -1,7 +1,8 @@
 type: files
 label:
   *: hksagentur.schema.section.documents.label
-template: document
+query: model.files.filterBy('template', 'in', ['document', 'video-track'])
+create: false
 layout: list
 info: "{{ file.label }} ({{ file.niceSize }})"
 batch: true
