@@ -22,6 +22,7 @@ v2 is a rewrite and not a drop-in upgrade. Changes that touch stored content nee
 - [Links of `HasLink` models](#links-of-haslink-models)
 - [Block accessors](#block-accessors)
 - [Image and video options](#image-and-video-options)
+- [Video formats and tracks](#video-formats-and-tracks)
 
 ### Low impact changes
 
@@ -150,7 +151,7 @@ Update the requirements in the project's `composer.json`:
 - `hksagentur/kirby-schema` to `^2.0`
 - `getkirby/cms` to `^5.1` (was `>=4.0`)
 - `hksagentur/kirby-media-kit` as a direct dependency if the project renders responsive images or
-  videos — v1 installed it, v2 no longer does
+  videos — v1 installed it, v2 no longer does; `^2.3` if it uses key visuals (`keyVisual()`)
 
 PHP `>=8.3` is unchanged.
 
@@ -242,7 +243,7 @@ The traits moved to `Hks\Schema\Cms\Concerns` and are named after their primary 
 | v1 trait                         | v2 trait                                              |
 | -------------------------------- | ----------------------------------------------------- |
 | `Hks\Schema\Cms\HasAction`       | `Concerns\HasLink`                                    |
-| `Hks\Schema\Cms\HasBlockContent` | `Concerns\HasBlocks` + `Concerns\HasKeyVisual`        |
+| `Hks\Schema\Cms\HasBlockContent` | `Concerns\HasBlocks` (key visuals: see below)         |
 | `Hks\Schema\Cms\HasCoverImage`   | `Concerns\HasCoverImage`                              |
 | `Hks\Schema\Cms\HasMedia`        | `Concerns\HasMediaFile`                               |
 | `Hks\Schema\Cms\HasImage`        | `Concerns\HasImage` (a single `image()`)              |
@@ -259,8 +260,8 @@ class ArticlePage extends Page
 }
 
 // After
+use Hks\MediaKit\Cms\Concerns\HasKeyVisual;
 use Hks\Schema\Cms\Concerns\HasBlocks;
-use Hks\Schema\Cms\Concerns\HasKeyVisual;
 
 class ArticlePage extends Page
 {
@@ -279,6 +280,17 @@ class ArticlePage extends Page
 The file methods `toResponsiveImage()` and `toResponsiveVideo()` moved to
 [`hksagentur/kirby-media-kit`](https://github.com/hksagentur/kirby-media-kit). Require it directly;
 the methods keep their names, so templates don't change.
+
+Key visuals moved there too. `Contracts\HasKeyVisual` and `Concerns\HasKeyVisual` are gone, and
+`HeroBlock`/`MediaTextBlock` no longer implement `keyVisual()`. In media-kit, a block implements
+`Hks\MediaKit\Cms\Contracts\HasKeyVisual` and returns its media as rendered (`Image|Video`) instead of
+a `File`; a page uses `Hks\MediaKit\Cms\Concerns\HasKeyVisual`, whose `keyVisuals()` collects the
+media the block marked with `priority()` and renders their preload links with `toPreloadLinks()`.
+Where you need the file (e.g. to measure its brightness), use `original()`, or `poster()?->original()`
+for a video. The old trait also read image and video blocks with `priority: high` on its own; that
+fallback is gone, so every block that should be preloaded (image, video, hero, media text, …) needs a
+block model in your project that implements the contract. Without one its preload link silently
+disappears.
 
 ## Medium impact changes
 
@@ -364,6 +376,84 @@ block snippets:
 `hksagentur.media-kit.image`/`.video` instead. v1 merged its options *under* media-kit's defaults,
 so a `hksagentur.schema.image.formats` setting never took effect — check the rendered output before
 moving it over.
+
+### Video formats and tracks
+
+**Likelihood of impact: Medium** for projects with video formats, subtitles or captions — requires
+a content migration
+
+The files of a video's `formats` get the template `video-format`, those of `subtitles` and
+`captions` the template `video-track`. Their `file` fields only list files of that template;
+`sections/videos` lists the formats along with the videos, `sections/documents` the tracks along
+with the documents. Both sections filter with a `query` now, so they no longer upload or sort:
+files are added through the fields that reference them (`fields/video`, `fields/document`, a
+video's formats and tracks). Before, these files had no template, so no
+section listed them and they couldn't be deleted in the Panel once their row was removed. Add the
+file blueprints next to the project's `video` blueprint:
+
+```yaml
+# site/blueprints/files/video-format.yml
+extends: schema/files/video-format
+
+# site/blueprints/files/video-track.yml
+extends: schema/files/video-track
+```
+
+Files uploaded before have no template: rows keep showing them, but the fields' pickers and the
+media tab don't. Assign the templates with a migration:
+
+```php
+<?php
+
+namespace App\Migrations;
+
+use Hks\Schema\Migration\Changeset;
+use Hks\Schema\Migration\Migration;
+use Kirby\Cms\File;
+use Kirby\Cms\ModelWithContent;
+
+class AssignVideoFileTemplates extends Migration
+{
+    public const TEMPLATES = [
+        'formats' => 'video-format',
+        'subtitles' => 'video-track',
+        'captions' => 'video-track',
+    ];
+
+    public function appliesTo(ModelWithContent $model): bool
+    {
+        return $model instanceof File && $this->templateFor($model) !== null;
+    }
+
+    public function migrate(Changeset $changeset): Changeset
+    {
+        if ($changeset->content()->get('template')->or('default')->value() !== 'default') {
+            return $changeset;
+        }
+
+        return $changeset->set('template', $this->templateFor($changeset->model()));
+    }
+
+    protected function templateFor(File $file): ?string
+    {
+        foreach ($file->siblings(false)->template('video') as $video) {
+            foreach (static::TEMPLATES as $field => $template) {
+                foreach ($video->content()->get($field)->toStructure() as $row) {
+                    if ($file->kirby()->file($row->file()->yaml()[0] ?? '', $file->parent())?->is($file)) {
+                        return $template;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+}
+```
+
+It only changes files without a template and skips files without a content file, which Kirby's
+Panel always creates on upload. Adjust `'video'` if the project's video blueprint has another name.
+A file that is a video of its own and also a format of another one keeps the `video` template.
 
 ## Low impact changes
 

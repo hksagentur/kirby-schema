@@ -2,7 +2,36 @@
 
 All notable changes to this project are documented in this file.
 
-## Unreleased
+## 2.0.0-alpha.5 — 2026-11-10
+
+### Added
+
+- File blueprints `schema/files/video-format` (MP4 and WebM) and `schema/files/video-track` (WebVTT)
+  for the files of a video's `formats`, `subtitles` and `captions`.
+
+### Changed
+
+- The `file` fields of `fields/video-formats` and `fields/video-tracks` (and `video-subtitles`,
+  `video-captions`) upload with the `video-format` and `video-track` templates and only list files
+  of that template. Uploads had no template, so no section of the media tab listed them and they
+  couldn't be deleted in the Panel once their row was removed. Requires the file blueprints in the
+  project and a content migration for existing files, see
+  [UPGRADE.md](UPGRADE.md#video-formats-and-tracks).
+- `sections/videos` also lists video formats, `sections/documents` also lists video tracks. Both
+  sections no longer upload or sort: they filter with a `query`, since a section's `template` takes
+  only one template, and uploads without it would get none. Files are added through the `video`,
+  `document` and video fields, which set the template.
+- `HasBlocks::blocks()` takes an optional language code like Kirby's `content()` and decodes the
+  blocks once per language. It used to cache the first language it was called in, so a call for
+  another language (a sitemap or a meta tag in a second language) got the wrong blocks. The
+  protected `$blocks` property is now an array keyed by language code.
+
+### Removed
+
+- `Contracts\HasKeyVisual`, `Concerns\HasKeyVisual` and `keyVisual()` on `HeroBlock` and
+  `MediaTextBlock`. Key visuals live in `hksagentur/kirby-media-kit` 2.3, which preloads the media
+  exactly as the block renders it instead of a bare file. See
+  [UPGRADE.md](UPGRADE.md#responsive-images-and-videos).
 
 ### Fixed
 
