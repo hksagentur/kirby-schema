@@ -6,10 +6,15 @@ use Kirby\Cms\Blocks;
 
 trait HasBlocks
 {
-    protected ?Blocks $blocks = null;
+    /**
+     * @var array<string, Blocks>
+     */
+    protected array $blocks = [];
 
-    public function blocks(): Blocks
+    public function blocks(?string $languageCode = null): Blocks
     {
-        return $this->blocks ??= $this->content()->blocks()->toBlocks();
+        $key = $this->kirby()->languageCode($languageCode) ?? 'default';
+
+        return $this->blocks[$key] ??= $this->content($languageCode)->blocks()->toBlocks();
     }
 }
