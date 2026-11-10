@@ -3,6 +3,10 @@ title:
 
 icon: file-video
 
+image:
+  ratio: 16/9
+  cover: false
+
 accept:
   mime:
     - video/mp4

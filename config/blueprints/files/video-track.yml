@@ -3,5 +3,9 @@ title:
 
 icon: file-text
 
+image:
+  ratio: 3/2
+  cover: false
+
 accept:
   extension: vtt

@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented in this file.
 
+## Unreleased
+
+### Fixed
+
+- `video-format` and `video-track` files show their Panel cards in the ratio of the section they are
+  listed in (16/9 next to videos, 3/2 next to documents) instead of square.
+
 ## 2.0.0-alpha.5 — 2026-11-10
 
 ### Added
