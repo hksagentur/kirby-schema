@@ -24,6 +24,24 @@ class OrganizationTest extends TestCase
         $this->assertArrayNotHasKey('website', $data);
     }
 
+    public function testToStructuredDataWritesPhoneNumbersInE164(): void
+    {
+        $organization = Organization::fromArray([
+            'name' => 'Acme Inc.',
+            'telephone' => '04202-91016-0',
+            'fax' => '04202 91016-99',
+            'contactPoints' => [
+                ['contactType' => 'Sales', 'telephone' => '+49 30 123456'],
+            ],
+        ]);
+
+        $data = $organization->toStructuredData();
+
+        $this->assertSame('+494202910160', $data['telephone']);
+        $this->assertSame('+4942029101699', $data['faxNumber']);
+        $this->assertSame('+4930123456', $data['contactPoint'][0]['telephone']);
+    }
+
     public function testToStructuredDataDescribesTheLocationAsAPlace(): void
     {
         $organization = new Organization(

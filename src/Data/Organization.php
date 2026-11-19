@@ -119,8 +119,8 @@ readonly class Organization extends DataObject
             'alternateName' => $this->alternateName,
             'address' => $this->address?->toStructuredData(),
             'email' => $this->email?->value,
-            'telephone' => $this->telephone?->value,
-            'faxNumber' => $this->fax?->value,
+            'telephone' => $this->telephone?->toE164String(),
+            'faxNumber' => $this->fax?->toE164String(),
             'url' => $this->website?->value,
             'contactPoint' => $this->contactPoints->toStructuredData(),
             'location' => $this->address || $this->coordinates ? array_filter([

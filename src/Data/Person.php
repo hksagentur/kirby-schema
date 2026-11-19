@@ -128,8 +128,8 @@ readonly class Person extends DataObject
             'honorificPrefix' => $this->name->honorificPrefix,
             'image' => $this->image?->url(),
             'email' => $this->email?->value,
-            'telephone' => $this->telephone?->value,
-            'faxNumber' => $this->fax?->value,
+            'telephone' => $this->telephone?->toE164String(),
+            'faxNumber' => $this->fax?->toE164String(),
             'jobTitle' => $this->jobTitle,
             'knowsAbout' => $this->expertise,
             'hasCredential' => array_map(

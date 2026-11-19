@@ -11,6 +11,9 @@ All notable changes to this project are documented in this file.
   files once per language. They cached the first language they were called in. The protected
   `$coverImage` and `$galleryImages` properties are now arrays keyed by language code, and a missing
   cover is no longer looked up again on every call.
+- `Organization`, `Person` and `ContactPoint` write `telephone` and `faxNumber` in E.164
+  (`+494202910160`) in their structured data instead of the number as entered, as search engines
+  expect an international number.
 
 ### Fixed
 

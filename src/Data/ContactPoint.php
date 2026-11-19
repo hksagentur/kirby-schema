@@ -69,7 +69,7 @@ readonly class ContactPoint extends DataObject
         return array_filter([
             '@type' => $type,
             'contactType' => $this->type,
-            'telephone' => $this->telephone?->value,
+            'telephone' => $this->telephone?->toE164String(),
             'email' => $this->email?->value,
         ]);
     }
