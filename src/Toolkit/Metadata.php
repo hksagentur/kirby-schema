@@ -21,6 +21,14 @@ class Metadata
     }
 
     /**
+     * @return array<string, array<string, string>>
+     */
+    public static function currencyNames(): array
+    {
+        return static::read('currency-names');
+    }
+
+    /**
      * The plugin's root, resolved from this file: `config/translations.php`
      * reads country and currency names while the plugin is still being
      * registered, before `App::plugin()` knows it.

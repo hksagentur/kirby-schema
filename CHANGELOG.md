@@ -9,6 +9,8 @@ All notable changes to this project are documented in this file.
 - `Country` data type (ISO 3166-1 alpha-2), registered as `country`, with names from the plugin's
   translations like `Currency`. `Country::all()` lists the countries with a name, sorted by name,
   and backs the new `schema/countries` collection.
+- `Currency::all()` lists the currencies with a name, sorted by name, and backs the new
+  `schema/currencies` collection.
 
 ### Changed
 
@@ -24,6 +26,10 @@ All notable changes to this project are documented in this file.
 - Country names come from CLDR for all 37 countries with an address format. They live in
   `resources/country-names.php` with their source and license and are merged into the plugin's
   translations, so projects still override them through Kirby translations.
+- `fields/currency` takes its options from the `schema/currencies` collection and shows the name
+  with the symbol of the Panel language (`Currency::symbol()`). Currency names come from CLDR in
+  `resources/currency-names.php` like the country names; the German name of CNY is "Renminbi Yuan"
+  now. The `field.currency.*` option labels and the unused `currency.label` are gone.
 - `HasCoverImage::coverImage()`/`hasCoverImage()` and `HasGalleryImages::galleryImages()`/
   `hasGalleryImages()` take an optional language code like `HasBlocks::blocks()` and resolve the
   files once per language. They cached the first language they were called in. The protected
@@ -35,7 +41,8 @@ All notable changes to this project are documented in this file.
 
 ### Fixed
 
-- The English name of the United States was German.
+- The English name of the United States was German, and two German currency options were misspelled
+  ("Britischer Pfund", "US Dollar").
 - `video-format` and `video-track` files show their Panel cards in the ratio of the section they are
   listed in (16/9 next to videos, 3/2 next to documents) instead of square.
 

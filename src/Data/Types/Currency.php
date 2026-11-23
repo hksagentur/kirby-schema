@@ -4,8 +4,10 @@ namespace Hks\Schema\Data\Types;
 
 use Hks\Schema\Data\Contracts\Localizable;
 use Hks\Schema\Data\Exceptions\NotFoundException;
+use Hks\Schema\Toolkit\Metadata;
 use InvalidArgumentException;
 use Kirby\Cms\App;
+use Kirby\Toolkit\Collection;
 use Kirby\Toolkit\I18n;
 use Kirby\Toolkit\Str;
 use NumberFormatter;
@@ -44,6 +46,23 @@ readonly class Currency extends StringType implements Localizable
         return $currency;
     }
 
+    /** @return Collection<string, static> */
+    public static function all(?string $locale = null): Collection
+    {
+        $currencies = [];
+
+        foreach (static::codes() as $code) {
+            $currencies[$code] = static::from($code);
+        }
+
+        uasort($currencies, fn (self $a, self $b) => strnatcasecmp(
+            Str::ascii($a->toLocaleString($locale)),
+            Str::ascii($b->toLocaleString($locale)),
+        ));
+
+        return new Collection($currencies);
+    }
+
     public function code(): string
     {
         return $this->value;
@@ -62,6 +81,12 @@ readonly class Currency extends StringType implements Localizable
     public function toLocaleString(?string $locale = null, array $options = []): string
     {
         return I18n::translate("hksagentur.schema.currency.{$this->value}", $this->value, $locale);
+    }
+
+    /** @return string[] */
+    protected static function codes(): array
+    {
+        return array_keys(array_merge(...array_values(Metadata::currencyNames())));
     }
 
     protected function formatter(?string $locale): NumberFormatter

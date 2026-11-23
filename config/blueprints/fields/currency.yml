@@ -2,21 +2,6 @@ type: select
 label:
   *: hksagentur.schema.field.currency.label
 options:
-  - value: USD
-    text:
-      *: hksagentur.schema.field.currency.usd
-  - value: EUR
-    text:
-      *: hksagentur.schema.field.currency.eur
-  - value: JPY
-    text:
-      *: hksagentur.schema.field.currency.jpy
-  - value: GBP
-    text:
-      *: hksagentur.schema.field.currency.gbp
-  - value: CNY
-    text:
-      *: hksagentur.schema.field.currency.cny
-  - value: CHF
-    text:
-      *: hksagentur.schema.field.currency.chf
+  type: query
+  query: kirby.collection("schema/currencies")
+  text: "{{ item.toLocaleString }} ({{ item.symbol }})"

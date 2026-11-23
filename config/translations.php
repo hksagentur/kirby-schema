@@ -9,6 +9,7 @@ $translations = [
 
 $resources = [
     'country' => Metadata::countryNames(),
+    'currency' => Metadata::currencyNames(),
 ];
 
 foreach ($resources as $type => $languages) {

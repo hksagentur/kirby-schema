@@ -195,7 +195,8 @@ empty until an editor picks the country, and until then the address counts as be
 <?= $address->countryName() ?>
 ```
 
-Projects change the offered countries in `site/collections/schema/countries.php`:
+Projects change the offered countries in `site/collections/schema/countries.php`, the same way as
+currencies in `schema/currencies`:
 
 ```php
 <?php

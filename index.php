@@ -41,6 +41,7 @@ Kirby::plugin('hksagentur/schema', [
     'blueprints' => require __DIR__ . '/config/blueprints.php',
     'collections' => [
         'schema/countries' => fn () => Types\Country::all(),
+        'schema/currencies' => fn () => Types\Currency::all(),
     ],
     'snippets' => require __DIR__ . '/config/snippets.php',
     'translations' => require __DIR__ . '/config/translations.php',

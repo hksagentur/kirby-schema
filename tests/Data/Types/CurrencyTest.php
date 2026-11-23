@@ -4,6 +4,8 @@ namespace Hks\Schema\Data\Types;
 
 use Hks\Schema\TestCase;
 use InvalidArgumentException;
+use Kirby\Cms\Page;
+use Kirby\Option\OptionsQuery;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 class CurrencyTest extends TestCase
@@ -69,5 +71,23 @@ class CurrencyTest extends TestCase
     public function testToHtmlAbbreviatesTheCodeWithItsName(): void
     {
         $this->assertSame('<abbr title="Euro">EUR</abbr>', trim(Currency::from('EUR')->toHtml()));
+    }
+
+    public function testAllListsTheCurrenciesWithANameSortedByName(): void
+    {
+        $currencies = Currency::all('de');
+
+        $this->assertSame(['GBP', 'EUR', 'JPY', 'CNY', 'CHF', 'USD'], $currencies->values(fn (Currency $currency) => $currency->code()));
+    }
+
+    public function testTheCurrencyFieldResolvesTheCollectionToOptions(): void
+    {
+        $page = new Page(['slug' => 'test']);
+        $options = OptionsQuery::factory([
+            'query' => 'kirby.collection("schema/currencies")',
+            'text' => '{{ item.toLocaleString }} ({{ item.symbol }})',
+        ])->resolve($page)->render($page);
+
+        $this->assertContains(['disabled' => false, 'icon' => null, 'info' => null, 'text' => 'Euro (€)', 'value' => 'EUR'], $options);
     }
 }
