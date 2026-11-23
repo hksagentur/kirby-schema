@@ -24,7 +24,10 @@ fields:
     width: 1/4
     counter: false
   addressCountry:
-    type: text
+    type: select
     label:
       *: hksagentur.schema.field.address.addressCountry
-    counter: false
+    options:
+      type: query
+      query: kirby.collection("schema/countries")
+      text: "{{ item.toLocaleString }}"

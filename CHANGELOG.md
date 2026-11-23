@@ -4,8 +4,26 @@ All notable changes to this project are documented in this file.
 
 ## Unreleased
 
+### Added
+
+- `Country` data type (ISO 3166-1 alpha-2), registered as `country`, with names from the plugin's
+  translations like `Currency`. `Country::all()` lists the countries with a name, sorted by name,
+  and backs the new `schema/countries` collection.
+
 ### Changed
 
+- **Breaking:** `addressCountry` of `fields/address` is a select of the `schema/countries`
+  collection instead of a text field. A country name entered before shows as empty until it is
+  picked again; see `UPGRADE.md`.
+- **Breaking:** `PostalAddress` holds its country as `?Country`, as `Money` holds a `Currency`:
+  `country()` returns the object instead of a string, `countryName()` always returns a name, and
+  `PostalAddress::ISO_COUNTRY_CODE` is gone. The constructor takes `region` before `country`, in the
+  order of the fields and of `toArray()`. A value that is no ISO code (a country name) is ignored,
+  so the address counts as being in the `defaultCountry` and its structured data has no
+  `addressCountry`.
+- Country names come from CLDR for all 37 countries with an address format. They live in
+  `resources/country-names.php` with their source and license and are merged into the plugin's
+  translations, so projects still override them through Kirby translations.
 - `HasCoverImage::coverImage()`/`hasCoverImage()` and `HasGalleryImages::galleryImages()`/
   `hasGalleryImages()` take an optional language code like `HasBlocks::blocks()` and resolve the
   files once per language. They cached the first language they were called in. The protected
@@ -17,6 +35,7 @@ All notable changes to this project are documented in this file.
 
 ### Fixed
 
+- The English name of the United States was German.
 - `video-format` and `video-track` files show their Panel cards in the ratio of the section they are
   listed in (16/9 next to videos, 3/2 next to documents) instead of square.
 

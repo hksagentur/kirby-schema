@@ -181,6 +181,35 @@ templates:
 <?= $site->company()->toDataObject('organization')?->address()?->locality() ?>
 ```
 
+`addressCountry` is a select of ISO 3166-1 alpha-2 codes now, offered by the `schema/countries`
+collection, instead of free text. The plugin doesn't convert a country name: the field shows it as
+empty until an editor picks the country, and until then the address counts as being in the
+`defaultCountry`. `PostalAddress::country()` returns a `Country` instead of a string:
+
+```php
+// Before
+<?= $address->country() ?>
+
+// After
+<?= $address->country()?->code() ?>
+<?= $address->countryName() ?>
+```
+
+Projects change the offered countries in `site/collections/schema/countries.php`:
+
+```php
+<?php
+
+use Hks\Schema\Data\Types\Country;
+
+// Offer fewer countries
+return fn () => Country::all()->filter(fn (Country $country) => in_array($country->code(), ['AT', 'CH', 'DE']));
+
+// Offer another country: name it in the project's translations (`hksagentur.schema.country.JP`)
+// and add its layout to the `addressFormats` option, or it uses the default country's
+return fn () => Country::all()->append('JP', Country::from('JP'));
+```
+
 ### Link target
 
 **Likelihood of impact: High** — requires a content migration

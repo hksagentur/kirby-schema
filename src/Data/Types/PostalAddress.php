@@ -12,30 +12,26 @@ use Hks\Schema\Data\Exceptions\NotFoundException;
 use Hks\Schema\Format\PostalAddressFormat;
 use Hks\Schema\Toolkit\Str;
 use InvalidArgumentException;
-use Kirby\Cms\App;
 use Kirby\Toolkit\A;
 use Kirby\Toolkit\Collection;
-use Kirby\Toolkit\I18n;
 use Throwable;
 
 #[ArrayInput]
 readonly class PostalAddress extends DataType implements Arrayable, Htmlable, Localizable, Schemable
 {
-    public const string ISO_COUNTRY_CODE = '/^[A-Z]{2,3}$/';
-
     public function __construct(
         public ?string $streetAddress = null,
         public ?string $postalCode = null,
         public ?string $locality = null,
-        public ?string $country = null,
         public ?string $region = null,
+        public ?Country $country = null,
     ) {
         if (
             static::isBlank($streetAddress) &&
             static::isBlank($postalCode) &&
             static::isBlank($locality) &&
-            static::isBlank($country) &&
-            static::isBlank($region)
+            static::isBlank($region) &&
+            $country === null
         ) {
             throw new InvalidArgumentException(
                 'A postal address must have at least one property set.'
@@ -55,8 +51,8 @@ readonly class PostalAddress extends DataType implements Arrayable, Htmlable, Lo
             $value['streetaddress'] ?? null,
             $value['postalcode'] ?? null,
             $value['addresslocality'] ?? null,
-            $value['addresscountry'] ?? null,
             $value['addressregion'] ?? null,
+            Country::tryFrom((string) ($value['addresscountry'] ?? '')),
         );
     }
 
@@ -86,7 +82,7 @@ readonly class PostalAddress extends DataType implements Arrayable, Htmlable, Lo
 
     public function isInternational(): bool
     {
-        return $this->countryCode() !== $this->defaultCountryCode();
+        return $this->countryCode() !== Country::default()->code();
     }
 
     public function isDomestic(): bool
@@ -139,31 +135,19 @@ readonly class PostalAddress extends DataType implements Arrayable, Htmlable, Lo
         return $this->region;
     }
 
-    public function country(): ?string
+    public function country(): ?Country
     {
         return $this->country;
     }
 
     public function countryCode(): string
     {
-        $value = $this->country();
-
-        if (! $value || ! Str::matches($value, self::ISO_COUNTRY_CODE)) {
-            return $this->defaultCountryCode();
-        }
-
-        return Str::upper($value);
+        return ($this->country ?? Country::default())->code();
     }
 
-    public function countryName(?string $locale = null): ?string
+    public function countryName(?string $locale = null): string
     {
-        $countryCode = $this->countryCode();
-
-        if (! $countryCode) {
-            return $this->country();
-        }
-
-        return I18n::translate("hksagentur.schema.country.{$countryCode}", $this->country(), $locale);
+        return ($this->country ?? Country::default())->toLocaleString($locale);
     }
 
     /**
@@ -213,8 +197,8 @@ readonly class PostalAddress extends DataType implements Arrayable, Htmlable, Lo
             $this->streetAddress === $other->streetAddress &&
             $this->postalCode === $other->postalCode &&
             $this->locality === $other->locality &&
-            $this->country === $other->country &&
-            $this->region === $other->region
+            $this->region === $other->region &&
+            $this->country?->code() === $other->country?->code()
         );
     }
 
@@ -238,7 +222,7 @@ readonly class PostalAddress extends DataType implements Arrayable, Htmlable, Lo
             'postalCode' => $this->postalCode,
             'addressLocality' => $this->locality,
             'addressRegion' => $this->region,
-            'addressCountry' => $this->country,
+            'addressCountry' => $this->country?->code(),
         ];
     }
 
@@ -260,19 +244,14 @@ readonly class PostalAddress extends DataType implements Arrayable, Htmlable, Lo
         return PostalAddressFormat::get($this->countryCode()) ?? PostalAddressFormat::default();
     }
 
-    protected function defaultCountryCode(): string
-    {
-        return Str::upper(App::instance()->option('hksagentur.schema.defaultCountry'));
-    }
-
     protected function templateData(?string $locale = null): array
     {
         $data = $this->toArray();
 
         if ($this->isDomestic()) {
             $data = A::without($data, 'addressCountry');
-        } elseif ($countryName = $this->countryName($locale)) {
-            $data['addressCountry'] = $countryName;
+        } else {
+            $data['addressCountry'] = $this->countryName($locale);
         }
 
         return array_filter($data);

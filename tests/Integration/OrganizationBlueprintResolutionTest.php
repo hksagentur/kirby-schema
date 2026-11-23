@@ -34,7 +34,7 @@ class OrganizationBlueprintResolutionTest extends TestCase
         $this->assertSame('Acme GmbH', $organization->name());
         $this->assertSame('Musterstraße 1', $organization->address()?->streetAddress());
         $this->assertSame('Berlin', $organization->address()?->locality());
-        $this->assertSame('DE', $organization->address()?->country());
+        $this->assertSame('DE', $organization->address()?->countryCode());
         $this->assertSame(52.520008, $organization->coordinates()?->latitude());
         $this->assertSame(13.404954, $organization->coordinates()?->longitude());
         $this->assertSame('info@acme.example', $organization->email()?->value);

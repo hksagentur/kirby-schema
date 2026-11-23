@@ -50,24 +50,42 @@ class PostalAddressTest extends TestCase
 
     public function testEqualsIsTrueWhenAllStructuredFieldsMatch(): void
     {
-        $address = new PostalAddress('Musterstraße 1', '12345', 'Berlin', 'DE', 'Berlin');
-        $other = new PostalAddress('Musterstraße 1', '12345', 'Berlin', 'DE', 'Berlin');
+        $address = new PostalAddress('Musterstraße 1', '12345', 'Berlin', 'Berlin', Country::from('DE'));
+        $other = new PostalAddress('Musterstraße 1', '12345', 'Berlin', 'Berlin', Country::from('DE'));
 
         $this->assertTrue($address->equals($other));
     }
 
     public function testEqualsIsFalseWhenRegionDiffersEvenIfTheRenderedTextMatches(): void
     {
-        $address = new PostalAddress('Musterstraße 1', '12345', 'Berlin', 'DE', 'Berlin');
-        $other = new PostalAddress('Musterstraße 1', '12345', 'Berlin', 'DE', 'Brandenburg');
+        $address = new PostalAddress('Musterstraße 1', '12345', 'Berlin', 'Berlin', Country::from('DE'));
+        $other = new PostalAddress('Musterstraße 1', '12345', 'Berlin', 'Brandenburg', Country::from('DE'));
 
         $this->assertSame($address->toLocaleString(), $other->toLocaleString());
         $this->assertFalse($address->equals($other));
     }
 
+    public function testFromReadsTheCountryCode(): void
+    {
+        $address = PostalAddress::from(['addressLocality' => 'Wien', 'addressCountry' => 'at']);
+
+        $this->assertSame('AT', $address->country()?->code());
+        $this->assertSame('Österreich', $address->countryName('de'));
+        $this->assertTrue($address->isInternational());
+    }
+
+    public function testFromIgnoresACountryNameAndFallsBackToTheDefaultCountry(): void
+    {
+        $address = PostalAddress::from(['addressLocality' => 'Achim', 'addressCountry' => 'Deutschland']);
+
+        $this->assertNull($address->country());
+        $this->assertSame('DE', $address->countryCode());
+        $this->assertArrayNotHasKey('addressCountry', $address->toStructuredData());
+    }
+
     public function testJsonSerializeMatchesToArray(): void
     {
-        $address = new PostalAddress('Musterstraße 1', '12345', 'Berlin', 'DE', 'Berlin');
+        $address = new PostalAddress('Musterstraße 1', '12345', 'Berlin', 'Berlin', Country::from('DE'));
 
         $this->assertSame($address->toArray(), $address->jsonSerialize());
         $this->assertSame(

@@ -5,13 +5,14 @@ use Hks\Schema\Data\Types;
 
 Kirby::plugin('hksagentur/schema', [
     'options' => [
+        'migrations' => [],
         'defaultCountry' => 'DE',
         'defaultCurrency' => 'EUR',
         'addressFormats' => [],
         'phoneNumberFormats' => [],
-        'migrations' => [],
         'dataTypes' => [
             'area' => Types\Area::class,
+            'country' => Types\Country::class,
             'currency' => Types\Currency::class,
             'distance' => Types\Distance::class,
             'email-address' => Types\EmailAddress::class,
@@ -38,6 +39,9 @@ Kirby::plugin('hksagentur/schema', [
         ],
     ],
     'blueprints' => require __DIR__ . '/config/blueprints.php',
+    'collections' => [
+        'schema/countries' => fn () => Types\Country::all(),
+    ],
     'snippets' => require __DIR__ . '/config/snippets.php',
     'translations' => require __DIR__ . '/config/translations.php',
     'commands' => require __DIR__ . '/config/commands.php',
