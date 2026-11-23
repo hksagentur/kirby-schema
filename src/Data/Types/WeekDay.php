@@ -125,7 +125,7 @@ enum WeekDay: int implements Comparable, Localizable
 
     public function shortName(): string
     {
-        return $this->toLocaleString(locale: 'en', options: ['style' => 'short']);
+        return Str::substr($this->name(), 0, 2);
     }
 
     public function dayOfWeek(): int

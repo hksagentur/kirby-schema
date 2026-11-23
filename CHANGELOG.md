@@ -43,6 +43,10 @@ All notable changes to this project are documented in this file.
 
 - The English name of the United States was German, and two German currency options were misspelled
   ("Britischer Pfund", "US Dollar").
+- `WeekDay::shortName()`, the two-letter code of schema.org opening hours (`Mo-Fr`), read the English
+  translation, so a project overriding it changed the machine format. It takes the case name now,
+  and the English short labels are CLDR's abbreviations ("Mon", "Tue", …). The unused `day.*`
+  translations are gone.
 - `video-format` and `video-track` files show their Panel cards in the ratio of the section they are
   listed in (16/9 next to videos, 3/2 next to documents) instead of square.
 

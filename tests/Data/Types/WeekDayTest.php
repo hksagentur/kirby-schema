@@ -28,6 +28,12 @@ class WeekDayTest extends TestCase
         $this->assertSame('Montag', WeekDay::Monday->toLocaleString('de', ['style' => 'long']));
     }
 
+    public function testShortNameIsTheTwoLetterCodeOfSchemaOrgRegardlessOfTranslations(): void
+    {
+        $this->assertSame('Th', WeekDay::Thursday->shortName());
+        $this->assertSame('Thu', WeekDay::Thursday->toLocaleString('en'));
+    }
+
     public function testCompareOrdersByIsoDayOfWeek(): void
     {
         $this->assertTrue(WeekDay::Monday->compare(WeekDay::Tuesday) < 0);
