@@ -2,7 +2,7 @@
 
 All notable changes to this project are documented in this file.
 
-## Unreleased
+## 2.0.0-alpha.6 — 2026-11-23
 
 ### Added
 
