@@ -9,7 +9,7 @@ use Hks\Schema\Data\Contracts\Htmlable;
 use Hks\Schema\Data\Contracts\Localizable;
 use Hks\Schema\Data\Contracts\Schemable;
 use Hks\Schema\Data\Exceptions\NotFoundException;
-use Hks\Schema\Format\PostalAddressFormat;
+use Hks\Schema\Toolkit\AddressFormat;
 use Hks\Schema\Toolkit\Str;
 use InvalidArgumentException;
 use Kirby\Toolkit\A;
@@ -239,9 +239,9 @@ readonly class PostalAddress extends DataType implements Arrayable, Htmlable, Lo
         return $this->toArray();
     }
 
-    protected function addressFormat(): ?PostalAddressFormat
+    protected function addressFormat(): ?AddressFormat
     {
-        return PostalAddressFormat::get($this->countryCode()) ?? PostalAddressFormat::default();
+        return AddressFormat::for($this->country ?? Country::default()) ?? AddressFormat::for(Country::default());
     }
 
     protected function templateData(?string $locale = null): array

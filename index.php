@@ -9,7 +9,7 @@ Kirby::plugin('hksagentur/schema', [
         'defaultCountry' => 'DE',
         'defaultCurrency' => 'EUR',
         'addressFormats' => [],
-        'phoneNumberFormats' => [],
+        'callingCodes' => [],
         'dataTypes' => [
             'area' => Types\Area::class,
             'country' => Types\Country::class,

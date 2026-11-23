@@ -226,7 +226,7 @@ Below is an overview of all available blueprints provided by this plugin. Each e
 
 - Country calling codes follow [ITU-T Recommendation E.164](https://www.itu.int/rec/T-REC-E.164).
 - Address formats in `resources/address-*.php` are adapted from [Google's address metadata](https://github.com/google/libaddressinput/wiki/AddressValidationMetadata) ([CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)).
-- Calling codes and trunk prefixes in `resources/calling-codes.php` are taken from [libphonenumber](https://github.com/google/libphonenumber) ([Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)).
+- Calling codes and national prefixes in `resources/calling-codes.php` are taken from [libphonenumber](https://github.com/google/libphonenumber) ([Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0)).
 - Country and currency names in `resources/country-names.php` and `resources/currency-names.php` are taken from [CLDR](https://github.com/unicode-org/cldr-json) ([Unicode License v3](https://www.unicode.org/license.txt)).
 
 

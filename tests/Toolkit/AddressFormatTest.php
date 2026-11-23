@@ -1,12 +1,13 @@
 <?php
 
-namespace Hks\Schema\Format;
+namespace Hks\Schema\Toolkit;
 
+use Hks\Schema\Data\Types\Country;
 use Hks\Schema\Data\Types\PostalAddress;
 use Hks\Schema\TestCase;
 use Kirby\Cms\App;
 
-class PostalAddressFormatTest extends TestCase
+class AddressFormatTest extends TestCase
 {
     public const array POSTAL_CODE_LOCALITY = [
         '{{ streetAddress }}',
@@ -14,22 +15,17 @@ class PostalAddressFormatTest extends TestCase
         '{{ addressCountry }}',
     ];
 
-    public function testGetResolvesTheAddressSchemeOfACountry(): void
+    public function testForResolvesTheAddressSchemeOfACountry(): void
     {
-        $format = PostalAddressFormat::get('de');
+        $format = AddressFormat::for(Country::from('de'));
 
-        $this->assertSame('DE', $format->countryCode());
+        $this->assertSame('DE', $format->country()->code());
         $this->assertSame(static::POSTAL_CODE_LOCALITY, $format->lines());
     }
 
-    public function testGetReturnsNullForAnUnknownCountry(): void
+    public function testForReturnsNullForACountryWithoutFormat(): void
     {
-        $this->assertNull(PostalAddressFormat::get('XX'));
-    }
-
-    public function testGetWithoutACodeReturnsTheDefaultCountry(): void
-    {
-        $this->assertSame('DE', PostalAddressFormat::get()->countryCode());
+        $this->assertNull(AddressFormat::for(Country::from('XX')));
     }
 
     public function testTheOptionOverridesAndAddsCountries(): void
@@ -44,42 +40,22 @@ class PostalAddressFormatTest extends TestCase
             ],
         ]);
 
-        $this->assertSame(['{{ addressLocality }}'], PostalAddressFormat::get('DE')->lines());
+        $this->assertSame(['{{ addressLocality }}'], AddressFormat::for(Country::from('DE'))->lines());
         $this->assertSame([
             '{{ streetAddress }}',
             '{{ addressLocality }} {{ addressRegion }} {{ postalCode }}',
             '{{ addressCountry }}',
-        ], PostalAddressFormat::get('JP')->lines());
+        ], AddressFormat::for(Country::from('JP'))->lines());
     }
 
-    public function testDefaultReadsTheDefaultCountryOption(): void
-    {
-        $this->app = new App([
-            'roots' => ['index' => '/dev/null'],
-            'options' => ['hksagentur.schema.defaultCountry' => 'us'],
-        ]);
-
-        $this->assertSame('US', PostalAddressFormat::default()->countryCode());
-    }
-
-    public function testAnUnknownTemplateNameIsSkipped(): void
+    public function testAnUnknownSchemeNameIsSkipped(): void
     {
         $this->app = new App([
             'roots' => ['index' => '/dev/null'],
             'options' => ['hksagentur.schema.addressFormats' => ['JP' => 'missing']],
         ]);
 
-        $this->assertNull(PostalAddressFormat::get('JP'));
-    }
-
-    public function testDefaultIsNullWhenTheDefaultCountryHasNoFormat(): void
-    {
-        $this->app = new App([
-            'roots' => ['index' => '/dev/null'],
-            'options' => ['hksagentur.schema.defaultCountry' => 'XX'],
-        ]);
-
-        $this->assertNull(PostalAddressFormat::default());
+        $this->assertNull(AddressFormat::for(Country::from('JP')));
     }
 
     public function testAKnownCountryKeepsItsFormatRegardlessOfTheDefaultCountry(): void

@@ -3,23 +3,23 @@
 namespace Hks\Schema\Data\Types;
 
 use Hks\Schema\Data\Contracts\Arrayable;
-use Hks\Schema\Format\PhoneNumberFormat;
+use Hks\Schema\Toolkit\CallingCode;
 use InvalidArgumentException;
 use Kirby\Toolkit\Str;
 
 readonly class PhoneNumber extends StringType implements Arrayable
 {
     /**
-     * Matches a country calling code.
+     * Matches a calling code.
      *
      * Calling codes are prefix-free, so their first digits decide how many digits belong to them.
      *
      * @link https://www.itu.int/rec/T-REC-E.164
      */
-    public const string COUNTRY_CODE = '[17]|2[07]|3[0-469]|4[013-9]|5[1-8]|6[0-6]|8[1246]|9[0-58]|[2-9]\d{2}';
+    public const string CALLING_CODE = '[17]|2[07]|3[0-469]|4[013-9]|5[1-8]|6[0-6]|8[1246]|9[0-58]|[2-9]\d{2}';
 
-    public const string ITU_E123 = '/^(?:(?<internationalPrefix>\\' . self::INTERNATIONAL_PREFIX_SYMBOL . '|' . self::INTERNATIONAL_PREFIX . ')(?<countryCode>' . self::COUNTRY_CODE . '))?\s*(?<nationalNumber>(?<nationalTrunkCode>\(\d+\)|0\d+)?[\/\s-]*\s*(?<subscriberNumber>[\d\s-]*\d))$/u';
-    public const string ITU_E164 = '/^(?<internationalPrefix>\\' . self::INTERNATIONAL_PREFIX_SYMBOL . ')?(?<countryCode>' . self::COUNTRY_CODE . ')(?<nationalSignificantNumber>\d{1,12})$/u';
+    public const string ITU_E123 = '/^(?:(?<internationalPrefix>\\' . self::INTERNATIONAL_PREFIX_SYMBOL . '|' . self::INTERNATIONAL_PREFIX . ')(?<callingCode>' . self::CALLING_CODE . '))?\s*(?<nationalNumber>(?<nationalTrunkCode>\(\d+\)|0\d+)?[\/\s-]*\s*(?<subscriberNumber>[\d\s-]*\d))$/u';
+    public const string ITU_E164 = '/^(?<internationalPrefix>\\' . self::INTERNATIONAL_PREFIX_SYMBOL . ')?(?<callingCode>' . self::CALLING_CODE . ')(?<nationalSignificantNumber>\d{1,12})$/u';
 
     public const string INTERNATIONAL_PREFIX = '00';
     public const string INTERNATIONAL_PREFIX_SYMBOL = '+';
@@ -27,7 +27,7 @@ readonly class PhoneNumber extends StringType implements Arrayable
     public string $nationalNumber;
     public ?string $subscriberNumber;
     public ?string $nationalTrunkCode;
-    public ?string $countryCode;
+    public ?string $callingCode;
 
     public function __construct(string $value)
     {
@@ -45,7 +45,7 @@ readonly class PhoneNumber extends StringType implements Arrayable
         $this->nationalNumber = $matches['nationalNumber'];
 
         $this->subscriberNumber = $matches['subscriberNumber'] ?? null;
-        $this->countryCode = $matches['countryCode'] ?? null;
+        $this->callingCode = $matches['callingCode'] ?? null;
 
         $this->nationalTrunkCode = isset($matches['nationalTrunkCode'])
             ? $this->digits($matches['nationalTrunkCode'])
@@ -54,17 +54,17 @@ readonly class PhoneNumber extends StringType implements Arrayable
 
     public function isInternational(): bool
     {
-        return $this->countryCode !== null;
+        return $this->callingCode !== null;
     }
 
     public function isNational(): bool
     {
-        return $this->countryCode === null;
+        return $this->callingCode === null;
     }
 
-    public function hasCountryCode(): bool
+    public function hasCallingCode(): bool
     {
-        return $this->countryCode !== null;
+        return $this->callingCode !== null;
     }
 
     public function hasNationalTrunkCode(): bool
@@ -77,14 +77,9 @@ readonly class PhoneNumber extends StringType implements Arrayable
         return $this->subscriberNumber !== null;
     }
 
-    public function countryCode(): ?string
+    public function callingCode(): ?string
     {
-        return $this->countryCode;
-    }
-
-    public function countryCallingCode(): ?string
-    {
-        return $this->countryCode !== null ? self::INTERNATIONAL_PREFIX_SYMBOL . $this->countryCode : null;
+        return $this->callingCode;
     }
 
     public function nationalNumber(): string
@@ -94,7 +89,7 @@ readonly class PhoneNumber extends StringType implements Arrayable
 
     public function nationalSignificantNumber(?string $countryCode = null): string
     {
-        return $this->significantNumber($this->numberFormat($countryCode));
+        return $this->significantNumber($this->callingCodeFor($countryCode));
     }
 
     public function nationalTrunkCode(): ?string
@@ -130,7 +125,7 @@ readonly class PhoneNumber extends StringType implements Arrayable
         $anonymizedSignificantNumber = $start . $replacement . $end;
 
         return implode(' ', array_filter([
-            $this->countryCallingCode(),
+            $this->isInternational() ? self::INTERNATIONAL_PREFIX_SYMBOL . $this->callingCode : null,
             $this->nationalTrunkCode(),
             $anonymizedSignificantNumber,
         ]));
@@ -142,26 +137,25 @@ readonly class PhoneNumber extends StringType implements Arrayable
             return $this->groupedDigits($this->nationalNumber);
         }
 
-        return $this->countryCallingCode() . ' ' . $this->groupedDigits($this->significantNumber($this->numberFormat()));
+        return self::INTERNATIONAL_PREFIX_SYMBOL . $this->callingCode . ' ' . $this->groupedDigits($this->significantNumber($this->callingCodeFor()));
     }
 
     public function toE164String(?string $countryCode = null): string
     {
-        $format = $this->numberFormat($countryCode);
-        $callingCode = $this->countryCode() ?? $format?->callingCode();
+        $callingCode = $this->callingCodeFor($countryCode);
 
         if ($callingCode === null) {
             return $this->digits($this->nationalNumber);
         }
 
-        return self::INTERNATIONAL_PREFIX_SYMBOL . $callingCode . $this->digits($this->significantNumber($format));
+        return self::INTERNATIONAL_PREFIX_SYMBOL . $callingCode->code() . $this->digits($this->significantNumber($callingCode));
     }
 
     public function toArray(): array
     {
         return [
             'value' => $this->value,
-            'countryCode' => $this->countryCode,
+            'callingCode' => $this->callingCode,
             'nationalTrunkCode' => $this->nationalTrunkCode,
             'nationalNumber' => $this->nationalNumber,
             'subscriberNumber' => $this->subscriberNumber,
@@ -178,11 +172,15 @@ readonly class PhoneNumber extends StringType implements Arrayable
         return $this->toArray();
     }
 
-    protected function numberFormat(?string $countryCode = null): ?PhoneNumberFormat
+    protected function callingCodeFor(?string $countryCode = null): ?CallingCode
     {
-        return $this->isInternational()
-            ? PhoneNumberFormat::byCallingCode($this->countryCode)
-            : PhoneNumberFormat::get($countryCode);
+        if ($this->isInternational()) {
+            return CallingCode::find($this->callingCode) ?? new CallingCode($this->callingCode);
+        }
+
+        $country = $countryCode === null ? Country::default() : Country::tryFrom($countryCode);
+
+        return $country ? CallingCode::for($country) : null;
     }
 
     protected function digits(string $number): string
@@ -195,14 +193,14 @@ readonly class PhoneNumber extends StringType implements Arrayable
         return preg_replace('/[^\d\s\-]/', '', $number);
     }
 
-    protected function significantNumber(?PhoneNumberFormat $format): string
+    protected function significantNumber(?CallingCode $callingCode): string
     {
         $number = trim($this->nationalNumber);
 
-        if ($format?->trunkPrefix() === null) {
+        if ($callingCode?->nationalPrefix() === null) {
             return $number;
         }
 
-        return preg_replace('/^\(?' . preg_quote($format->trunkPrefix(), '/') . '\)?\s*/', '', $number);
+        return preg_replace('/^\(?' . preg_quote($callingCode->nationalPrefix(), '/') . '\)?\s*/', '', $number);
     }
 }

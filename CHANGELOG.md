@@ -11,6 +11,10 @@ All notable changes to this project are documented in this file.
   and backs the new `schema/countries` collection.
 - `Currency::all()` lists the currencies with a name, sorted by name, and backs the new
   `schema/currencies` collection.
+- `Toolkit\Metadata` is the one place that knows the files in `resources/` and the options
+  that extend them: `addressFormats()` (schemes resolved to lines), `callingCodes()`,
+  `countryNames()` and `currencyNames()`. `AddressFormat`, `CallingCode`, `Country`, `Currency` and
+  the translations read through it.
 
 ### Changed
 
@@ -23,6 +27,22 @@ All notable changes to this project are documented in this file.
   order of the fields and of `toArray()`. A value that is no ISO code (a country name) is ignored,
   so the address counts as being in the `defaultCountry` and its structured data has no
   `addressCountry`.
+- **Breaking:** the `Format` namespace is gone. `Toolkit\AddressFormat::for(Country)` replaces
+  `PostalAddressFormat::get()`, and `Toolkit\CallingCode::for(Country)` and `CallingCode::find()`
+  replace `PhoneNumberFormat::get()` and `byCallingCode()`. There is no `default()` or `all()` on
+  them any more: pass `Country::default()`. `CallingCode::find()` returns the calling code and its
+  national prefix, not a country, since several countries share a code (`1`).
+- **Breaking:** the trunk prefix is called national prefix, as in libphonenumber:
+  `CallingCode::nationalPrefix()`, and the key in `resources/calling-codes.php` and in the option is
+  `nationalPrefix` instead of `trunkPrefix`. The option itself is called `callingCodes` instead of
+  `phoneNumberFormats`, since it holds no format and the `PhoneNumberFormat` class is gone.
+- **Breaking:** `PhoneNumber` calls the calling code it stores by its name: `callingCode()`,
+  `hasCallingCode()`, `$callingCode`, `CALLING_CODE` and the `callingCode` key of `toArray()` replace
+  `countryCode()`, `hasCountryCode()`, `$countryCode`, `COUNTRY_CODE` and `countryCode`, which read
+  like the ISO code of `Country`. `countryCallingCode()` is gone: it returned `+49`, where
+  libphonenumber-js means `49`; `toE123String()` and `anonymize()` still render the `+`. The
+  `$countryCode` arguments of `toE164String()`, `toUri()` and `nationalSignificantNumber()` stay:
+  they take an ISO country code.
 - Country names come from CLDR for all 37 countries with an address format. They live in
   `resources/country-names.php` with their source and license and are merged into the plugin's
   translations, so projects still override them through Kirby translations.

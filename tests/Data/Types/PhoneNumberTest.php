@@ -13,7 +13,7 @@ class PhoneNumberTest extends TestCase
 
         $this->assertTrue($phoneNumber->isNational());
         $this->assertFalse($phoneNumber->isInternational());
-        $this->assertNull($phoneNumber->countryCode());
+        $this->assertNull($phoneNumber->callingCode());
         $this->assertSame('0221', $phoneNumber->nationalTrunkCode());
     }
 
@@ -23,7 +23,7 @@ class PhoneNumberTest extends TestCase
 
         $this->assertTrue($phoneNumber->isInternational());
         $this->assertFalse($phoneNumber->isNational());
-        $this->assertSame('49', $phoneNumber->countryCode());
+        $this->assertSame('49', $phoneNumber->callingCode());
     }
 
     public function testHasNationalTrunkCodeIsFalseInsteadOfMatchingAnEmptyString(): void
@@ -72,8 +72,8 @@ class PhoneNumberTest extends TestCase
         $this->app = new App([
             'roots' => ['index' => '/dev/null'],
             'options' => [
-                'hksagentur.schema.phoneNumberFormats' => [
-                    'JP' => ['callingCode' => '81', 'trunkPrefix' => '0'],
+                'hksagentur.schema.callingCodes' => [
+                    'JP' => ['callingCode' => '81', 'nationalPrefix' => '0'],
                 ],
             ],
         ]);
@@ -118,17 +118,17 @@ class PhoneNumberTest extends TestCase
         $number = new PhoneNumber('0049 4202 91016-0');
 
         $this->assertTrue($number->isInternational());
-        $this->assertSame('49', $number->countryCode());
+        $this->assertSame('49', $number->callingCode());
         $this->assertSame('+494202910160', $number->toE164String());
         $this->assertSame('+494202910160', (new PhoneNumber('0049 (0) 4202 910160'))->toE164String());
     }
 
     public function testTheCountryCodeEndsWhereTheCallingCodeEnds(): void
     {
-        $this->assertSame('49', (new PhoneNumber('+494202910160'))->countryCode());
-        $this->assertSame('1', (new PhoneNumber('+14155550100'))->countryCode());
-        $this->assertSame('353', (new PhoneNumber('+3531234567'))->countryCode());
-        $this->assertSame('49', (new PhoneNumber('00494202910160'))->countryCode());
+        $this->assertSame('49', (new PhoneNumber('+494202910160'))->callingCode());
+        $this->assertSame('1', (new PhoneNumber('+14155550100'))->callingCode());
+        $this->assertSame('353', (new PhoneNumber('+3531234567'))->callingCode());
+        $this->assertSame('49', (new PhoneNumber('00494202910160'))->callingCode());
     }
 
     public function testTheNationalSignificantNumberDropsTheTrunkPrefix(): void
